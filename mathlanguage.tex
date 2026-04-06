@@ -1,0 +1,285 @@
+\labeledsection{Mathematical Language}{sec:mathlanguage}
+\definition{Natural Language}{
+A natural language is any form of spoken or signed means of communication that has evolved naturally in humans through use and repetition without conscious planning or premeditation.
+}{natural_language}
+
+\definition{Domain of Discourse}{
+The \linkterm{set}{def:set} of entities, objects, or concepts that a language, discussion, or formal system refers to. It specifies the scope within which terms, statements, and reasoning apply.  
+}{domain_of_discourse}
+
+\definition{Jargon (Terminology)}{
+    A jargon (or terminology) is a \linkterm{set}{def:set} of specialized words or phrases (called technical terms or just terms) relating to concepts from a particular \linkterm{domain of discourse}{domain_of_discourse}.
+}{terminology}
+
+
+\definition{Technical Language}{
+A technical language is a \linkterm{natural language}{natural_language} extended by a \linkterm{terminology}{terminology} and (possibly) special idioms, discourse markers, and notations.  
+}{technical_language}
+
+\definition{Stylized Language}{
+Mathematicians use a stylized language that uses formulae to represent mathematical objects, uses math idioms for special situations (e.g. "iff", "hence", "let... be..., then..."), and classifies statements by role (e.g., definition, Lemma, Theorem, Proof, Example).
+}{stylized_language}
+
+\definition{Mathematical Vernacular}{
+A \linkterm{technical language}{technical_language} that you need to master to be successful when moving to a new environment (\linkterm{symbolic AI}{symbolicai}).
+}{mathematical_vernacular}
+
+\definition{Formulae}{
+    A mathematical formula can be a \refterm{mathematical statement}{math_statement} (clause) which can be true or false (e.g. $x>5, 3+5=7$), or a \refterm{mathematical object}{math_object} (e.g. $3, n, x^2 + y^2 + z^2, \int_1^0 x^{3/2} dx$)
+}{formulae}
+
+\textbf{Observation: }\linkterm{mathematical vernacular}{mathematical_vernacular} loves to name 
+\linkterm{objects}{math_object}/\linkterm{statements}{math_statement} for precise references. For example: Let $p=3x^2+7x$, then $p^3 + 17p + 1 \text{ is } \cdots$
+
+Moreover, \linkterm{mathematical vernacular}{mathematical_vernacular} aggregates \linkterm{objects}{math_object}/\linkterm{statements}{math_statement} for cognitive efficiency, examples:
+\begin{itemize}
+    \item $a \in S, b \in S, \text{ and } c \in S \leadsto a, b, c \in S$ (\linkterm{object}{math_object} aggregation)
+    \item $i \geq 0 \text{ and } i \leq n \leadsto 0 \leq i \leq n$ (\linkterm{statement}{math_statement} aggregation)
+\end{itemize}
+
+
+\definition{Sequence}{
+    \linkterm{mathematical vernacular}{mathematical_vernacular} uses the concept of sequences instead of lists. Sequences are usually finite, but can be infinite as well.
+}{sequence}
+
+\definition{Ellipses}{
+    \linkterm{mathematical vernacular}{mathematical_vernacular} uses ellipses ($\cdots$) as a constructor for \linkterm{sequences}{sequence}. The meaning of an ellipsis is usually considered "obvious" and left for interpretation by the reader.
+}{ellipses}
+
+\linkterm{ellipses}{ellipses} allow to write down large \linkterm{objects}{math_object} easily, examples:
+\begin{itemize}
+    \item $1, \cdots, n \leadsto$ the \linkterm{sequence}{sequence} of natural numbers between 1 and $n$ in order.
+    \item $1, 4, 9, 16, \cdots \leadsto$ the \linkterm{sequence}{sequence} of squares in orders.
+    \item $e_1, \cdots, e_n \leadsto$ a \linkterm{sequence}{sequence} of \linkterm{objects}{math_object} $e_i$ for $1 \leq i \leq n$
+\end{itemize}
+
+\linkterm{Mathematical statements}{math_statement} come in different epistemic varieties:
+\begin{itemize}
+    \item \refterm{Definitions}{definitions}: \linkterm{statements}{math_statement} that introduce new global identifier for important \linkterm{objects}{math_object}
+    \item \refterm{Assertions}{assertions}: \linkterm{statements}{math_statement} that state properties of \linkterm{mathematical objects}{math_object}
+    \item \refterm{Examples}{examples}: \linkterm{statements}{math_statement} that exhibit a witness for some property
+    \item \refterm{Axioms}{axiom}: \linkterm{statements}{math_statement} that characterize the \linkterm{objects}{math_object} of a certain \linkterm{domain of discourse}{domain_of_discourse} or theory. An axiom (postulate) is a statement about \linkterm{mathematical objects}{math_object} that we \textit{assume} to be true.
+\end{itemize}
+
+\linkterm{Mathematical assertions}{assertions} are pragmatically classified into categories:
+\begin{itemize}
+    \item \refterm{proofs}{proofs} are arguments that justify the truth of \linkterm{statements}{math_statement} beyond any doubt. \linkterm{Proofs}{proofs} are not really \linkterm{statements}{math_statement}, but we sometimes treat them together.
+    \item \refterm{proposition}{proposition} is a \linkterm{statement}{math_statement} which is interesting in its own right.
+    \item \refterm{lemma}{lemma} is an easily proved \linkterm{statement}{math_statement} which is helpful for proving other \linkterm{propositions}{proposition} and \linkterm{theorems}{theorem}, but is usually not particularly interesting in its own right. A \linkterm{lemma}{lemma} is an intermediate \linkterm{theorem}{theorem} that serves as part of a \linkterm{proof}{proofs} of a larger \linkterm{theorem}{theorem}.
+    \item \refterm{theorem}{theorem} is a more important \linkterm{statement}{math_statement} than a \linkterm{proposition}{proposition} which says something definitive on the subject, and often takes more effort to prove than a \linkterm{proposition}{proposition} or \linkterm{lemma}{lemma}. A \linkterm{theorem}{theorem} is a \linkterm{statement}{math_statement} about \linkterm{mathematical object}{math_object} that we \textit{know} to be true.
+    \item \refterm{corollary}{corollary} is a quick consequence of a \linkterm{proposition}{proposition} or \linkterm{theorem}{theorem} that was proven rececently. It is a \linkterm{theorem}{theorem} that follows directly from another \linkterm{theorem}{theorem}.
+    \item \refterm{conjecture}{conjecture} is a \linkterm{statement}{math_statement} that is thought to be provable, but has not been yet. A \linkterm{conjecture}{conjecture} that is proven is a \linkterm{theorem}{theorem}
+\end{itemize}
+
+\linkterm{Mathematical statement}{math_statement} use abbreviations, examples:
+\begin{itemize}
+    \item $\land$ and $\lor$ for "and" and "or",
+    \item $\neg$ for "not"
+    \item $\forall x.P \quad (\forall x \in S.P)$ for "condition $P$ holds for all $x$ (in $S$)"
+    \item $\exists x.P \quad (\exists x \in S.P)$ for "there exists an $x$ (in $S$) such that the condition $P$ holds"
+    \item $\nexists x.P \quad (\nexists x \in S.P)$ for "there exists no $x$ (in $S$) such that the condition $P$ holds"
+    \item $\exists^1 x.P (\exists^1 x \in S.P)$ for "there exists one and only $x$ (in $S$) such that the condition $P$ holds"
+    \item "\textit{iff}" for "if and only if", symbolized by $\Leftrightarrow$ 
+    \item $\Rightarrow$ for "implies"; we can read $A \Rightarrow B$ as "if $A$ then $B$"
+\end{itemize}
+
+\definition{Declaration}{
+    In \linkterm{mathematical vernacular}{mathematical_vernacular} we call a clause that introduce new identifiers together with some properties a declaration. For example $\text{Let } \epsilon, \delta > 0 \cdots$
+}{declaration}
+
+\definition{Scope}{
+    The scope of an identifier is the part of an expression where the reference is valid; that is, where the identifier can be used to refer. In the other parts, the identifier may refer to a different entity, or to nothing at all (unbound)
+}{scope}
+
+\textbf{Observations:} \linkterm{definition}{definitions} have \textit{global} \linkterm{scope}{scope}, \linkterm{declarations}{declaration} have \textit{local} \linkterm{scope}{scope}.
+
+\definition{Definiendum}{
+    The definiendum is the symbol, expression, or term being introduced by a \linkterm{definition}{definitions}. It is the newly named \linkterm{object}{math_object} or concept.
+}{defineiendum}
+
+\definition{Definiens}{
+    The definiens is the symbol, expression, or construction that specifies the meaning of the \linkterm{defineiendum}{defineiendum}. It explains what the \linkterm{defineiendum}{defineiendum} denotes.
+}{definiens}
+
+\linkterm{Mathematics}{mathematics} has developed various forms of \linkterm{definition}{definitions} (definition schemata). A \refterm{simple definition}{simpledefinition} introduces a name (the \linkterm{defineiendum}{defineiendum}) for a compound \linkterm{object}{math_object} or concept (the \linkterm{definiens}{definiens}). The \linkterm{defineiendum}{defineiendum} must be new, i.e. may not have been used for anything else, in particular, the \linkterm{defineiendum}{defineiendum} may not occur in the \linkterm{definiens}{definiens}. We use the symbols $:=$ (and the inverse $=:$) to write \linkterm{simple definitions}{simpledefinition}. For example, we can give the natural number $2$ the name $\phi$. In a \linkterm{formula}{formulae} we write this as $\phi := 2$ or $2 =: \phi$.
+
+On the other hand, in a \refterm{pattern definition}{patterndefinition} the \linkterm{defineiendum}{defineiendum} is the \linkterm{operator}{arithmetic} or \linkterm{relation}{relation} applied to $n$ distinct variables -called pattern variables- $v_1, \cdots, v_n$ as arguments, and the \linkterm{definiens}{definiens} is an expression in these variables. When the new \linkterm{operator}{arithmetic} is applied to arguments $a_1, \cdots, a_n$, then its value is the \linkterm{definiens}{definiens} expression where the $v_i$ are replaced by the $a_i$. We use the symbol $:=$ for \linkterm{operator}{arithmetic} definitions and $:\Leftrightarrow$ for \linkterm{relation}{relation} definitions. For example, the following is a \linkterm{pattern definition}{patterndefinition} for the \linkterm{set intersection operator}{set_intersection} $\cap$:
+\[
+A \cap B := \set{x \mid x \in A \land x \in B}
+\] 
+The pattern variables are $A$ and $B$, and with this definition we have e.g. $\Phi \cap \Phi = \set{x \mid x \in \Phi \land x \in \Phi}$.
+
+An \refterm{implicit definition}{implicitdefinition} (definition by description) is a clause or expression $A$, such that we can prove "there is exactly one $n$ such that $A$" ($\exists^1 n.A$), where $n$ is a new name - the \linkterm{defineiendum}{defineiendum}. If such a unique existence proof exists, we call $n$ \textit{well-defined}. For example, $\forall x.x \notin \Phi$ is an \linkterm{implicit definition}{implicitdefinition} for the empty set $\Phi$ (instead of explicitly saying $\Phi := \{ \}$). We can prove unique existence of $\Phi$ by just exhibiting $\{ \}$ and showing that any other \linkterm{set}{def:set} $S$ with $\forall x.x \notin S$ we have $S \equiv \Phi$. $S$ cannot have elements, so it has the same elements as $\Phi$, and thus $S \equiv \Phi$.
+
+Here is another \linkterm{implicit definition}{implicitdefinition}: The exponential function is that function $f: \mathbb{R} \to \mathbb{R}$ with $f' = f$ and $f(0) = 1$. Here $A$ is the clause "$f' = f$ and $f(0)=1$". Well-definedness is mathematically non-trivial.
+
+\linkterm{Mathematics}{mathematics} uses examples and counterexamples to support understanding a property $P$. Examples give us a sense of the extent of $P$ and counterexamples help delineate the border of $P$.
+
+\definition{Example}{
+An example $E$ is a \linkterm{mathematical statement}{math_statement} that consists of:
+\begin{itemize}
+\item symbol $p$ for the \refterm{exemplandum}{exemplandum} (plural: exemplanda): the property to be exemplified,
+\item the \refterm{exemplans}{exemplans} (plural: exemplantia): an expression $A$ denoting a \linkterm{mathematical object}{math_object} that acts as witness object for the property $p$, and
+\item (optionally) a \refterm{justification}{justification} of $E$, i.e. a \linkterm{proof}{proofs} $\pi$ that $p(A)$ holds in the current context.
+\end{itemize}
+}{def:example}
+
+\definition{Counter Example}{
+An \linkterm{example}{def:example} for the complement of the property $p$ where $\pi$ is a \linkterm{proof}{proofs} that $p(A)$ does not hold.
+}{def:counterexample}
+
+\definition{Running Example}{
+An \linkterm{example}{def:example} that is recalled time and again during an argument, applying the newly discovered knowledge to it, presumably to show how things work.
+}{def:running_example}
+
+For instance, the following \linkterm{mathematical statement}{math_statement} is a \linkterm{mathematical example}{def:example}: 
+
+The identity function on $\mathbb{R}$ is \textit{continuous}.
+\begin{itemize}
+    \item the \linkterm{exemplandum}{exemplandum} is "\textit{continuous}", 
+    \item the \linkterm{exemplans}{exemplans} $A$ is "The identity function on $\mathbb{R}$", and
+    \item the \linkterm{justification}{justification} $\pi$, a \linkterm{proof}{proofs} of continuity $\text{Id}_{\mathbb{R}}$: Let $\epsilon > 0$, then we choose $\delta := \epsilon \cdots$ is omitted.
+\end{itemize}
+
+We can use \linkterm{examples}{def:example} for $\forall$-\linkterm{statements}{math_statement} as well. Let $B=\forall x.A$ be a \linkterm{mathematical statement}{math_statement}, then we call an \linkterm{example}{def:example}/\linkterm{counter example}{def:counterexample} for $B$ whose \linkterm{exemplandum}{exemplandum} is the property "$A$ holds for $x$" an \linkterm{example}{def:example}/\linkterm{counter example}{def:counterexample} for $B$. For example, $3$ is an \linkterm{example}{def:example} for the \linkterm{statement}{math_statement} $B=\forall n. \text{odd}(n)$. 
+
+\commandnote{
+An \linkterm{example}{def:example} (or even several) for a \linkterm{mathematical statement}{math_statement} $B$ do not constitute a \linkterm{proof}{proofs} for $B$. On the other hand, one \linkterm{counter example}{def:counterexample} for a \linkterm{mathematical statement}{math_statement} $B$ does show that $\neg B$ is true ($\exists x. \neg A \equiv \neg (\forall x.A)$). 
+}
+
+\definition{Syllogism}{
+A syllogism (\linkterm{proof}{proofs} method) is an argument that applies \linkterm{deductive reasoning}{deduction} to arrive at a \linkterm{conclusion}{def:inference} based on two (or more) \linkterm{propositions}{proposition} that are \linkterm{asserted}{assertions} or assumed to be true. A \refterm{syllogistic system}{syllogistic_system} is simply a \linkterm{set}{def:set} of \linkterm{syllogisms}{syllogism}
+}{syllogism}
+
+\commandnote{
+Today we usually reserve the term \linkterm{syllogism}{syllogism} to \linkterm{informal}{def:informality} arguments, \linkterm{formal}{def:formal_logic} arguments are called \linkterm{inference}{def:inference} rules.
+}
+
+In a \refterm{proof by contradiction}{proof_by_contradiction}, we make an assumption ($\neg A$) to the contrary of what we want to prove ($A$), and then we show that the assumption leads to a contradiction and therefore must be false. That lets us to \linkterm{conclude}{def:inference} that ($\neg \neg A$) must be true, and thus ($A$).
+
+If we want to prove a \linkterm{statement}{math_statement} of the form \textit{"If $A$, then $B$"}, then we do that by:
+\begin{itemize}
+\item assuming $A$ and proving $B$ from that.
+\item after this subproof, we may not use $A$ anymore. 
+\end{itemize}
+We call this \linkterm{proof}{proofs} method a \refterm{proof by local hypothesis}{proof_by_local_hypothesis}
+
+If we know a general rule of the form \textit{"If $A$ then $B$"}, and we also know a specific instance \(A'\), which arises from \(A\) by replacing its variables with concrete values.  
+Then by \refterm{chaining}{chaining} we can \linkterm{conclude}{def:inference} the corresponding instance \(B'\), obtained from \(B\) by the same variable replacement.  
+
+\textbf{Example.}  
+
+1. We know: ``Socrates is a human.'' This is \(A'\).  
+
+2. We also know a general rule: 
+\[
+\forall x \; ( \; x \text{ is human} \;\Rightarrow\; x \text{ is mortal} \; ).
+\]
+This is the ``If $A$ then $B$'' statement, where
+\[
+A(x) = (x \text{ is human}), \quad B(x) = (x \text{ is mortal}).
+\]
+
+3. Substitute \(x = \text{Socrates}\):  
+\[
+A(x) \to \text{Socrates is human}, \qquad B(x) \to \text{Socrates is mortal}.
+\]
+
+4. Since ``Socrates is human'' is true, \linkterm{chaining}{chaining} gives us:  
+\[
+\text{Socrates is mortal}.
+\]
+
+If we want to prove \textit{"$A$ for all $x$"}, then we prove $A$ without regard for $x$, then argue something like \textit{"as $x$ was chosen arbitrarily when we proved $A$, we know $A$ for every $x$"}
+
+If we know that one of the cases $A_1, \cdots, A_k$ must always hold, then we use \refterm{proof by cases}{proof_by_cases} to show that \textit{"if $A_1$ then $C$"} and {"if $A_2$ then $C$"} and so on $\forall i:1 \leq i \leq k$, hence we can \linkterm{conclude}{def:inference} that $C$ holds. The following is an example:
+
+\Lemma{For all rational numbers $a$ and $b$, if $ab = 0$, then $a = 0$ or $b = 0$.}{lemma:zeromult}
+
+\Proof{
+
+1. Let $a,b \in \mathbb{Q}$ and assume $ab = 0$.  
+
+2. Obviously, either $a = 0$ or $a \neq 0$.  
+
+3. We prove that $a = 0$ or $b = 0$ by the two cases induced.  
+
+\quad 4. Case $a = 0$:  
+
+\quad\quad 4.1 Then the conclusion of the lemma is trivially true, and there is nothing to prove.  
+
+\quad 5. Case $a \neq 0$:  
+
+\quad\quad 5.1 We can multiply both sides of the equation $ab = 0$ by $\tfrac{1}{a}$ and obtain  
+\[
+\tfrac{1}{a} \cdot ab = \tfrac{1}{a} \cdot 0.
+\]  
+
+\quad\quad 5.2 Reducing the fractions gives $b = 0$.  
+
+6. In both cases, either $a = 0$ or $b = 0$, so the statement holds.
+}
+
+
+\definition{Without Loss of Generality (WLOG)}{
+An \linkterm{inference}{def:inference} principle used in \linkterm{proofs}{proofs} when a \linkterm{statement}{math_statement} $Q(x)$ must be shown for all cases of $x$, but the different cases are equivalent by symmetry or trivial reduction.
+\linkterm{Formally}{def:formal_logic}, if the domain of $x$ can be partitioned into cases $A_1, \dots, A_k$ and it can be shown that:
+\begin{itemize}
+\item proving $Q(x)$ under one representative case $A_i$ suffices, because
+\item for every other case $A_j$ there is either a trivial \linkterm{proof}{proofs} of $Q(x)$ or a direct reduction to the representative case,
+\end{itemize}
+then we may assume $A_i$ holds ``without loss of generality''.  
+This allows us to simplify the argument by only proving the representative case.
+}{def:wlog}
+
+For example, if we want to prove the property $Q(p)$ for all primes $p$. We know that every prime is either $2$ (the only even prime) or an odd prime. If the case $p=2$ is easy, and the general odd prime case is the only real work, then we can say:
+\begin{quote}
+    \linkterm{WLOG}{def:wlog}, assume $p$ is odd
+\end{quote}
+This does not exclude the even case; it means we have already checked that the even case adds no new difficulty.
+
+In \linkterm{mathematical vernacular}{mathematical_vernacular}, different alphabets are used to convey precise meanings. 
+\Tabref{tab:greekalphabet} presents the Greek letters that you are expected to read, recognize, and write. 
+In addition, \tabref{tab:roman_fraktur_letters} shows the curly Roman and Fraktur letters, which are also standard in mathematical writing. 
+Becoming fluent with these alphabets is an essential part of mathematical literacy.
+
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|c|c|c|c|c|c|c|c|c|}
+\hline
+$\alpha$ & $A$ & alpha   & $\beta$ & $B$ & beta   & $\gamma$ & $\Gamma$ & gamma \\ \hline
+$\delta$ & $\Delta$ & delta   & $\epsilon$ & $E$ & epsilon & $\zeta$ & $Z$ & zeta \\ \hline
+$\eta$   & $H$ & eta     & $\theta, \vartheta$ & $\Theta$ & theta & $\iota$ & $I$ & iota \\ \hline
+$\kappa$ & $K$ & kappa   & $\lambda$ & $\Lambda$ & lambda & $\mu$ & $M$ & mu \\ \hline
+$\nu$    & $N$ & nu      & $\xi$ & $\Xi$ & xi     & $o$ & $O$ & omicron \\ \hline
+$\pi, \varpi$ & $\Pi$ & pi & $\rho$ & $P$ & rho   & $\sigma$ & $\Sigma$ & sigma \\ \hline
+$\tau$   & $T$ & tau     & $\upsilon$ & $\Upsilon$ & upsilon & $\varphi, \phi$ & $\Phi$ & phi \\ \hline
+$\chi$   & $X$ & chi     & $\psi$ & $\Psi$ & psi   & $\omega$ & $\Omega$ & omega \\ \hline
+\end{tabular}
+\caption{Greek Alphabet}
+\label{tab:greekalphabet}
+\end{table}
+
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|l|} \hline
+Roman & $
+\mathcal{A}, \mathcal{B}, \mathcal{C}, \mathcal{D}, \mathcal{E}, \mathcal{F}, 
+\mathcal{G}, \mathcal{H}, \mathcal{I}, \mathcal{J}, \mathcal{K}, \mathcal{L}, 
+\mathcal{M}, \mathcal{N}, \mathcal{O}, \mathcal{P}, \mathcal{Q}, \mathcal{R}, 
+\mathcal{S}, \mathcal{T}, \mathcal{U}, \mathcal{V}, \mathcal{W}, \mathcal{X}, 
+\mathcal{Y}, \mathcal{Z}
+$ \\ \hline
+
+Fraktur & $
+\mathfrak{A}, \mathfrak{B}, \mathfrak{C}, \mathfrak{D}, \mathfrak{E}, \mathfrak{F}, 
+\mathfrak{G}, \mathfrak{H}, \mathfrak{I}, \mathfrak{J}, \mathfrak{K}, \mathfrak{L}, 
+\mathfrak{M}, \mathfrak{N}, \mathfrak{O}, \mathfrak{P}, \mathfrak{Q}, \mathfrak{R}, 
+\mathfrak{S}, \mathfrak{T}, \mathfrak{U}, \mathfrak{V}, \mathfrak{W}, \mathfrak{X}, 
+\mathfrak{Y}, \mathfrak{Z}
+$ \\ \hline
+\end{tabular}
+\caption{Roman and Fraktur Letters}
+\label{tab:roman_fraktur_letters}
+\end{table}

@@ -1,0 +1,160 @@
+\labeledsection{Sets}{sec:sets}
+\definition{Set}{
+A collection of different things (called \textbf{elements} or \textbf{members} of the set).
+}{def:set}
+
+We can represent \linkterm{sets}{def:set} by listing the \linkterm{elements}{def:set} within curly brackets, e.g. $\set{a,b,c}$ or by describing the \linkterm{elements}{def:set} via a property, e.g. $\set{x \mid x \mod 2 = 0}$ (the \linkterm{set}{def:set} of even numbers). We can state \linkterm{element}{def:set}-hood ($a \in S$) or not ($b \notin S$)
+
+\commandnote{
+Learn to distinguish between \linkterm{objects}{math_object} and their representations. ($\set{a,b,c}$ and $\set{b,a,a,c}$ are different representations of the same \linkterm{set}{def:set})
+}
+
+\definition{Set Equality}{
+$A \equiv B : \equiv \forall x. x \in A \Leftrightarrow x \in B$
+}{set_equality}
+
+\definition{Subset}{
+$A \subseteq B : \equiv \forall x.x \in A \Rightarrow x \in B$
+}{subset}
+
+\definition{Proper Subset}{
+$A \subset B : \equiv (A \subseteq B) \land (A \not\equiv B)$
+}{proper_subset}
+
+\definition{Super Set}{
+$A \supseteq B :\equiv \forall x.x \in B \Rightarrow x \in A$
+}{superset}
+
+\definition{Proper Superset}{
+$A \supset B : \equiv (A \supseteq B) \land (A \not\equiv B)$
+}{proper_superset}
+
+\definition{Set Union}{
+$A \cup B := \set{x \mid x \in A \lor x \in B}$
+}{set_union}
+
+\definition{Set Intersection}{
+$A \cap B := \set{x \mid x \in A \land x \in B}$
+}{set_intersection}
+
+\definition{Disjoint}{
+Two \linkterm{sets}{def:set} $A,B$ are \textbf{disjoint} iff $A \cap B = \Phi$
+}{disjoint}
+
+\definition{Set Difference}{
+$A \setminus B := \set{x \mid x \in A \land x \notin B}$
+}{set_difference}
+
+\definition{Power Set}{
+$\mathcal{P}(A) := \set{S \mid S \subseteq A}$ (the set of all subsets)
+}{power_set}
+
+\commandnote{
+\linkterm{Set}{def:set} \linkterm{operators}{arithmetic} such as \linkterm{union ($\cup$)}{set_union}, \linkterm{intersection ($\cap$)}{set_intersection}, and \linkterm{set difference ($\setminus$)}{set_difference} always return a \linkterm{\emph{set}}{def:set}.
+
+For example, consider
+\[
+\{a,b\} \cap \{b,c\} = \{b\}.
+\]
+The result $\{b\}$ is a \linkterm{set}{def:set}.  
+
+Now observe:
+\begin{itemize}
+  \item $\{b\} \notin \{a,b\}$, since the \linkterm{elements}{def:set} of $\{a,b\}$ are $a$ and $b$, not the \linkterm{set}{def:set} $\{b\}$.  
+  \item $\{b\} \notin \{b,c\}$, since the \linkterm{elements}{def:set} of $\{b,c\}$ are $b$ and $c$, not the \linkterm{set}{def:set} $\{b\}$.  
+  \item $\{b\} \subseteq \{a,b\}$, because every \linkterm{element}{def:set} of $\{b\}$ (namely $b$) is also in $\{a,b\}$.  
+  \item $\{b\} \subseteq \{b,c\}$, for the same reason.  
+\end{itemize}
+
+Thus, the outcome of a \linkterm{set}{def:set} \linkterm{operation}{arithmetic} should always be compared to other \linkterm{sets}{def:set} using $\subseteq$ (\linkterm{subset relation}{subset}), not $\in$ (\linkterm{element relation}{def:set}).
+}
+
+\definition{Cartesian Product}{
+$A \times B := \set{(a,b) \mid a \in A \land b \in B}$, $(a,b)$ is a \textit{pair}
+}{cartesian_product}
+
+\definition{Family}{
+A \linkterm{set}{def:set} of \linkterm{sets}{def:set}
+}{family}
+
+\definition{Topology}{
+A \linkterm{family}{family} of open \linkterm{sets}{def:set}
+}{topology}
+
+\definition{Indexing Function}{
+Let $I$ and $X$ be \linkterm{sets}{def:set}. A function $f:I \to X$ is called an indexing function. The set $I$ is called the index set. For each $i \in I$, we define $x_i := f(i)$, here $i$ is called the index (or parameter) of $x_i$.
+}{indexing_function}
+
+\definition{Indexed Family}{
+Given an \linkterm{indexing function}{indexing_function} $f:I \to X$, the \linkterm{set}{def:set} of values $f(I) = \set{f(i):i \in I}$ is called an indexed \linkterm{family}{family}. It is often written as $(x_i)_{i \in I}$, $\langle x_i \rangle_{i \in I} $, or $\{ x_i \}_{i \in I}$. 
+}{indexed_family}
+
+Example:
+Consider \linkterm{index set}{indexing_function} $I:=\set{1,2,3}$. Consider \linkterm{indexing function}{indexing_function} $f$ defined as:
+\[
+f(1) = \set{a,b} \quad f(2) = \set{c} \quad f(3) = \set{d,f}
+\]
+the \linkterm{set}{def:set} of values $f(I) = \set{f(1), f(2), f(3)}$ is the \linkterm{indexed family}{indexed_family}:
+\[
+(X_i)_{i \in I} = f(I) = \set{\set{a,b}, \set{c}, \set{d,f}}
+\]
+where $x_i = f(i)$, i.e. $x_1 = f(1) = \set{a,b}$, $\cdots$
+
+\definition{Union over a Family}{
+Let $(X_i)_{i \in I}$ be an \linkterm{indexed family}{indexed_family}, then $\bigcup_{i \in I} X_i := \set{x \mid \exists i \in I.x \in X_i}$
+}{family_union}
+
+\definition{Intersection over a Family}{
+Let $(X_i)_{i \in I}$ be an \linkterm{indexed family}{indexed_family}, then $\bigcap_{i \in I} X_i := \set{x \mid \forall i \in I.x \in X_i}$
+}{family_intersection}
+
+\definition{$n$-fold Cartesian Product}{
+$\prod_{i=1}^{n} X_i := X_1 \times \cdots \times X_n := \set{\langle x_1, \cdots, x_n \rangle \mid \forall i. 1 \leq i \leq n \Rightarrow x_i \in X_i}$ where $\langle x_1, \cdots, x_n \rangle$ is called an $n$-tuple.
+}{cartesian_product_fold}
+
+Example: consider the \linkterm{indexed family}{indexed_family} $(X_i)_{i \in \set{1,2,3}} = \set{\set{a,b}, \set{c}, \set{d,f}}$. $X_1 \times X_2 \times X_3 = \set{\langle a,c,d \rangle, \langle a,c,f \rangle, \langle b,c,d \rangle, \langle b,c,f \rangle}$.
+
+\definition{$n$-dim Cartesian Space}{
+$X^n := \set{\tuple{x_1, \cdots, x_n} \mid 1 \leq i \leq n \Rightarrow x_i \in X}$ where $\tuple{x_1, \cdots, x_n}$ is called a vector.
+}{cartesian_space}
+Example: Let $X = \set{1,2}$, then $X^2 = \set{\tuple{1,1}, \tuple{1,2}, \tuple{2,1}, \tuple{2,2}}$. Another example is the usual 2D plane: $\mathbb{R}^2 := \set{\tuple{x,y} \mid x \in \mathbb{R}, y \in \mathbb{R}}$
+
+\definition{Size of a Set}{
+The size $\setsize{A}$ of a \linkterm{set}{def:set} $A$ is the number of \linkterm{elements}{def:set} in $A$.
+}{setsize}
+
+\commandnote{
+\begin{itemize}
+\item $\setsize{A \cup B} \leq \setsize{A} + \setsize{B}$
+\item $\setsize{A \cap B} \leq \text{min} (\setsize{A} , \setsize{B})$
+\item $\setsize{A \times B} = \setsize{A} \cdot \setsize{B}$
+\end{itemize}
+}
+
+\definition{Pairwise Disjoint}{
+A \linkterm{family}{family} of \linkterm{sets}{def:set} is called \textbf{pairwise disjoint} or \textbf{mutually disjoint}, if any two of those \linkterm{sets}{def:set} are \linkterm{disjoint}{disjoint}.
+}{pairwise_disjoint}
+
+\definition{Multiset}{
+A \textbf{multiset} (or \textbf{bag}) is a generalization of a \linkterm{set}{def:set} where \linkterm{elements}{def:set} can appear more than once. Formally, a multiset $\mathcal{M}$ over a domain $D$ is a pair $(D, m)$, where $m: D \to \mathbb{N}$ is a function mapping each \linkterm{element}{def:set} $x \in D$ to its \textbf{multiplicity} (the number of occurrences).
+}{multiset}
+
+\definition{Multiset Membership}{
+$x \in \mathcal{M} :\equiv m(x) > 0$
+}{multiset_membership}
+
+\definition{Multiset Size}{
+The size of a multiset $\mathcal{M} = (D, m)$, denoted $\setsize{\mathcal{M}}$, is the sum of the multiplicities of all its \linkterm{elements}{def:set}: $\setsize{\mathcal{M}} = \sum_{x \in D} m(x)$.
+}{multiset_size}
+
+\definition{Multiset Sum (Union)}{
+The sum of two multisets $\mathcal{M}_1 = (D, m_1)$ and $\mathcal{M}_2 = (D, m_2)$, denoted $\mathcal{M}_1 \uplus \mathcal{M}_2$, is a multiset where the multiplicity of each \linkterm{element}{def:set} is the sum of its multiplicities: $m_{\uplus}(x) = m_1(x) + m_2(x)$.
+}{multiset_sum}
+
+\definition{Multiset Intersection}{
+The \linkterm{intersection}{set_intersection} of two multisets $\mathcal{M}_1 = (D, m_1)$ and $\mathcal{M}_2 = (D, m_2)$, denoted $\mathcal{M}_1 \cap \mathcal{M}_2$, is a multiset where the multiplicity of each \linkterm{element}{def:set} is the minimum of its multiplicities in the two multisets: $m_{\cap}(x) = \min(m_1(x), m_2(x))$.
+}{multiset_intersection}
+
+\definition{Multiset Equality}{
+$\mathcal{M}_1 \equiv \mathcal{M}_2 :\equiv \forall x \in D. m_1(x) = m_2(x)$
+}{multiset_equality}

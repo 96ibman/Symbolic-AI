@@ -1,0 +1,430 @@
+\labeledsection{Functions}{sec:functions}
+
+\definition{Partial function}{
+A \linkterm{relation}{relation} $R \subseteq X \times Y$ is a \textit{partial function} from $X$ to $Y$ ($f:X \rightharpoonup Y$) iff
+$\forall x \in X, \forall y_1, y_2 \in Y. \big((x,y_1) \in R \wedge (x,y_2) \in R \Rightarrow y_1 = y_2\big)$ (i.e. there is at most one $y \in Y$ with $(x,y) \in f$)
+}{partial_function}
+
+\definition{dom, codom}{
+We call $X$ the domain ($\text{dom}(f)$), and $Y$ the codomain ($\text{codom}(f)$)
+}{domain_codomain}
+
+\definition{Function Application}{
+Instead of writing $(x,y) \in f$ we write $f(x)=y$
+}{function_application}
+
+\definition{Undefined}{
+we call a \linkterm{partial function}{partial_function} $f:X \rightharpoonup Y$ undefined at $x \in X$, iff $\forall y \in Y. (x,y) \notin f$ ($f(x) = \bot$).
+}{undefined}
+
+\definition{Function}{
+A \linkterm{partial function}{partial_function} $f:X \rightharpoonup Y$ is called a \textit{function} (or \textit{total function}) from $X$ to $Y$ iff it is a \linkterm{total relation}{total_relation}. ($\forall x \in X. \exists^1 y \in Y: (x,y) \in f$)
+}{function}
+
+\commandnote{
+A \linkterm{partial function}{partial_function} guarantees uniqueness, but not existence. So each $x$ has at most one $y$ (some might have none). A \linkterm{total function}{function} guarantees both uniqueness and existence (at most and at least $\to$ exactly one)
+}
+
+\definition{Partial Function Space}{
+Given two sets $X$ and $Y$, the \linkterm{set}{def:set} of all possible \linkterm{partial functions}{partial_function} from $X$ to $Y$ is called the partial function space, denoted as $X \rightharpoonup Y$
+}{function_space_partial}
+
+\commandnote{
+If $X$ and $Y$ are finite, then for each element $x \in X$ we have $\setsize{Y} + 1$ choices (either pick one of the $\setsize{Y}$ values in $Y$, or leave it \linkterm{undefined}{undefined}). Therefore, $\setsize{X \rightharpoonup Y} = (\setsize{Y} + 1)^{\setsize{X}}$.
+}
+Example, $X = Y = \set{0,1}$
+\[
+X \rightharpoonup Y = \set{\Phi, \set{(0,0)}, \set{(0,1)}, \set{(1,0)}, \set{(1,1)}, \set{(0,0),(1,0)}, \set{(0,1),(1,1)}, \set{(0,1), (1,0)}, \set{(0,0), (1,1)}}
+\]
+Notice that $\setsize{X \rightharpoonup Y} = 9 = (\setsize{Y} + 1)^{\setsize{X}} = (2 + 1)^{2}$
+
+\definition{Function Space}{
+Given two sets $X$ and $Y$, the \linkterm{set}{def:set} of all possible \linkterm{functions}{function} from $X$ to $Y$ is called the partial function space, denoted as $X \to Y$
+}{function_space_total}
+
+\commandnote{
+If $X$ and $Y$ are finite, then for each element $x \in X$ we must pick exactly one of the $\setsize{Y}$ values in $Y$. Therefore, $\setsize{X \to Y} = (\setsize{Y})^{\setsize{X}}$.
+}
+
+Example, $X = Y = \set{0,1}$
+\[
+X \to Y = \set{\set{(0,0),(1,0)}, \set{(0,1),(1,1)}, \set{(0,1), (1,0)}, \set{(0,0), (1,1)}}
+\]
+Notice that $\setsize{X \to Y} = 4 = (\setsize{Y})^{\setsize{X}} = (2)^{2}$
+
+
+
+
+A \linkterm{function}{function} $f: X \to Y$ is called
+\begin{itemize}
+\item \refterm{injective}{injective} iff $\forall x_1,x_2 \in X.f(x_1) = f(x_2) \Rightarrow x_1 = x_2$
+\item \refterm{surjective}{surjective} iff $\forall y \in Y. \exists x \in X.f(x)=y$
+\item \refterm{bijective}{bijective} iff $f$ is \linkterm{injective}{injective} and \linkterm{surjective}{surjective} 
+\end{itemize}
+
+Let's look for some examples to make the previous definitions clear. 
+
+Assume $X = \set{1,2,3} \quad Y = \set{a,b}$ The \linkterm{relation}{relation} $R=\set{(1,a), (1,b)}$ is just a \linkterm{relation}{relation}, it is not a \linkterm{partial function}{partial_function} nor a \linkterm{total function}{function}.
+
+If $R = \set{(1,a)}$ it becomes a \linkterm{partial function}{partial_function} but not a \linkterm{total one}{function}.
+
+If $R = \set{(1,a),(2,a),(3,a)}$ it becomes a \linkterm{total function}{function} because each $x \in X$ has exactly one $y \in Y$. However, it is not \linkterm{injective}{injective} ($1,2,3$ all map to the same value) and not \linkterm{surjective}{surjective} ($b$ is not reached).
+
+IF $R = \set{(1,a),(2,a),(3,b)}$ then this is a \linkterm{surjective}{surjective} \linkterm{function}{function} but not an \linkterm{injective one}{injective} (since $1,2$ map to the same value).
+
+Assume $X = \set{1,2} \quad Y=\set{a,b,c} \quad f = \set{(1,a),(2,b)}$ then this is an \linkterm{injective}{injective} \linkterm{function}{function} (different inputs map to different output) but not \linkterm{surjective}{surjective} since there is no $x$ such that  $f(x) = c$.
+
+And finally, assume $X=\set{1,2} \quad Y=\set{a,b} \quad f=\set{(1,a),(2,b)}$ then this is a \linkterm{total function}{function} that is both \linkterm{injective}{injective} and \linkterm{surjective}{surjective}, i.e. a \linkterm{bijective}{bijective} \linkterm{function}{function}.
+
+\definition{Function Composition}{
+If $f:A \to B$ and $g: B \to C$ are \linkterm{functions}{function}, then we call $g \circ f: A\to C ; x\longmapsto g(f(x))$ the composition of $g$ and $f$ (read $g$ after $f$).
+}{function_composition}
+
+\commandnote{
+Given $f,g: \mathbb{N} \to \mathbb{N}$, if $f$ and $g$ both are \linkterm{injective}{injective}/\linkterm{bijective}{bijective}, so is $g \circ f$
+}
+
+\textbf{Observations:}
+\begin{itemize}
+\item If $f$ is \linkterm{injective}{injective}, then the \linkterm{converse}{converse_relation} \linkterm{relation}{relation} $f^{-1}$ is a \linkterm{partial function}{partial_function}.
+
+For example: $X = \set{1,2,3}, Y = \set{a,b,c,d}, f:X \to Y = \set{(1,a),(2,b),(3,c)}$. $f$ is clearly \linkterm{injective}{injective} since different inputs map to different outputs. $\text{dom}(f^{-1}) = \text{codom}(f)$ and vice versa. $f^{-1} = \set{(a,1),(b,2),(c,3)}$. It is a \linkterm{partial function}{partial_function} because for $d \in \text{dom}(f^{-1})$ there is no $f^{-1} (d)$
+\item If $f$ is \linkterm{surjective}{surjective}, then the \linkterm{converse}{converse_relation} \linkterm{relation}{relation} $f^{-1}$ is a \linkterm{total}{total_relation} \linkterm{relation}{relation}. 
+
+For example: $X = \set{1,2,3}, Y = \set{a,b}, f:X \to Y = \set{(1,a),(2,b),(3,b)}$. $f$ is clearly \linkterm{surjective}{surjective} because both $a,b$ are hit by some $x$. $f^{-1} = \set{(a,1),(b,2),(b,3)}$. It is a \linkterm{total function}{function}.
+\item IF $f$ is \linkterm{bijective}{bijective}, call the \linkterm{converse}{converse_relation} \linkterm{relation}{relation} \refterm{inverse function}{inverse_function}, we also write it as $f^{-1}$.
+\item If $f$ is \linkterm{bijective}{bijective}, then the \linkterm{inverse function}{inverse_function} $f^{-1}$ is a \linkterm{total function}{function}.
+\item If $f:X \to Y$ is \linkterm{bijective}{bijective}, then $f \circ f^{-1} = \text{Id}_{Y}$.
+
+For example: $X = \set{1,2,3}, Y = \set{a,b,c}, f = \set{(1,a),(2,b),(3,c)}, f^{-1} = \set{(a,1),(b,2),(c,3)}$. $(f \circ f^{-1})(y) = f(f^{-1}(y))$
+\begin{itemize}
+    \item $y = a: f^{-1} (a) = 1, f(1) = a$
+    \item $y = b: f^{-1} (b) = 2, f(2) = b$
+    \item $y = c: f^{-1} (c) = 3, f(3) = c$
+\end{itemize}
+$\to \quad$ $f \circ f^{-1} = \text{Id}_{Y}$
+\end{itemize}
+
+\definition{Image and Preimage}{
+Let $f:X \to Y$ be a \linkterm{function}{function}, $X' \subseteq X$ and $Y' \subseteq Y$, then we call
+\begin{itemize}
+\item $f(X'):= \set{y \in Y \mid \exists x \in X'.(x,y) \in f}$ the \textbf{image} of $X'$ under $f$,
+\item $\text{Im}(f) := f(X)$ the \textbf{image} of $f$, and
+\item $f^{-1}(Y') := \set{x \in X \mid \exists y \in Y'.(x,y) \in f}$ the \textbf{preimage} of $Y'$ under $f$.
+\end{itemize} 
+}{image_preimage}
+
+\commandnote{
+Let $f:\mathbb{N}\to\mathbb{N}$ be \linkterm{injective}{injective} and let its \linkterm{partial}{partial_function} \linkterm{inverse}{inverse_function} be
+\[
+f^{-1}:\mathbb{N}\rightharpoonup\mathbb{N},\qquad
+\operatorname{dom}(f^{-1})=\operatorname{im}(f),\quad f^{-1}(y)=x \text{ iff } f(x)=y.
+\]
+Then $f^{-1}\circ f=\operatorname{Id}_{\mathbb{N}}$ as a \linkterm{total function}{function} $\mathbb{N}\to\mathbb{N}$.
+
+\emph{Proof.} For any $x\in\mathbb{N}$ we have $f(x)\in\operatorname{im}(f)=\operatorname{dom}(f^{-1})$, hence
+$(f^{-1}\circ f)(x)=f^{-1}(f(x))=x$. $\square$
+}
+
+For example: 
+Define $f:\mathbb{N}\to\mathbb{N}, \quad f(x)=2x$. Then $f$ is \linkterm{injective}{injective} with \linkterm{image}{image_preimage} $\operatorname{im}(f)=\{0,2,4,6,\dots\}$.
+Its \linkterm{partial}{partial_function} \linkterm{inverse}{inverse_function} is
+\[
+f^{-1}:\mathbb{N}\rightharpoonup\mathbb{N}, \quad
+f^{-1}(y)=\tfrac{y}{2} \ \text{if $y$ is even}, \quad
+\text{undefined if $y$ is odd}.
+\]
+
+For all $x\in\mathbb{N}$ we have
+\[
+(f^{-1}\circ f)(x)=f^{-1}(f(x))=f^{-1}(2x)=\tfrac{2x}{2}=x,
+\]
+hence $f^{-1}\circ f=\operatorname{Id}_{\mathbb{N}}$.
+By contrast, $f\circ f^{-1}$ is only the identity on the even numbers.
+
+Another example: Define $f:\mathbb{N}\to\mathbb{N}, \quad f(x)=x+1$. Then $f$ is \linkterm{injective}{injective} with \linkterm{image}{image_preimage} $\operatorname{im}(f)=\{1,2,3,\dots\}$.
+Its \linkterm{partial}{partial_function} \linkterm{inverse}{inverse_function} is
+\[
+f^{-1}:\mathbb{N}\rightharpoonup\mathbb{N}, \quad
+f^{-1}(y)=y-1 \ \text{if $y\geq 1$}, \quad
+\text{undefined if $y=0$}.
+\]
+
+For all $x\in\mathbb{N}$ we have
+\[
+(f^{-1}\circ f)(x)=f^{-1}(f(x))=f^{-1}(x+1)=(x+1)-1=x,
+\]
+hence again $f^{-1}\circ f=\operatorname{Id}_{\mathbb{N}}$.
+Here $f\circ f^{-1}$ is only the identity on $\{1,2,3,\dots\}$.
+
+
+
+
+
+\definition{Isomorphic}{
+We call two \linkterm{sets}{def:set} $A$ and $B$ isomorphic iff there is a \linkterm{bijection}{bijective} $f: A \to B$.
+}{isomorphic_sets}
+
+\definition{Cardinality}{
+We say that a \linkterm{set}{def:set} $A$ is \textbf{finite} and has \textbf{cardinality} $\setsize{A} \in \mathbb{N}$, iff there is a \linkterm{bijective function}{bijective} $f:A\to \set{n \in \mathbb{N} \mid n < \setsize{A}}$.
+}{set_cardinality}
+
+\definition{Countably Infinite}{
+We say that a \linkterm{set}{def:set} $A$ is countably infinite, iff there is a \linkterm{bijective function}{bijective} $f: A \to \mathbb{N}$. Examples: $\mathbb{N}, \mathbb{Z}, \cdots$
+}{countably_infinite}
+
+\definition{Countable}{
+A \linkterm{set}{def:set} $A$ is called countable, iff it is \linkterm{finite}{set_cardinality} or \linkterm{countably infinite}{countably_infinite}
+}{countable}
+
+\commandnote{
+The \linkterm{set}{def:set} of real numbers $\mathbb{R}$ is not \linkterm{countable}{countable} (there is no \linkterm{bijection}{bijective}) $\mathbb{R} \to \mathbb{N}$
+}
+
+
+
+\definition{Restriction}{
+Let $f:A \to B$ and $C \subseteq A$, then we call the \linkterm{function}{function} $f\!\restriction_C := \set{(c,b) \in f \mid c \in C}$ the restriction of $f$ to $C$.
+}{restriction}
+
+
+
+\definition{Lambda-Notation}{
+Let $X$ be a \linkterm{set}{def:set} and $E$ an expression depending on a variable $x \in X$.  
+The expression $\lambda x \in X.\, E$ denotes the (\linkterm{partial}{partial_function}) \linkterm{function}{function} $f$ from $X$ to $Y$ with $f(x) = E \quad \text{for all } x \in X.$
+}{lambda_notation}
+Examples:
+\begin{itemize}
+    \item the identity function is written in \linkterm{lambda notation}{lambda_notation}: $\lambda n \in \mathbb{N}.n = \set{(n,n) \mid n \in \mathbb{N}} = \text{Id}_{\mathbb{N}} = \set{(0,0), (1,1), (2,2), \cdots}$
+    \item the square function: $\lambda x \in \mathbb{N}.x^2 = \set{(x,x^2) \mid x \in \mathbb{N}}= \set{(0,0), (1,1), (2,4), (3,9), \cdots}$
+    \item the "add" operation: $\lambda (x,y) \in \mathbb{N} \times \mathbb{N}. x+y = \set{((0,0),0), ((1,0),1), \cdots}$
+\end{itemize}
+
+\definition{Curried Function Type}{
+Let $X,Y,Z$ be sets. An \textit{uncurried}  \linkterm{function}{function} is written as
+\[
+f : X \times Y \to Z, \quad f(x,y) = E(x,y).
+\]
+The same \linkterm{function}{function} can equivalently be written in \textit{curried} form as
+\[
+f : X \to Y \to Z, \quad f(x)(y) = E(x,y).
+\]
+Thus in the curried notation the \linkterm{function}{function} takes one argument at a time:
+for $x \in X$, the value $f(x)$ is itself a \linkterm{function}{function} $Y \to Z$, and applying it to $y \in Y$ yields $f(x)(y) \in Z$.
+}{curried_function_type}
+
+\textbf{Example.} The addition \linkterm{function}{function} can be written in \linkterm{uncurried}{curried_function_type} or \linkterm{curried}{curried_function_type} form:
+\[
+\text{add} : \mathbb{N} \times \mathbb{N} \to \mathbb{N}, 
+\quad \text{add}(m,n) = m+n,
+\]
+equivalently: $\text{add} : \mathbb{N} \to \mathbb{N} \to \mathbb{N}, 
+\quad \text{add}(m)(n) = m+n.$
+
+In the \linkterm{curried}{curried_function_type} form, for fixed $m \in \mathbb{N}$, the expression $\text{add}(m) : \mathbb{N} \to \mathbb{N}$ is the \linkterm{function}{function} $n \mapsto m+n$, i.e. the \linkterm{function}{function} that adds $m$ to its argument.
+
+\textbf{Another Example (Trinary)}
+\[
+h : \mathbb{N} \times \mathbb{N} \times \mathbb{N} \to \mathbb{N}, 
+\quad h(m,n,o) = m+n+o.
+\]
+
+Equivalently, in \linkterm{curried form}{curried_function_type} we can write
+\[
+h : \mathbb{N} \to \mathbb{N} \to \mathbb{N} \to \mathbb{N}, 
+\quad h(m)(n)(o) = m+n+o.
+\]
+
+In this form, $h(m)$ is a \linkterm{function}{function} 
+\[
+h(m) : \mathbb{N} \to \mathbb{N} \to \mathbb{N}, \quad h(m)(n)(o) = m+n+o,
+\]
+which for fixed $m$ returns the \linkterm{function}{function} “add $m$ to the sum of two further arguments.”
+
+\definition{Well-Defined Function}{
+Let $X,Y$ be sets.  
+A \linkterm{function}{function} declaration $f : X \to Y$ together with a defining expression $E(x)$
+is called \textit{well-defined} iff for every $x \in X$:
+\begin{itemize}
+  \item the expression $E(x)$ is meaningful (all variables are bound and the operations are valid), and
+  \item the result $E(x)$ lies in $Y$.
+\end{itemize}
+
+Equivalently: a \linkterm{function}{function} is well-defined if its type annotation $f : X \to Y$ is consistent with the expression that defines it.
+}{well_defined_function}
+
+
+\minititle{Checking well-definedness in practice:}
+The general definition above says that a \linkterm{function}{function} declaration must be consistent with its defining expression. 
+Typical ways in which this can fail are:
+\begin{itemize}
+  \item \textbf{Type mismatch:} the declared type $X \to Y$ does not agree with the actual input/output structure of the definition.
+  \item \textbf{Free variables:} the definition uses symbols that are not bound by the input.
+  \item \textbf{Partiality:} the definition does not provide an output for all inputs in the domain.
+\end{itemize}
+
+To illustrate, let us fix two \linkterm{functions}{function}
+\[
+f : \mathbb{N} \times \mathbb{N} \to \mathbb{N}, 
+\qquad 
+g : \mathbb{N} \to \mathbb{N},
+\]
+and examine a series of possible definitions of \linkterm{functions}{function} $h$. Each case shows whether the definition is \linkterm{well-defined}{well_defined_function} and why.
+
+\textbf{A correct curried definition}
+\[
+h : \mathbb{N} \to \mathbb{N} \to \mathbb{N}, \quad h(m)(n) = f(n,g(m)).
+\]
+This is well-defined: for each $m \in \mathbb{N}$ we obtain $g(m) \in \mathbb{N}$, so $(n,g(m)) \in \mathbb{N}\times\mathbb{N}$ and $f(n,g(m)) \in \mathbb{N}$.
+
+\textbf{Incorrect composition}
+\[
+g \circ f : \mathbb{N} \to \mathbb{N}.
+\]
+This is not well-defined with the given type. Since $f : \mathbb{N}\times\mathbb{N}\to \mathbb{N}$, the composition $g \circ f$ has domain $\mathbb{N}\times\mathbb{N}$, hence $g \circ f : \mathbb{N}\times\mathbb{N} \to \mathbb{N}$, not $\mathbb{N} \to \mathbb{N}$.
+
+
+\textbf{A correct nested definition}
+\[
+h : \mathbb{N} \to \mathbb{N} \to \mathbb{N} \to \mathbb{N}, \quad h(m)(n,o) = f(n,f(m,o)).
+\]
+This is \linkterm{well-defined}{well_defined_function}: $f(m,o) \in \mathbb{N}$, so $(n,f(m,o)) \in \mathbb{N}\times\mathbb{N}$, and thus $f(n,f(m,o)) \in \mathbb{N}$.
+
+\textbf{Type mismatch between \linkterm{curried}{curried_function_type} and \linkterm{uncurried}{curried_function_type}}
+\[
+h : \mathbb{N} \to \mathbb{N} \to \mathbb{N}, \quad h = f.
+\]
+This is not \linkterm{well-defined}{well_defined_function}, since $f : \mathbb{N}\times\mathbb{N} \to \mathbb{N}$ has a different type from the declared type of $h$. \linkterm{Mathematically}{mathematics} $f(x,y)$ and $f(x)(y)$ can be identified via \linkterm{currying}{curried_function_type}, but in type-theoretic terms they are distinct unless an explicit \linkterm{curry}{curried_function_type} \linkterm{operation}{arithmetic} is applied.
+
+\textbf{Free variable problem}
+\[
+h : \mathbb{N} \to \mathbb{N}, \quad h(x) = f(x,y).
+\]
+This is not \linkterm{well-defined}{well_defined_function}, since $y$ is not bound. Without fixing $y$ in advance, the right-hand side is not a \linkterm{function}{function} of $x$ alone.
+
+\textbf{Partial definition problem}
+\[
+h : \mathbb{N}\times\mathbb{N} \to \mathbb{N}, \quad h(x,1) = x.
+\]
+This is not a \linkterm{total function}{function}, because the definition only specifies values when the second argument is $1$. A \linkterm{function}{function} of type $\mathbb{N}\times\mathbb{N}\to\mathbb{N}$ must assign a value for every \linkterm{pair}{cartesian_product} $(x,y)$.
+
+\definition{Invertible}{
+Let $A$ and $B$ be \linkterm{sets}{def:set} and \func{f}{A}{B} a \linkterm{function}{function}, then $f$ is called invertible, iff there is a \linkterm{function}{function} \func{g}{B}{A}, such that \compose{f, g} = $\operatorname{Id}_B$. $g$ is called the \linkterm{inverse function}{inverse_function} (or just \linkterm{inverse}{inverse_function}) of $f$ and is written as \inverse{f}.
+}{invertible}
+
+\Theorem{
+A \linkterm{function}{function} \func{f}{A}{B} is \linkterm{invertible}{invertible}, iff it is \linkterm{bijective}{bijective}.
+}{th:invertible_bijective}
+
+\Proof{
+
+1. If $f$ is \linkterm{bijective}{bijective}, then it is \linkterm{invertible}{invertible}:
+\begin{itemize}
+    \item Assume \func{f}{A}{B} is \linkterm{bijective}{bijective}
+    \item for each $b \in B$ there exists a unique $a \in A$ such that $f \paren{a} = b$. Define \func{g}{B}{A} by sending $b$ to this unique $a$. Therefore:
+    \begin{enumerate}
+        \item \compose{g,f} = $\identity{A}$, because if you start with $a \in A$, apply $f$, then $g$, you get back $a$.
+         \item \compose{f,g} = $\identity{B}$, because if you start with $b \in B$, apply $g$, then $f$, you get back $b$.
+    \end{enumerate}
+    \item Hence, $g$ is the \linkterm{inverse}{inverse_function} of $f$. So $f$ is \linkterm{invertible}{invertible}
+\end{itemize}
+
+2. If $f$ is \linkterm{invertible}{invertible}, then it is \linkterm{bijective}{bijective}:
+
+Suppose there exists a \linkterm{function}{function} \func{g}{B}{A} such that \compose{g,f} = \identity{A} and \compose{f,g} = \identity{B}. We want to show $f$ is \linkterm{bijective}{bijective}.
+
+\begin{enumerate}
+    \item \linkterm{injectivity}{injective}
+    \begin{enumerate}
+        \item Assume $f(a) = f(a^{\prime})$.
+        \item Apply $g$ to both sides: 
+        \[
+        a = \identity{A}\paren{a} = g\paren{f\paren{a}}=g\paren{f\paren{a^{\prime}}} = a^{\prime}
+        \]
+        \item So, $a = a^{\prime}$. Hence $f$ is \linkterm{injective}{injective}.
+    \end{enumerate}
+    \item \linkterm{surjectivity}{surjective}
+    \begin{enumerate}
+        \item Take any $b \in B$. Then 
+        \[
+        f \paren{g \paren{b}} = \paren{\compose{f,g}}\paren{b} = \identity{B}\paren{b} = b
+        \] 
+        \item So $b$ is indeed an image of $f$. Hence $f$ is \linkterm{surjective}{surjective}.
+    \end{enumerate}
+\end{enumerate}
+}
+
+\Lemma{
+Let $A$ and $B$ be \linkterm{sets}{def:set}, then the \linkterm{set}{def:set} $\mathcal{R} = \powerset{\cartprod{A,B}}$ of all \linkterm{relations}{relation} between $A$ and $B$ and the \linkterm{function space}{function_space_total} $A \to \powerset{B}$ are \linkterm{isomorphic}{isomorphic_sets}.
+}{lem:function_relation}
+
+\Proof{
+For each $R \in \mathcal{R}$ and each $x \in A$ we define: $S_x^R := \setbuilder{y \in B}{(x,y) \in R}$ (the \linkterm{set}{def:set} of all $y$ in $B$ that are related to $x$ by $R$). Example:
+\[
+A = \set{1,2} \quad B = \set{a,b,c} \quad R = \set{(1,a),(1,c),(2,b)}
+\]
+Then for $x = 1: S_1^R = \set{a,c}$ and for $x=2: S_2^R = \set{b}$.
+
+We define a the following mapping:
+\[
+\func{\varphi}{\mathcal{R}}{\paren{A \to \powerset{B}}}, \quad \varphi \paren{R} = f_R \qquad \text{where } f_R \paren{x} = S_x^R.
+\]
+For our example, this would be $\varphi(R) = f_R = \set{1 \mapsto \set{a,c}, 2 \mapsto \set{b}}$
+
+Then, for any $f \in A \to \powerset{B}$, we compute the \linkterm{inverse}{inverse_function} as $\inverse{\varphi}\paren{f} = \set{\paren{x,y} \mid y \in f \paren{x}}$. This is exactly the \linkterm{relation}{relation} corresponding to $f$.
+
+Since both directions match up perfectly, $\varphi$ is a \linkterm{bijection}{bijective}, hence an \linkterm{isomorphism}{isomorphic_sets}.
+}
+
+
+\textbf{Example: }the $>$ \linkterm{relation}{relation} on $\mathbb{N}$ can also be represented as the \linkterm{function}{function} $f_{>}$ that maps a number $n$ to the \linkterm{set}{def:set} $\set{n+1, \cdots}$, i.e. $\func{f_{>}}{\mathbb{N}}{\powerset{\mathbb{N}}}$ ; $n \mapsto \setbuilder{m}{m > n}$  
+
+\textbf{Another example: }let $A = \set{x,y}, B = \set{1}$, the \linkterm{cartesian product}{cartesian_product} $\cartprod{A,B} = \set{\paren{x,1}, \paren{y,1}}$. Hence, the \linkterm{power set}{power_set} (all possible relations) is:
+\[
+\powerset{\cartprod{A,B}} = \set{\set{\phi}, \set{\paren{x,1}}, \set{\paren{y,1}}, \set{\paren{x,1}, \paren{y,1}}}
+\]
+\textbf{Note: } the \linkterm{cardinality}{set_cardinality} of the \linkterm{power set}{power_set} of the \linkterm{cartesian product}{cartesian_product} of two \linkterm{sets}{def:set} $A,B$ is $\setsize{\powerset{\cartprod{A,B}}} = 2^{\setsize{A} \setsize{B}}$.
+
+$\powerset{B} = \set{\set{\phi}, \set{1}}$, \linkterm{function space}{function_space_total} $A \to \powerset{B}$ is the \linkterm{set}{def:set} of all \linkterm{functions}{function} $f : A \to \powerset{B}$:
+\[
+A \to \powerset{B} = \set{f_1, f_2, f_3, f_4}
+\] 
+where:
+\begin{itemize}
+    \item $f_1 = \set{\paren{x, \set{\phi}}, \paren{y, \set{ \phi}}}$
+    \item $f_2 = \set{\paren{x, \set{\phi}}, \paren{y, \set{1}}}$
+    \item $f_3 = \set{\paren{x, \set{1}}, \paren{y, \set{\phi}}}$
+    
+    \item $f_4 = \set{\paren{x,\paren{1}}, \paren{y, \set{1}}}$
+\end{itemize}
+Since $\setsize{A \to \powerset{B}} = \setsize{\powerset{\cartprod{A,B}}}$, we can define a \linkterm{bijection}{bijective}:
+\begin{itemize}
+    \item $\varphi(\set{\phi}) \mapsto f_1$
+    \item $\varphi(\set{\paren{x,1}}) \mapsto f_3$
+    \item $\varphi(\set{\paren{y,1}}) \mapsto f_2$
+    \item $\varphi(\set{\paren{x,1}, \paren{y,1}}) \mapsto f_4$
+\end{itemize}
+$\leadsto \quad$ \linkterm{isomorphism}{isomorphic_sets}.
+
+\commandnote{
+The \linkterm{bijection}{bijective} $\phi \paren{R} = f$ entails the following properties of $R$:
+\begin{itemize}
+\item $R$ is a \linkterm{total relation}{total_relation}, iff $\phi \notin \operatorname{Im}\paren{f}$
+\item $R$ is a \linkterm{partial function}{partial_function}, iff $\setsize{S} \leq 1 \quad \forall S \in \operatorname{Im}\paren{f}$
+\item $R = \phi$, iff $\operatorname{Im}\paren{f} = \set{\phi}$
+\item $R$ is \linkterm{reflexive}{reflexive}, iff $x \in f(x) \quad \forall x \in A$ 
+\end{itemize}
+}
+
+We have defined \linkterm{equivalence relations}{equivalence_relation} as \linkterm{reflexive}{reflexive}, \linkterm{symmetric}{symmetric}, and \linkterm{transitive}{transitive_relation} relations, e.g., \linkterm{equality}{equality_relation} is an \linkterm{equivalence relation}{equivalence_relation}.
+
+
+
+Let $S$ be a \linkterm{set}{def:set} of persons, and $=_A \subseteq S^2$, such that $s =_A t$, iff $s$ and $t$ have the same age, then $=_A$ is an \linkterm{equivalence relation}{equivalence_relation} \linkterm{on}{relation_on} $S$.
+
+Let $S$ and $T$ be \linkterm{sets}{def:set} and $S \sim_{\Gamma} T$, iff there is a \linkterm{bijection}{bijective} \func{f}{S}{T}, then $\sim_{\Gamma}$ is an \linkterm{equivalence relation}{equivalence_relation}. For example, let $S = \set{1,2,3} \quad T = \set{a,b,c}$. We can define a \linkterm{bijection}{bijective} $f = \set{1 \mapsto a, 2 \mapsto b, 3 \mapsto c}$, so, $S \sim_{\Gamma} T$ (they have the same \linkterm{size}{setsize}).
+
+\Lemma{
+If $S$ is a \linkterm{set}{def:set} and $R \subseteq S^2$ is an \linkterm{equivalence relation}{equivalence_relation}, then $= \subseteq R$.
+}{lem:equiv_relation}
+\textit{Proof Sketch: }because of \linkterm{reflexivity}{reflexive} ($\forall x \in S, (x,x) \in R$), the \linkterm{equality relation}{equality_relation} $=$ is exactly $\setbuilder{(x,x)}{x \in S}$. Therefore, $= \subseteq R$.

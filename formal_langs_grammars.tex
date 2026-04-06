@@ -1,0 +1,221 @@
+\labeledsection{Formal Languages and Grammars}{sec:formal_langs_grammars}
+\definition{Alphabet}{
+An alphabet is a \linkterm{finite}{set_cardinality} \linkterm{set}{def:set}; we call each element $a \in A$ a \textbf{character}, and an $n$-tuple $s \in A^n$ a \textbf{string} (of \textit{length} $n$ over $A$).
+}{alphabet}
+
+\commandnote{We often write a string $\tuple{c_1, \cdots, c_n}$ as "$c_1 \cdots c_n$", for instance \texttt{"abc"} for $\tuple{a,b,c}$}
+
+\textbf{Example: }Let $A=\set{0,1}$ be an \linkterm{alphabet}{alphabet}
+\begin{itemize}
+    \item \texttt{"0", "1"} are strings of length $1$ ($A^1 = \set{0,1}$)
+    \item \texttt{"00","01","10","11"} are strings of length $2$ in ($A^2$)
+    \item \texttt{"001"} $\in A^3$
+\end{itemize}
+
+
+
+\definition{Empty String}{
+Let $A$ be an \linkterm{alphabet}{alphabet}, then $A^0 = \set{\tuple{}}$, where $\tuple{}$ is the unique $0$-tuple. We consider $\tuple{}$ as the string of length $0$ and call it the \textbf{empty string} and denote it with $\epsilon$.
+}{empty_string}
+
+\commandnote{
+    $\set{1,2,3} = \set{3,2,1}$ BUT $\tuple{1,2,3} \neq \tuple{3,2,1}$ (\linkterm{sets}{def:set} vs strings)
+}
+
+\definition{String Length}{
+Given a string $s$, we denote its length with $\abs{s}$.
+}{string_length}
+
+\definition{String Concatenation}{
+The concatenation $\operatorname{conc}(s,t)$ of two strings $s = \tuple{s_1, \cdots, s_n} \in A^n$ and $t = \tuple{t_1,\cdots, t_m} \in A^m$ is defined as $s+t$ or simply \texttt{st}
+}{concatenation_string}
+\textbf{Example: }$\operatorname{conc}(\text{"text"}, \text{"book"}) = \text{"text"} + \text{"book"} = \text{"textbook"}$.
+
+\definition{Kleene Plus and Kleene Star}{
+Let $A$ be an \linkterm{alphabet}{alphabet}, then we define the \linkterm{sets}{def:set}:
+\begin{itemize}
+    \item $A^{+} := \bigcup_{i \in \mathbb{N}^{+}} A^i$ (\textit{nonempty strings}), and
+    \item $A^{*} := A^{+} \cup \set{\epsilon}$ (\textit{strings}).
+\end{itemize}
+}{kleene_operators}
+
+\definition{Formal Language}{
+A \linkterm{set}{def:set} $L \subseteq A^{*}$ is called a \textit{formal language} over $A$.
+}{formal_language}
+
+\textbf{Example: }If $A = \set{a,b}$ then:
+\[
+A^{*} = \bigcup_{n = 0}^{\infty} A^n
+\]
+where $A^0 = \epsilon$, $A^1 = \set{a,b}$, $A^2 = \set{a, b, ab, ba}$, and so on ... 
+\begin{align*}
+    A^{*} &= \set{\epsilon, a, b, aa, ab, ba, bb, aaa, aab, aba, abb, \cdots} \\
+    A^{+} &= \set{a, b, aa, ab, ba, bb, aaa, aab, aba, abb, \cdots} \\
+\end{align*}
+A \linkterm{formal language}{formal_language} might be $L = \set{a,b,aab,bbb, \cdots}$
+
+\definition{Repeating Chars}{
+We use $c^{[n]}$ for the string that consists of the character \texttt{c} repeated $n$ times.
+}{repeating_chars}
+\textbf{Examples: }
+\begin{itemize}
+    \item Let $A = \set{a,b}$, $a^{[5]} = $ \texttt{"aaaaa"}.
+    \item The \linkterm{set}{def:set} $M := \set{\text{ba}^{[n]} \mid n \in \mathbb{N}}$ of strings that start with character $b$ followd by an arbitrary numbers of a's is a \linkterm{formal language}{formal_language} over $A = \set{a,b}$
+\end{itemize}
+
+\commandnote{A \linkterm{formal language}{formal_language} might be infinite and even undecidable even if the \linkterm{alphabet}{alphabet} $A$ is \linkterm{finite}{set_cardinality}. For example, let $A = \set{a,b}$ then the \linkterm{formal language}{formal_language} $L = \set{a,ab,bba}$ is \linkterm{finite}{set_cardinality} but the \linkterm{formal language}{formal_language} $L = \setbuilder{a^{[n]}}{n \in \mathbb{N}}$ is infinite.}
+
+Since we cannot list all strings in a \linkterm{formal language}{formal_language} $L$ because there are infinitely many, we need a \textbf{finite description} that can generate all strings in $L$. We need \textbf{Grammars}.
+
+\definition{Phrase Structure Grammar}{
+A phrase structure grammar (\textit{type 0 grammar, unrestricted grammar, grammar}) is a tuple $\tuple{N,\Sigma, P, S}$ where
+\begin{itemize}
+    \item $N$ is a \linkterm{finite}{set_cardinality} \linkterm{set}{def:set} of \textbf{nonterminal symbols},
+    \item $\Sigma$ is a \linkterm{finite}{set_cardinality} \linkterm{set}{def:set} of \textbf{terminal symbols}. (members of $N \cup \Sigma$ are called symbols).
+    \item $P$ is a \linkterm{finite}{set_cardinality} \linkterm{set}{def:set} of \textbf{production rules}: pairs $p := h \to b$ (also written as $h \Rightarrow b$), where $h \in (\Sigma \cup N)^{*} N (\Sigma \cup N)^{*}$ and $b \in (\Sigma \cup N)^{*}$. The string $h$ is called the \textbf{head} of $p$ and $b$ the \textbf{body}.
+    \item $S \in N$ is a distinguished symbol called the \textbf{start symbol} (also \textbf{sentence symbol}).
+\end{itemize}
+The \linkterm{sets}{def:set} $N$ and $\Sigma$ are assumed to be \linkterm{disjoint}{disjoint}. Any word $w \in \Sigma^{*}$ is called a \textbf{terminal word}.
+}{phrase_structure_grammar}
+\commandnote{\linkterm{Production rules}{phrase_structure_grammar} map strings with at least one \linkterm{nonterminal}{phrase_structure_grammar} to arbitrary other strings}
+
+\textbf{Notation: }If we have $n$ \linkterm{production rule}{phrase_structure_grammar} $h \to b_i$ sharing a head, we often write $h \to b_1 \mid \cdots \mid b_n$ instead.
+
+\textbf{Example: }A simple \linkterm{grammar}{phrase_structure_grammar} for english sentences:
+\begin{align*}
+\text{S} &::= \text{NP} \text{ Vi} \\
+\text{NP} &::= \text{Article} \text{ N} \\
+\text{Article} &::= \text{the} \mid \text{a} \mid \text{an} \\
+\text{N} &::= \text{dog} \mid \text{teacher} \mid \cdots \\
+\text{Vi} &::= \text{sleeps} \mid \text{smells} \mid \cdots
+\end{align*}
+Here $S$ is the \linkterm{start symbol}{phrase_structure_grammar}, NP, Article, N, and Vi are \linkterm{nonterminals}{phrase_structure_grammar}, the, a, dog, smells, ... are \linkterm{terminals}{phrase_structure_grammar}. Let's generate a valid sentence from the \linkterm{grammar}{phrase_structure_grammar}:
+\begin{verbatim}
+NP           Vi
+Article N    Vi
+the     N    Vi
+the    dog   Vi
+the    dog sleeps
+\end{verbatim}
+
+\definition{Lexical}{
+A \linkterm{production rule}{phrase_structure_grammar} whose head is a single \linkterm{nonterminal}{phrase_structure_grammar} and whose body consists of a single \linkterm{terminal}{phrase_structure_grammar} is called \textbf{lexical} or a \textbf{lexical insertion rule}.
+}{lexical_rule_grammar}
+\textbf{Example: } Both of the following \linkterm{rules}{phrase_structure_grammar} are \linkterm{lexical}{lexical_rule_grammar}
+\begin{align*}
+\text{Noun } &\to \text{ "dog"} \\
+\text{Verb } &\to \text{ "run"} 
+\end{align*}
+
+\definition{Lexicon of a Grammar}{
+The \linkterm{subset}{subset} of \linkterm{lexical rules}{lexical_rule_grammar} of a \linkterm{grammar}{phrase_structure_grammar} $G$ is called the \textbf{lexicon} of $G$
+}{lexicon_grammar}
+
+\definition{Vocabulary}{
+The \linkterm{set}{def:set} of body symbols are called the vocabulary (or the alphabet).
+}{vocabulary_grammar}
+
+\definition{Lexical Categories of a Grammar}{
+The \linkterm{nonterminals}{phrase_structure_grammar} that appear in the heads of \linkterm{lexical}{lexical_rule_grammar} rules are called lexical categories of the \linkterm{grammar}{phrase_structure_grammar}.
+}{lexical_categories_grammar}
+
+\definition{Structural Rules}{
+The non \linkterm{lexicon}{lexicon_grammar} \linkterm{production rules}{phrase_structure_grammar} are called structural.
+}{structural_rules_grammar}
+
+\definition{Phrasal categories}{
+The \linkterm{nonterminals}{phrase_structure_grammar} in the heads of \linkterm{production rules}{phrase_structure_grammar} that expand into other \linkterm{nonterminals}{phrase_structure_grammar} are called phrasal (syntactic) categories.
+}{phrasal_categories}
+
+\definition{$G$-Derivation}{
+Given a \linkterm{phrase structure grammar}{phrase_structure_grammar} $G := \set{N,\Sigma, P, S}$, we say $G$ \textbf{derives} $t \in (\Sigma \cup N)^{*}$ from $s \in (\Sigma \cup N)^{*}$ in one step, iff there is a \linkterm{production rule}{phrase_structure_grammar} $p \in P$ with $p = h \to b$ and there are $u,v \in (\Sigma \cup N)^{*}$, such that $s=uhv$ and $t=ubv$. We write $s \to_{G}^{p} t$ (or $s \to_{G} t$ if $p$ is clear from the context) and use $\to_{G}^{*}$ for the \linkterm{reflexive}{reflexive} \linkterm{transitive}{transitive_relation} closure of $\to_G$. We call $s \to_{G}^{*} t$ a $G$-derivation of $t$ from $s$.
+}{g_derivation_grammar}
+
+Let's unravel that. Take the following \linkterm{grammar}{phrase_structure_grammar}:
+\begin{itemize}
+    \item $N = \set{S}$
+    \item $\Sigma = \set{a,b}$
+    \item $P = \set{S \to \text{aSb}, S \to \text{ab}}$
+    \item $S = S$
+\end{itemize}
+The following derivations holds:
+\begin{itemize}
+    \item $S \to_{G}^{p} \text{aSb}$ where $p: S \to \text{aSb}$ (\textit{one step})
+    \item $\text{aSb} \to_{G}^{q} \text{aabb}$ where $q: S \to \text{ab}$ (\textit{one step})
+    \item $S \to_{G}^{S \to \text{aSb}} \text{aSb} \to_{G}^{S \to \text{ab}} \text{aabb}$ (\textit{multiple steps}). So, $S \to_{G}^{*} \text{aabb}$
+\end{itemize}
+
+
+\definition{Sentential Form}{
+Given a \linkterm{phrase structure grammar}{phrase_structure_grammar} $G := \set{N,\Sigma, P, S}$, we say that $s \in (\Sigma \cup N)^{*}$ is a \textbf{sentential form} of $G$, iff $S \to_{G}^{*} s$
+}{sentential_form}
+
+\definition{Sentence}{
+A \linkterm{sentential form}{sentential_form} that does not contain \linkterm{nonterminals}{phrase_structure_grammar} is called a sentence of $G$, we also say that $G$ \textbf{accepts} $s$. We say that $G$ \textbf{rejects} $s$, iff it is not a sentence of $G$.
+}{sentence_grammar}
+
+\textbf{Examples}
+
+1. "Article teacher Vi" is a \linkterm{sentential form}{sentential_form}
+\begin{align*}
+S &{\to_G} \text{ NP } \text{ Vi } \\
+&{\to_G} \text{ Article } \text{ N } \text{ Vi } \\
+&{\to_G} \text{ Article } \text{ teacher } \text{ Vi }
+\end{align*}
+
+2. "the teacher sleeps" is a \linkterm{sentence}{sentence_grammar}
+\begin{align*}
+S &{\to_G^{*}} \text{ Article } \text{ teacher } \text{ Vi } \\
+&{\to_G} \text{ the } \text{ teacher } \text{ Vi } \\
+&{\to_G} \text{ the } \text{ teacher } \text{ sleeps }
+\end{align*}
+
+
+\definition{Language Generation}{
+The language $L(G)$ of $G$ is the \linkterm{set}{def:set} of its \linkterm{sentences}{sentence_grammar}. We say that $L(G)$ is \textbf{generated} by $G$.
+}{language_generation_grammar}
+
+\definition{Equivalent Grammars}{
+We call two \linkterm{grammars}{phrase_structure_grammar} \textbf{equivalent}, iff they have the same \linkterm{languages}{language_generation_grammar}.
+}{equivalent_grammars}
+
+\definition{Universal Grammar}{
+A \linkterm{grammar}{phrase_structure_grammar} $G$ is said to be \textbf{universal} if $L(G) = \Sigma^{*}$
+}{universal_grammar}
+
+\definition{Syntactic Analysis}{
+Syntactic analysis (parsing / syntax analysis) is the process of analyzing a string of symbols, either in a \linkterm{formal}{formal_language} or a \linkterm{natural language}{natural_language} by means of a \linkterm{grammar}{phrase_structure_grammar}.
+}{syntactic_analysis_grammar}
+
+\commandnote{The shape of the \linkterm{grammar}{phrase_structure_grammar} determines the size of its \linkterm{language}{language_generation_grammar}}
+
+\definition{Context-Sensitive}{
+We call a \linkterm{grammar}{phrase_structure_grammar} context-sensitive (or type 1), if the bodies of \linkterm{production rules}{phrase_structure_grammar} have no less symbols than the heads.
+}{contex_sensitive_grammar}
+\textbf{Example:} The \linkterm{language}{formal_language} $\set{a^{[n]}  b^{[n]}  c^{[n]}}$ is \linkterm{accepted}{sentence_grammar} by
+\begin{align*}
+S \quad &{\to} \quad \text{a b c} \mid A \\
+A \quad &{\to} \quad \text{a } A \text{ } B \text{ c} \mid \text{a b c} \\
+\text{c } B \quad &{\to} \quad B \text{ c} \\
+\text{b } B \quad &{\to} \quad \text{b b}
+\end{align*}
+
+
+\definition{Context-Free}{
+We call a \linkterm{grammar}{phrase_structure_grammar} context-free (or type 2), iff the heads have exactly one symbol.
+}{contex_free_grammar}
+
+\textbf{Example: }The \linkterm{language}{formal_language} $\set{a^{[n]}  b^{[n]}}$ is  \linkterm{accepted}{sentence_grammar} by $S \to \text{ a } S \text{ b } \mid \text{ } \epsilon$
+
+\definition{Regular}{
+We call a \linkterm{grammar}{phrase_structure_grammar} regular (or type 3, or REG), if additionally the bodies are empty or consist of a \linkterm{nonterminal}{phrase_structure_grammar}, optionally followed by a \linkterm{terminal symbol}{phrase_structure_grammar}.
+}{regular_grammar}
+
+\textbf{Example: }The \linkterm{language}{formal_language} $\set{a^{[n]}}$ is \linkterm{accepted}{sentence_grammar} by $S \to S \text{ a } \mid \text{ } \epsilon$
+
+
+\commandnote{
+By extension, a \linkterm{formal language}{formal_language} $L$ is called \textit{context-sensitive / context-free / regular}, iff it is the \linkterm{language}{language_generation_grammar} of a respective \linkterm{grammar}{phrase_structure_grammar}. \linkterm{Context-free grammars}{contex_free_grammar} are sometimes \texttt{CFGs} and context-free languages \texttt{CFLs}.
+}
+
+\textbf{Observation: }\linkterm{Natural languages}{natural_language} are probably \linkterm{context sensitive}{contex_sensitive_grammar} but parsable in real time!

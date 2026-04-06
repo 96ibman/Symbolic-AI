@@ -1,0 +1,146 @@
+\labeledsection{Term Languages and Abstract Grammars}{sec:term_langs_abstract_grams}
+\commandnote{
+In most applications of \linkterm{symbolic AI}{symbolicai}, the \linkterm{formal languages}{formal_language} are very strucutred.
+}
+
+\textbf{Example (\linkterm{Arithmetic}{arithmetic} Expressions): }Consider the \linkterm{CFG}{contex_free_grammar} $G$ and the $G$-derivation:
+
+\begin{verbatim}
+term   → num | var | sum | prod | neg
+num    → digit*
+digit  → 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 0
+var    → 'x' num
+sum    → '(' term '+' term ')'
+prod   → '(' term '*' term ')'
+neg    → '-(' term ')'
+
+term → G -(term)
+     → G -((term * term))
+     → G -(((term + term) * num))
+     → G -(((var + num) * digit digit))
+     → G -(((x num + digit*) * 555))
+     → G -(((x digit digit + 3) * 555))
+     → G -(((x29 + 3) * 555))
+\end{verbatim}
+$G$ accepts the string $-(((X29+3) * 555))$ but not $-(X29*3($.
+
+\commandnote{
+We call such \linkterm{languages}{formal_language} term languages
+}
+
+\textbf{Observation: }Strings in $L(G)$ are \textit{well-bracketed} and can be split into sub-strings from $L(G)$.
+
+\textbf{Intuition: }The parse \linkterm{trees}{tree} are the primary \linkterm{objects}{math_object} for \linkterm{symbolic AI}{symbolicai}, the strings are just the technical I/O.
+
+\definition{Parse Tree}{
+Let $G$ be a \linkterm{CFG}{contex_free_grammar} that accepts a string $s$. Then a \textbf{parse tree} is a \linkterm{node labeled}{labeled_graph}, ordered \linkterm{tree}{tree} $P_s$ that represents the syntactic strucutre of $s$.
+}{parse_tree}
+\textbf{Example: }the \linkterm{parse tree}{parse_tree} of "the teacher sleeps":
+\begin{verbatim}
+        S
+       / \
+     NP   Vi
+    /  \    \
+Article N   sleeps
+   |    |
+  the teacher  
+\end{verbatim}
+
+\commandnote{
+There may be multiple derivations that accept a string $s$ in a \linkterm{CFG}{contex_free_grammar}. For example, $S \to \text{ NP } \text{Vi} \to \text{ Article N } \text{Vi} \cdots$ or $S \to \text{ NP } \text{Vi} \to \text{ NP } \text{sleeps} \cdots$, and so on.
+}
+
+Let $G$ be \linkterm{CFG}{contex_free_grammar} and $D := s \to_{G}^{*} t$ a $G$-derivation where $t$ is a \linkterm{sentence}{sentence_grammar} of $G$. We define the \linkterm{parse tree}{parse_tree} $P_D$ of $D$ \linkterm{recursively}{recursion}:
+\begin{itemize}
+\item IF $D = s \to_{G}^{p} t$, then $p$ is a \linkterm{lexical}{lexical_grammar} \linkterm{rule}{phrase_structure_grammar} $s\to t$ and $t$ consists of a single \linkterm{terminal}{phrase_structure_grammar}. Then $P_D$ is the \linkterm{tree}{tree} whose root has label $s$ with one child labeled with $t$.
+\item If $D = s \to_{G}^{p} \bar{s} \to_{G}^{*} t$, $\bar{s} \to_{G}^{*} t$, and $p = h \to a_1 \cdots a_n$, then the root of $P_D$ has label $h$ and it has children that are the \linkterm{parse trees}{parse_tree} for the subderivations for the $a_i$ in $\bar{D}$.
+\end{itemize}
+
+\commandnote{Term languages are ones that have enough structural characters so that the \linkterm{parse tree}{parse_tree} is obvious.}
+
+In \linkterm{SML}{def:sml} we can program the same \linkterm{grammar}{phrase_structure_grammar} as an abstract datatype:
+\begin{verbatim}
+datatype aterm =
+    anum of int
+  | avar of int
+  | aneg of aterm
+  | asum of aterm * aterm
+  | aprod of aterm * aterm;
+\end{verbatim}
+
+And we can express arithmetic expressions as \linkterm{SML}{def:sml} expressions directly, e.g. $-(((X29+3) * 555))$:
+\begin{verbatim}
+- val ex = aneg (aprod (asum (avar 29, anum 3), anum 555));
+val ex = aneg (aprod (asum (avar 29,anum 3),anum 555)) : aterm
+\end{verbatim}
+
+Moreover, we can traverse the term \linkterm{recursively}{recursion} and print it as a string:
+\begin{verbatim}
+fun aprint (anum n) = Int.toString n
+  | aprint (avar n) = "x" ^ Int.toString n
+  | aprint (aneg t) = "-(" ^ aprint t ^ ")"
+  | aprint (asum (t1, t2)) = "(" ^ aprint t1 ^ "+" ^ aprint t2 ^ ")"
+  | aprint (aprod (t1, t2)) = "(" ^ aprint t1 ^ "*" ^ aprint t2 ^ ")";
+\end{verbatim}
+
+Let's test that on our \texttt{ex}:
+\begin{verbatim}
+- aprint ex;
+val it = "-(((x29+3)*555))" : string
+\end{verbatim}
+
+We can also do more complex tasks via \linkterm{tree}{tree} traversal. For example, we can evaluate \texttt{"-(((x29+3)*555))"}. To do that, we need to know the value of the variable $X29$. This is traditionally given by an assignment that assigns values to variables, e.g. $X1 \mapsto 3, X29 \mapsto 5, \cdots$ (a dictionary), which we can represent as a list of pairs in \linkterm{SML}{def:sml}:
+\begin{verbatim}
+type assignment = (int * aterm) list
+\end{verbatim}
+Then we can represent the evaluation function by \linkterm{recursion}{recursion} over the structure of the expression:
+\begin{verbatim}
+fun aeval (anum n, a:assignment) = n
+|   aeval (aneg (n), a) = ~(aeval (n,a))
+|   aeval (asum (s,t), a) = aeval (s,a) + aeval (t,a)
+|   aeval (aprod (s,t), a) = aeval (s,a) * aeval (t,a);
+\end{verbatim}
+In all cases, the assignment is just passed on to the \linkterm{recursive call}{recursion}. The only exception is the variable case, where we need to \linkterm{recursively}{recursion} find the right value from the assignment, so the final function would look like:
+\begin{verbatim}
+fun aeval (anum n, a) = n
+  | aeval (aneg t, a) = ~ (aeval (t, a))
+  | aeval (asum (s, t), a) = aeval (s, a) + aeval (t, a)
+  | aeval (aprod (s, t), a) = aeval (s, a) * aeval (t, a)
+  | aeval (avar n, []) = raise Fail "unbound variable"
+  | aeval (avar n, (m, r) :: l) =
+      if n = m then aeval (r, l) else aeval (avar n, l);
+\end{verbatim}
+
+Let's first assign $X29 \mapsto 5$
+\begin{verbatim}
+val env = [(29, anum 5)];
+\end{verbatim}
+Then test the function on our term:
+\begin{verbatim}
+- val ex = aneg (aprod (asum (avar 29, anum 3), anum 555));
+val ex = aneg (aprod (asum (avar 29,anum 3),anum 555)) : aterm
+
+- val result = aeval (ex, env);
+val result = ~4440 : int
+\end{verbatim}
+
+\commandnote{
+The situation for \linkterm{arithmetic}{arithmetic} expressions in \linkterm{SML}{def:sml} is typical for term languages.
+\begin{itemize}
+    \item Inductive data types, one constructor per \linkterm{production rule}{phrase_structure_grammar}
+    \item Expressions as \linkterm{tree}{tree}-structured data structures (no brackets needed)
+    \item All computation on expressions via \linkterm{recursive}{recursion} \linkterm{tree}{tree} traversal
+\end{itemize}
+}
+
+\definition{Tree Grammar}{
+A tree grammar is a \linkterm{grammar}{phrase_structure_grammar} where the result data type is \linkterm{trees}{tree} not strings.
+}{tree_grammar}
+If we interpret the brackets as "\linkterm{parse tree}{parse_tree} constructors", then we do not have to worry about matching them. The string representation - with e.g. infix notations for operators - is just a derived / secondary artifact for storage / communication (implementation details).
+
+\definition{Abstract vs Concrete Grammars}{
+The underlying \linkterm{tree}{tree} \linkterm{grammar}{phrase_structure_grammar} of a \linkterm{language}{formal_language} is often called the \textbf{abstract grammar}; it captures the essence of the \linkterm{formal language}{formal_language} (the constructors), and any derived (string) \linkterm{grammar}{phrase_structure_grammar} - there may be multiple - is called a \textbf{concrete grammar}; they correspond to, e.g. the results of print functions.
+}{abstract_concrete_grammar}
+
+\commandnote{We are mostly interested in \linkterm{\textbf{abstract grammars}}{abstract_concrete_grammar} in \linkterm{symbolic AI}{symbolicai}}
+

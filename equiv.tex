@@ -1,0 +1,144 @@
+\labeledsection{Equivalence Classes}{sec:equivclasses}
+\definition{Equivalence Classes and Quotients}{
+Let $S$ be a \linkterm{set}{def:set} and $R$ be an \linkterm{equivalence relation}{equivalence_relation} \linkterm{on}{relation_on} $S$, then for any $x \in S$ we call the set $\brak{x}_R := \setbuilder{y \in S}{R \paren{x,y}}$ the \textbf{equivalence class} of $x$ under $R$, and the \linkterm{set}{def:set} $S/R := \setbuilder{\brak{x}_R}{x \in S}$ the \textbf{quotient space} of $S$ under $R$, it is often read as $S$ \textit{modulo} $R$. The \linkterm{element}{def:set} $x$ is called the \textbf{representative} of $\brak{x}_R \in S/R$.
+}{def:equivalence_class}
+
+
+\textbf{Example: }Let $S = \mathbb{Z}$ and $R$ is the \linkterm{equivalence relation}{equivalence_relation} \linkterm{on}{relation_on} $S$ that describes the same parity (\linkterm{congruence modulo}{congruence_modulo} 2) $x \equiv y \pmod{2} \Leftrightarrow 2 \mid (x-y)$:
+\[
+R = \setbuilder{\paren{x,y} \in \cartprod{\mathbb{Z},\mathbb{Z}}}{x \equiv y \pmod{2}}
+\]
+\begin{itemize}
+    \item $\paren{x,y} \in R$ if the difference $x-y$ is divisable by $2$.
+    \item i.e. either both are even, or both are odd.
+\end{itemize}
+All odd-odd pairs:
+\[
+\setbuilder{\paren{x,y}}{x,y \in \set{\cdots, -3, -1, 1, 1, 3, 5, \cdots}}
+\]
+All even-even pairs:
+\[
+\setbuilder{\paren{x,y}}{x,y \in \set{\cdots, -4, -2, 0, 2, 4, 6, \cdots}}
+\]
+Example pairs in $R$: $\paren{1,3}, \paren{5,-1}, \paren{7,7},\paren{2,4}, \paren{0,-6}, \paren{-8,10}$
+Then, we have the following two distinct classes:
+\begin{itemize}
+    \item $\brak{1}_R = \set{\cdots, -3, -1, 1, 1, 3, 5, \cdots}$
+    \item $\brak{2}_R = \set{\cdots, -4, -2, 0, 2, 4, 6, \cdots}$
+\end{itemize}
+For each $x \in \mathbb{Z}$ we have:
+\begin{itemize}
+    \item the \linkterm{set}{def:set} $\brak{1}_R$ as the \linkterm{equivalence class}{def:equivalence_class} if $x$ is odd
+    \item the \linkterm{set}{def:set} $\brak{2}_R$ as the \linkterm{equivalence class}{def:equivalence_class} if $x$ is even
+    \item $1$ and $2$ are the \linkterm{representatives}{def:equivalence_class}
+\end{itemize}
+And the \linkterm{quotient space}{def:equivalence_class} \linkterm{set}{def:set} of $\mathbb{Z}$ under $R$ is:
+\[
+\mathbb{Z}/R = \set{\brak{1}_R, \brak{2}_R} = \set{\text{odds}, \text{evens}}
+\]
+
+\definition{Canonical Projection}{
+The mapping $\pi_R : S \to S/R \quad;\quad x \mapsto \brak{x}_R$ is called the \textbf{canonical projection} or \textbf{canonical surjection} of $S$ to $S/R$.
+}{canonical_projection}
+Given our example, we define the following \linkterm{canonical projection}{canonical_projection}:
+\[
+\pi_R: \mathbb{Z} \to \set{\brak{1}_R, \brak{2}_R}, \quad x \mapsto \brak{1}_R \text{ if odd, and } x \mapsto  \brak{2}_R \text{ if even.}
+\]
+
+\definition{System of Representatives}{
+Let $R$ be an \linkterm{equivalence relation}{equivalence_relation} \linkterm{on}{relation_on} $S$, a \linkterm{subset}{subset} $M \subseteq S$ is called a system of representatives, iff $M$ contains exactly one \linkterm{representative}{def:equivalence_class} for each \linkterm{equivalence class}{def:equivalence_class} of $R$.
+}{system_of_representatives}
+Given our example, a \linkterm{system of representatives}{system_of_representatives} is any \linkterm{subset}{subset} of $\mathbb{Z}$ that picks exactly one \linkterm{element}{def:set} from each \linkterm{equivalence class}{def:equivalence_class}, e.g.
+\begin{itemize}
+    \item $M = \set{1,2}$ is a \linkterm{system of representatives}{system_of_representatives}
+    \item $M = \set{-3,0}$ is a \linkterm{system of representatives}{system_of_representatives}
+    \item $M = \set{5,-8}$ is a \linkterm{system of representatives}{system_of_representatives}
+\end{itemize}
+
+\textbf{Observation: }Often a \linkterm{quotient space}{def:equivalence_class} $S/R$ behaves similarly to the original \linkterm{set}{def:set} $S$.
+
+\textbf{Example: }$n \equiv_k m \Leftrightarrow k \mid (n-m)$ is an \linkterm{equivalence relation}{equivalence_relation} and $\pi_{\equiv_k}: \mathbb{Z}/ \equiv_k \to \setbuilder{n}{0 \leq n \leq \paren{k-1}}$ is \linkterm{bijective}{bijective}.
+
+
+Another example, the general \linkterm{congruence modulo}{congruence_modulo} $n \equiv_k m \Leftrightarrow k \mid (n-m)$ partitions $\mathbb{Z}$ into exactly $k$ \linkterm{equivalence classes}{def:equivalence_class} (all numbers that leave the same remainder when divided by $k$). e.g. $k=3$:
+\begin{itemize}
+    \item $\brak{0} = \set{\cdots, -6, -3, 0, 3, 6, \cdots}$
+    \item $\brak{1} = \set{\cdots, -5, -2, 1, 4, 7, \cdots}$
+    \item $\brak{2} = \set{\cdots, -4, -1, 2, 5, 8, \cdots}$
+\end{itemize}
+We have the \linkterm{canonical projection}{canonical_projection} $\pi_{\equiv_k}: \mathbb{Z} \to \mathbb{Z}/\equiv_k, \quad n \mapsto \brak{n}$ that sends each $n \in \mathbb{Z}$ to its \linkterm{equivalence class}{def:equivalence_class}.
+
+Notice that the \linkterm{quotient space}{def:equivalence_class} $\mathbb{Z}/\equiv_k$ has exactly $k$ classes, so, we have the following \linkterm{bijection}{bijective}:
+\[
+\varphi: \mathbb{Z}/\equiv_k \to \set{0,1, \cdots, k-1}, \quad \brak{n} \mapsto \text{ the remainder of }n\text{ mod }k.
+\]
+If we compose the \linkterm{canonical projection}{canonical_projection} with the \linkterm{bijection}{bijective} we get the remainder, e.g. for $k=3$:
+\[
+-6 \;\xmapsto{\;\pi_{\equiv_3}\;}\; [0] 
+   \;\xmapsto{\;\varphi\;}\; 0. \\
+\]
+\[
+7 \;\xmapsto{\;\pi_{\equiv_3}\;}\; [1] 
+\;\xmapsto{\;\varphi\;}\; 1.
+\]
+
+
+\Lemma{
+Let $= \subseteq S \times S$ be the \linkterm{equality relation}{equality_relation} on a set $S$, then $\brak{x}_{=} \in S/=$ is always a \textbf{singleton} and thus $S \sim_{\Gamma} S/=$.
+}{lemm:equality_singleton}
+\Proof{
+If we take the \linkterm{equality relation}{equality_relation} \linkterm{on}{relation_on} a \linkterm{set}{def:set} $S$, then for any $x \in S$, the \linkterm{equivalence class}{def:equivalence_class} is:
+\[
+\brak{x}_{=} = \setbuilder{y \in S}{y = x}
+\]
+But the only $y$ that satisfies $y=x$ is $y=x$ itself. So we get $\brak{x}_{=} = \set{x}$. This is a \textbf{singleton} \linkterm{set}{def:set}. So every \linkterm{equivalence class}{def:equivalence_class} under $=$ has exactly one element.
+
+The \linkterm{quotient space}{def:equivalence_class} is $S/= \quad :=  \setbuilder{\brak{x}_{=}}{x \in S}$ and each $\brak{x}_{=}$ is the singleton \linkterm{set}{def:set} $\set{x}$, so the \linkterm{quotient space}{def:equivalence_class} becomes $S/= :=  \setbuilder{\set{x}}{x \in S}$. In other words, the \linkterm{quotient space}{def:equivalence_class} under the \linkterm{equality relation}{equality_relation} just replaces each \linkterm{element}{def:set} $x$ with one-element \linkterm{set}{def:set} $\set{x}$. 
+
+That means the \linkterm{set}{def:set} $S$ is in \linkterm{bijection}{bijective} with its \linkterm{quotient space}{def:equivalence_class} under $=$ via the following \linkterm{bijective}{bijective} map:
+\[
+\phi: S \to S/=, \quad x \mapsto \brak{x}_{=} = \set{x}
+\]
+Therefore, we express the \linkterm{bijection}{bijective} via same \linkterm{cardinality}{set_cardinality}:
+\[
+S \sim_{\Gamma} S/=
+\]
+}
+
+\textbf{Fun Example: }Let $S$ be the \linkterm{set}{def:set} of all cities worldwide and $\sim_c \in S^2$ defined by $a \sim_c b$, iff $a$ and $b$ are in the same country. Then $\sim_c$ is an \linkterm{equivalence relation}{equivalence_relation} \linkterm{on}{relation_on} $S$, and the \linkterm{quotient space}{def:equivalence_class} $S/ \sim_c$ of $S$ under $\sim_c$ consists of the \linkterm{equivalence class}{def:equivalence_class} $\brak{x}_{\sim_c}$ where $x \in S$. The capital of a country is a good \linkterm{representative}{def:equivalence_class} for an \linkterm{equivalence class}{def:equivalence_class}.
+
+\textbf{For instance: } let's take a \linkterm{subset}{subset} of all worldwide cities for simplicity, consider \linkterm{domain of discourse}{domain_of_discourse}:
+\[
+S = \{\text{Berlin}, \text{Munich}, \text{Hamburg}, \text{Paris}, \text{Lyon}, \text{Marseille}, \text{Rome}, \text{Milan}\}.
+\]
+
+For $a,b \in S$ define the \linkterm{relation}{relation_on}:
+\[
+a \sim_c b \;\;\Longleftrightarrow\;\; a \text{ and } b \text{ are in the same country}.
+\]
+
+This \linkterm{relation}{relation_on} is:
+\begin{itemize}
+\item \linkterm{reflexive}{reflexive}: any city is in the same country as itself.  
+\item \linkterm{symmetric}{symmetric}: if Berlin is in the same country as Munich, then Munich is in the same country as Berlin.  
+\item \linkterm{transitive}{transitive_relation}: if Berlin and Munich are in the same country, and Munich and Hamburg are in the same country, then Berlin and Hamburg are in the same country.  
+\end{itemize}
+Hence, $\sim_c$ is an \linkterm{equivalence relation}{equivalence_relation}.
+
+The \linkterm{quotient space}{def:equivalence_class} $S/\sim_c$ is the \linkterm{set}{def:set} of \linkterm{equivalence classes}{def:equivalence_class}, i.e.\ the partition of $S$ into countries:
+\[
+[\text{Berlin}]_{\sim_c} = \{\text{Berlin}, \text{Munich}, \text{Hamburg}\}, \quad
+[\text{Paris}]_{\sim_c} = \{\text{Paris}, \text{Lyon}, \text{Marseille}\}, \quad
+[\text{Rome}]_{\sim_c} = \{\text{Rome}, \text{Milan}\}.
+\]
+So
+\[
+S/\sim_c = 
+\Big\{
+\{\text{Berlin}, \text{Munich}, \text{Hamburg}\},\;
+\{\text{Paris}, \text{Lyon}, \text{Marseille}\},\;
+\{\text{Rome}, \text{Milan}\}
+\Big\}.
+\]
+
+The \linkterm{set}{def:set} of chosen \linkterm{representatives}{def:equivalence_class} is: $\{\text{Berlin}, \text{Paris}, \text{Rome}\}$.

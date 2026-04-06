@@ -1,0 +1,446 @@
+\labeledsection{Graphs and Trees}{sec:graphs_trees}
+\definition{Undirected Graph}{
+An undirected graph is a pair $\tuple{V,E}$ such that
+\begin{itemize}
+    \item $V$ is a \linkterm{set}{def:set} of \textbf{vertices (nodes)}, and
+    \item $E \subseteq \setbuilder{\set{v, \bar{v}}}{v, \bar{v} \in V \land v \neq \bar{v}}$ is the \linkterm{set}{def:set} of its \textbf{undirected edges}. 
+\end{itemize}
+}{undirected_graph}
+
+\textbf{Example: }An \linkterm{undirected graph}{undirected_graph} $G_1 = \tuple{V_1, E_1}$, where $V_1 = \set{A,B,C,D,E}$ and $E_1 = \set{\set{A,B}, \set{A,C}, \set{A,D}, \set{B,D}, \set{B,E}}$
+
+\begin{tikzpicture}[node distance=18mm]
+  \node[vertex] (A) {A};
+  \node[vertex, right=of A] (B) {B};
+  \node[vertex, right=of B] (E) {E};
+  \node[vertex, below=of A] (C) {C};
+  \node[vertex, below=of B] (D) {D};
+
+  \draw[edge] (A)--(B);
+  \draw[edge] (A)--(C);
+  \draw[edge] (A)--(D);
+  \draw[edge] (B)--(D);
+  \draw[edge] (B)--(E);
+\end{tikzpicture}
+
+\definition{Directed Graph}{
+A directed graph (digraph) is a pair $\tuple{V,E}$ such that
+\begin{itemize}
+    \item $V$ is a \linkterm{set}{def:set} of \textbf{vertices (nodes)}, and
+    \item $E \subseteq \cartprod{V,V}$ is the \linkterm{set}{def:set} of its \textbf{directed edges}.
+\end{itemize}
+}{directed_graph}
+
+\textbf{Example: }A \linkterm{directed graph}{directed_graph} $G_2 = \tuple{V_2, E_2}$, where $V_2 = \set{1,2,3,4,5}$ and $E_2 = \set{\paren{1,1}, \paren{1,2}, \paren{2,3}, \paren{3,2}, \paren{2,4}, \paren{5,4}}$
+
+\begin{tikzpicture}[node distance=22mm]
+  \node[vertex] (1) {1};
+  \node[vertex, right=of 1] (2) {2};
+  \node[vertex, right=of 2] (4) {4};
+  \node[vertex, right=of 4] (5) {5};
+  \node[vertex, below=14mm of 2] (3) {3};
+
+  \draw[arc] (1) to[loop above] (1);
+  \draw[arc] (1) -- (2);
+  \draw[arc] (2) -- (3);
+  \draw[arc] (3) -- (2);
+  \draw[arc] (2) -- (4);
+  \draw[arc] (5) -- (4);
+\end{tikzpicture}
+
+
+\definition{Indegree}{
+Given a \linkterm{directed graph}{directed_graph} $\tuple{V,E}$, the indegree $\operatorname{indeg}(v)$ of a vertex $v \in V$ is defined as $\operatorname{indeg}(v) = \setsize{\setbuilder{w}{\paren{w,v} \in E}}$.
+}{indegree}
+
+\textbf{Example: }$\operatorname{indeg}(2) = 2$
+
+\definition{Outdegree}{
+Given a \linkterm{directed graph}{directed_graph} $\tuple{V,E}$, the outdegree $\operatorname{outdeg}(v)$ (branching factor) of a vertex $v \in V$ is defined as $\operatorname{outdeg}(v) = \setsize{\setbuilder{w}{\paren{v,w} \in E}}$.
+}{outdegree}
+
+\textbf{Example: }$\operatorname{outdeg}(5) = 1$
+
+
+\commandnote{
+For an \linkterm{undirected graph}{undirected_graph}, $\operatorname{indeg}(v) = \operatorname{outdeg}(v)$ for all $v \in V$.
+}
+
+\textbf{Observation: }\linkterm{directed graphs}{directed_graph} are nothing else than \linkterm{relations}{relation}.
+
+\definition{Initial vs Terminal Node}{
+Let $G = \tuple{V,E}$ be a \linkterm{directed graph}{directed_graph}, then we call a node $v \in V$
+\begin{itemize}
+  \item \textbf{initial} (source of $G$), iff there is no $w \in V$ such that $\paren{w,v} \in E$ (no predecessor)
+  \item \textbf{terminal} (sink of $G$), iff there is no $w \in V$ such that $\paren{v,w} \in E$ (no successor)
+\end{itemize}
+}{initial_terminal_node}
+
+
+\definition{Graph Isomorphism}{
+Iff we can find a \linkterm{bijection}{bijective} $\psi : V \to \bar{V}$ between two graphs $G = \tuple{V,E}$ and $\bar{G} = \tuple{\bar{V},\bar{E}}$ then we call them isomorphic. 
+The \linkterm{bijection}{bijective} $\psi : V \to \bar{V}$ is defined as $(a,b) \in E \Leftrightarrow (\psi (a), \psi (b)) \in \bar{E}$ for \linkterm{directed graph}{directed_graph}. And for \linkterm{undirected graph}{undirected_graph} it is defined as $\set{a,b} \in E \Leftrightarrow \set{\psi (a), \psi (b)} \in \bar{E}$
+}{graph_isomorphism}
+
+\definition{Equivalent Graphs}{
+Two graphs $G$ and $\bar{G}$ are \textbf{equivalent} iff there is an \linkterm{isomorphism}{graph_isomorphism} $\psi$ between $G$ and $\bar{G}$.
+}{equivalent_graphs}
+
+\textbf{Example: }the following two \linkterm{graphs}{directed_graph} are \linkterm{equivalent}{equivalent_graphs} as there exists an \linkterm{isomorphism}{graph_isomorphism} between them given by the \linkterm{bijection}{bijective}:
+\[
+\psi := \set{a \mapsto 5, b \mapsto 6, c \mapsto 2, d \mapsto 4, e \mapsto 1, f \mapsto 3}
+\]
+\begin{tikzpicture}
+\begin{scope}
+  \node[vertex] (v1) at (0,0) {1};
+  \node[vertex] (v2) at (1.6,1.4) {2};
+  \node[vertex] (v3) at (1.6,-1.4) {3};
+  \node[vertex] (v4) at (3.4,0) {4};
+  \node[vertex] (v5) at (4.9,1.4) {5};
+  \node[vertex] (v6) at (5.6,0) {6};
+
+  \draw[->] (v2) -- (v1);
+  \draw[->] (v3) -- (v1);
+  \draw[->] (v2) -- (v4);
+  \draw[->] (v4) -- (v3);
+  \draw[->] (v2) -- (v5);
+  \draw[->] (v5) to[out=-20,in=120] (v6);
+  \draw[->] (v6) to[out=160,in=-60] (v5);
+\end{scope}
+
+\begin{scope}[xshift=9.5cm]
+  \node[vertex] (a) at (0,1.2) {a};
+  \node[vertex] (b) at (0,-0.6) {b};
+  \node[vertex] (c) at (2.2,1.2) {c};
+  \node[vertex] (d) at (2.2,-1.2) {d};
+  \node[vertex] (e) at (4.4,1.2) {e};
+  \node[vertex] (f) at (4.4,-1.2) {f};
+
+  \draw[->] (a) edge[bend left=20] (b);
+  \draw[->] (b) edge[bend left=20] (a);
+
+  \draw[->] (c) -- (a);
+  \draw[->] (c) -- (e);
+  \draw[->] (c) -- (d);
+  \draw[->] (d) -- (f);
+  \draw[->] (f) -- (e);
+\end{scope}
+
+\end{tikzpicture}
+
+
+\definition{Labeled Graph}{
+A labeled graph $G$ is a quadruple $\tuple{V,E,L,l}$ where $\tuple{V,E}$ is a graph and $\pfunc{l}{\union{V,E}}{L}$ is a \linkterm{partial function}{partial_function} into a \linkterm{set}{def:set} $L$ of labels.
+}{labeled_graph}
+\textbf{Example: }$G = \tuple{V,E,L,l}$ with $V = \set{A,B,C,D,E}$, where
+\begin{itemize}
+  \item $E = \set{(A,A), (A,B), (B,C), (C,B), (B,D), (E,D)}$
+  \item $\pfunc{l}{\union{V,E}}{\cartprod{\set{+,-,\phi},\set{1,\cdots,9}}}$ with
+  \begin{itemize}
+    \item $l(A) = 5 \quad l(B) = 3 \quad l(C) = 7 \quad l(D)=4 \quad l(E)=8$,
+    \item $l((A,A)) = -0 \quad l((A,B)) = -2 \quad l((B,C)) = +4$,
+    \item $l((C,B)) = -4 \quad l((B,D)) = +1 \quad l((E,D)) = -4$
+  \end{itemize}
+\end{itemize}
+
+\begin{tikzpicture}
+\node[vertex] (v5) at (0,0) {5};
+\node[vertex] (v3) at (2.2,0) {3};
+\node[vertex] (v4) at (4.4,0) {4};
+\node[vertex] (v8) at (6.6,0) {8};
+\node[vertex] (v7) at (2.2,-2) {7};
+
+\path[->] (v5) edge[loop below,min distance=10mm]
+  node[below=2pt] {$-0$} (v5);
+
+\draw[->] (v5) -- node[midway,above] {$-2$} (v3);
+
+\draw[->] (v3) -- node[midway,above] {$+1$} (v4);
+
+\draw[->] (v8) -- node[midway,above] {$-4$} (v4);
+
+\draw[->] (v3) to[bend left=35] node[midway,right] {$+4$} (v7);
+\draw[->] (v7) to[bend left=35] node[midway,left] {$-4$} (v3);
+\end{tikzpicture}
+
+
+\definition{Paths in Graphs}{
+Given a graph $G:=\tuple{V,E}$ we call a $n+1$-tuple $p=\tuple{v_0, \cdots, v_n} \in V^{n+1}$ a \textbf{path} in $G$ iff $(v_{i-1}, v_i) \in E$ for all $1 \leq i \leq n$ and $n>0$.
+\begin{itemize}
+\item We say that $v_i$ are nodes on $p$ and that $v_0$ and $v_n$ are \textbf{linked} by $p$.
+\item $v_0$ and $v_n$ are called the \textbf{start} and \textbf{end} of $p$ (write $\operatorname{start}(p)$ and $\operatorname{end}(p)$), the other $v_i$ are called \textbf{inner nodes} of $p$.
+\item $n$ is called the \textbf{length} of $p$ (write $\operatorname{len}(p)$).
+\item We denote the \linkterm{set}{def:set} of paths in $G$ with $\Pi(G)$. 
+\end{itemize}
+}{path_graph}
+
+\commandnote{
+  Not all $v_i$-s in a \linkterm{path}{path_graph} are necessarily different.
+}
+
+For a graph $G=\tuple{V,E}$ and a \linkterm{path}{path_graph} $p = \tuple{v_1, \cdots, v_n} \in V^{n+1}$, write
+\begin{itemize}
+  \item $v \in p$, iff $v \in V$ is a vertex on the \linkterm{path}{path_graph} ($\exists i. v_i = v$)
+  \item $e \in p$, iff $e = (v, \bar{v}) \in E$ is an edge on the \linkterm{path}{path_graph} ($\exists i. v_i = v \land v_{i+1} = \bar{v}$)
+\end{itemize}
+
+\textbf{Example: }Consider $G = \tuple{V,E}$ with $V = \set{a,b,c,d}$ and $E = \set{(a,b), (b,c)}$:
+
+\begin{tikzpicture}[>=stealth, node distance=1cm]
+  \tikzstyle{Vertex}=[circle, draw, minimum size=18pt, inner sep=0pt]
+
+  \node[Vertex] (a) {a};
+  \node[Vertex, right=of a] (b) {b};
+  \node[Vertex, right=of b] (c) {c};
+  \node[Vertex, right=of c] (d) {d};
+
+  \draw[->] (a) -- (b);
+  \draw[->] (b) -- (c);
+\end{tikzpicture}
+
+An example \linkterm{path}{path_graph} would be $p = \tuple{a,b,c}$. Here $n = 2$ and $p \in V^3 = \set{(a,a,a), (a,b,d), \cdots}$. Obviously, since $n=2$ so we have $2$ edges and $3$ nodes.
+\begin{itemize}
+  \item nodes $a,b,c$ are on the \linkterm{path}{path_graph}
+  \item $\operatorname{start}(p) = a$ and $\operatorname{end}(p)=c$
+  \item $b$ is an inner node, and $\operatorname{len}(p) = 2$
+  \item $e = (a,b), \bar{e}=(b,c) \in p$
+  \item $\Pi(G) = \set{(a,b), (b,c), (a,b,c)}$
+\end{itemize}
+
+\definition{Cyclic Graphs}{
+Given a \linkterm{directed graph}{directed_graph} $G = \tuple{V,E}$, a \linkterm{path}{path_graph} $p$ is called \textbf{cyclic} iff $\operatorname{start}(p) = \operatorname{end}(p)$. A cycle $\tuple{v_0, \cdots, v_n}$ is called \textbf{simple}, iff $v_i \neq v_j$ for $1 \leq i$, $j \leq n$ with $i \neq j$ (all inner nodes are distinct).
+}{cyclic_graphs}
+
+\definition{DAG}{
+A \linkterm{directed graph}{directed_graph} with no \linkterm{cycles}{cyclic_graphs} is called \textbf{directed acyclic graph (DAG)}.
+}{dag}
+
+\textbf{Example: } $p = \tuple{a,b,c,a}$ is simple \linkterm{cyclic}{cyclic_graphs} path. $p = \tuple{a,b,a,b,a}$ is a \linkterm{cyclic}{cyclic_graphs} path that is not simple.
+
+\begin{tikzpicture}[>=stealth, node distance=1cm]
+  \tikzstyle{Vertex}=[circle, draw, minimum size=20pt, inner sep=0pt]
+
+  % Nodes
+  \node[Vertex] (a) {a};
+  \node[Vertex, right=of a] (b) {b};
+  \node[Vertex, right=of b] (c) {c};
+
+  \draw[->] (a) -- (b);
+  \draw[->] (b) -- (c);
+  \draw[->, bend left=45] (c) to (a);   
+  \draw[->, bend right=45] (b) to (a); 
+\end{tikzpicture}
+
+\definition{Node Depth}{
+Let $G = \tuple{V,E}$ be a \linkterm{directed graph}{directed_graph}, then the depth $\operatorname{dp}(v)$ of a vertex $v \in V$ is defined to be $0$, iff $v$ is a source of $G$ and the \linkterm{supremum}{supremum_infimum} $\operatorname{sup}(\setbuilder{\operatorname{len}(p)}{\operatorname{indeg}(\operatorname{start}(p))=0 \land \operatorname{end}(p)=v})$ otherwise, i.e. the length of the longest \linkterm{path}{path_graph} from a source of $G$ to $v$ (can be infinite).
+}{depth_node}
+
+\definition{Graph Depth}{
+Given a \linkterm{directed graph}{directed_graph} $G = \tuple{V,E}$, the \textbf{depth} ($\operatorname{dp}(G)$) of $G$ is defined as the \linkterm{supremum}{supremum_infimum} $\operatorname{sup}(\setbuilder{\operatorname{len}(p)}{p \in \Pi(G)})$, i.e. the maximal path length in $G$.
+}{depth_graph}
+
+\definition{Tree}{
+A tree is a \linkterm{DAG}{dag} $G = \tuple{V,E}$ such that
+\begin{itemize}
+  \item There is exactly one \linkterm{initial node}{initial_terminal_node} $v_r \in V$ (called the \textbf{root})
+  \item All nodes but the root have \linkterm{indegree}{indegree} of $1$.
+\end{itemize}
+We call $v$ the \textbf{parent} of $w$, iff $(v,w) \in E$ ($w$ is a child of $v$). We call a node $v$ a \textbf{leaf} of $G$, iff it is \linkterm{terminal}{initial_terminal_node}, i.e. if it does not have children.
+}{tree}
+
+\Lemma{
+For any node $v \in V$ except the root $v_r$, there is exactly one \linkterm{path}{path_graph} $p \in \Pi(G)$ with $\operatorname{start}(p) = v_r$ and $\operatorname{end}(p)=v$.
+}{lemma_tree}
+
+\textbf{Observation: }We often deal with \textbf{well-bracketed structures} in Computer Science, e.g. \linkterm{mathematical}{mathematics} expressions, Markup languages like \texttt{HTML}, programming languages like \texttt{python}, etc. A common approach to scaling in computer science is to come up with a common data structure that allows to program the same algorithm for all of these structures, that where \linkterm{trees}{tree} come in. For example (\texttt{HTML}):
+
+\begin{minipage}[t]{0.45\textwidth}
+\vspace{25pt}
+\begin{verbatim}
+<html>
+  <head>
+    <script>.emph {color:red}</script>
+  </head>
+  <body>
+    <p>Hello SMAI</p>
+  </body>
+</html>
+\end{verbatim}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.5\textwidth}
+\vspace{0pt}
+\begin{tikzpicture}[>=stealth, node distance=1cm]
+  % styles
+  \tikzstyle{tag}=[inner sep=1pt]
+  \tikzstyle{box}=[draw, rectangle, rounded corners=2pt, inner sep=3pt]
+
+  % nodes
+  \node[tag] (html) {$\langle$html$\rangle$};
+
+  \node[tag, below left=1.2cm and 1.6cm of html] (head) {$\langle$head$\rangle$};
+  \node[tag, below right=1.2cm and 1.6cm of html] (body) {$\langle$body$\rangle$};
+
+  \node[tag, below=of head] (script) {$\langle$script$\rangle$};
+  \node[tag, below=of body] (p) {$\langle$p$\rangle$};
+
+  \node[box, below=1.0cm of script] (css) {.emph \{color:red\}};
+  \node[box, below=1.0cm of p] (text) {Hello SMAI};
+
+  % edges
+  \draw[->] (html) -- (head);
+  \draw[->] (html) -- (body);
+
+  \draw[->] (head) -- (script);
+  \draw[->] (body) -- (p);
+
+  \draw[->] (script) -- (css);
+  \draw[->] (p) -- (text);
+\end{tikzpicture}
+\end{minipage}
+
+\textbf{Observation: }\linkterm{functional programming}{functional_programming} languages like \linkterm{SML}{def:sml} are ideal for computing with \linkterm{labeled}{labeled_graph} \linkterm{trees}{tree}. 
+
+\textbf{Example: } data types for node \linkterm{labeled}{labeled_graph} \linkterm{trees}{tree} (binary and general):
+\begin{verbatim}
+datatype lbt = leaf of int |t of int * lbt * lbt
+\end{verbatim}
+
+\begin{verbatim}
+datatype ltree = leaf of int | t of int * ltree list
+\end{verbatim}
+
+We can compute e.g. the weight (sum of all labels) recursively:
+\begin{verbatim}
+fun wt (leaf n) = n | wt (t n l r) = n + wt l + wt r
+\end{verbatim}
+
+\begin{verbatim}
+fun wt (leaf n) = n
+  | wt (t n ts) = n + wtl ts
+and wtl (nil) = 0
+  | wtl (h::ts) = wt h + wtl ts
+\end{verbatim}
+
+\textbf{Observation: }often, \linkterm{DAGs}{dag} are better representations of \linkterm{trees}{tree} (\linkterm{trees}{tree} with sharing):
+
+\begin{minipage}[t]{0.50\textwidth}
+\vspace{0pt}
+\begin{verbatim}
+ f
+ |
+( )
+ |
+ f
+ |
+( )
+ |
+ f
+ |
+( )
+ |
+ a
+\end{verbatim}
+\end{minipage}%
+\hfill
+\begin{minipage}[t]{0.50\textwidth}
+\vspace{0pt}
+\begin{verbatim}
+           f
+         /   \
+       f       f
+     /  \    /   \
+    f    f  f     f
+   / \  / \ / \   / \
+  a  a a  a a  a a   a
+\end{verbatim}
+\end{minipage}
+
+Here, we assume that the constant symbol $a$ represent a leaf and the function symbol $f$ represents a parent node with two children which can be $f$ or $a$. Hence, the full tree is represented as:
+\[
+f(f(f(a,a),f(a,a)),f(f(a,a),f(a,a)))
+\]
+The \linkterm{DAG}{dag} compresses the same structure by reusing subterms. It internally does not duplicate all the $f(a,a)$ pieces, it stores them once and reuses them by reference. For example, define a base piece: $t_1 = f(a,a)$, then reuse it: $t_2 = f(t_1, t_1)$ and finally $t_3 = f(t_2,t_2)$
+
+\textbf{Idea: }We want to represent a \linkterm{DAG}{dag} in \linkterm{SML}{def:sml}, and then be able to \textit{explode} it into a \linkterm{tree}{tree}. A \linkterm{DAG}{dag} can share subtrees via references and save memory, but a \linkterm{tree}{tree} has no sharing and every reference is copied. \textit{Exploding} is the process of removing and duplicating the structure.
+
+\minititle{Datatype Definition}
+
+\begin{verbatim}
+type id = int
+type label = string
+
+datatype DAG = 
+   leaf of id * label
+ | ref of id
+ | dag of id * label * DAG list 
+\end{verbatim}
+
+Example:
+
+\begin{verbatim}
+ex1 = 
+  dag 1 "f" [
+    dag 2 "f" [
+      dag 3 "f" [leaf 4 "a", ref 4], ref 3
+    ],
+    ref 2
+  ]
+\end{verbatim}
+
+Notice that the innermost part is \inlinecode{dag 3 "f" [leaf 4 "a", ref 4]}. That is a node with \texttt{id=3}, label "f", and two children: \texttt{leaf 4 "a"} (a leaf node with \texttt{id=4}, label = "a"), and \texttt{ref 4} (a reference back to the same leaf id (4)). So this subtree is $f(a,a)$ but written with sharing.
+
+Next level, we see \inlinecode{dag 2 "f" [(dag 3 ...), ref 3]}. That is a node with id=2, label "f", and two children: one is the whole \texttt{dag 3} subtree ($f(a,a)$), the other one is a reference back to it. So this is $f(f(a,a),f(a,a))$.
+
+Finally, we have \inlinecode{dag 1 "f" [(dag 2 ...), ref 2]}. This is the root node with id=1, label "f", and two children. One is the whole \texttt{dag 2} ($f(f(a,a),f(a,a))$), the other one is a reference back to that node. So this is the full
+\[
+f(f(f(a,a),f(a,a)),f(f(a,a),f(a,a)))
+\]
+
+Now, we want a function \inlinecode{fun explode (dag, dict) = tree} where \texttt{dict} is a dictionary mapping identifiers to already-exploded subtrees, so that references can be looked up.
+
+Case 1: \texttt{explode (leaf (\_, l), \_) = leaf l}, i.e. if we see a leaf, ignore the id, just return a tree leaf with the label.
+
+Case 2: \texttt{explode (ref i, dict) = lookup dict i}, i.e. if we see a reference, we just look up the corresponding tree in the dictionary.
+
+Case 3: internal \linkterm{DAG}{dag} node:
+
+\begin{verbatim}
+explode (dag (_, l) ds, dict) = 
+  let val (ts, _) = explist ds dict
+  in tree l ts
+  end
+\end{verbatim}
+
+i.e. for a node, explode the children \texttt{ds} using \texttt{explist} and build a new tree node with label \texttt{l} and explode children \texttt{ts}
+
+\texttt{explist} is a helper function defined as:
+\begin{verbatim}
+and explist [] dict = ([], dict)
+  | explist (h::t) dict =
+      let val (th, dict1) = explode h dict
+          val (tt, dict2) = explist t dict1
+      in (th::tt, dict2)
+      end
+\end{verbatim}
+It explodes a list of \linkterm{DAG}{dag} children into a list of \linkterm{tree}{tree} children.
+
+And here are some helper functions for completeness: a function that looks up identifiers:
+\begin{verbatim}
+fun did (leaf i _) = i | did (ref _ j) = j | did (dag i _ _) = i
+\end{verbatim}
+
+A dictionary type and a lookup function:
+\begin{verbatim}
+type dict = (id * DAG) list
+
+exception NotFound
+
+fun lookup i [] = raise NotFound
+  | lookup i (h::t) =
+      let 
+        val (k,d) = t
+      in
+        if i = k then d else lookup i t
+      end
+\end{verbatim}

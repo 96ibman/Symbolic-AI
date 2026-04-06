@@ -1,0 +1,1270 @@
+\labeledsection{Functional Programming using SML}{sec:sml}
+\definition{Functional Programming}{
+We call programming languages where procedures can be fully describes in terms of their input/output behabior \textbf{functional}.
+}{functional_programming}
+
+\commandnote{
+There are two main programming paradigms: \textbf{imperative} and \textbf{declarative}. Imperative programming is where the programmer instructs the machine how to change its state, it can be:
+\begin{itemize}
+    \item structured programming: makes extensive use of block structures and subroutines
+    \item procedural programming: groups instructions into procedures
+    \item object-oriented programming: groups instructions together with the part of the state they operate on
+\end{itemize}
+
+On the other hands, declarative programming is where the programmer merely declares properties of the desired result, but not how to compute it. Examples:
+\begin{itemize}
+    \item functional programming: the desired result is declared as the value of a series of function calls
+    \item logic programming: the desired result is declared as the answer to a question about a system of facts and rules
+    \item mathematical programming: the desired result is declared as the solution of an optimization problem
+\end{itemize}
+}
+
+\definition{Standard ML (SML)}{
+SML is general-purpose, high-level, modular, \linkterm{function programming language}{functional_programming} with compile-time type checking and type inference.
+}{def:sml}
+
+\definition{Predefined objects in SML}{
+\begin{itemize}
+\item \textbf{basic types}, e.g. \texttt{int}, \texttt{real}, \texttt{bool}, \texttt{string}, ...
+\item \textbf{basic type constructors}, e.g. \texttt{->}, \texttt{*}, ...
+\item \textbf{basic operators}, e.g. \texttt{numbers}, \texttt{true}, \texttt{false}, \texttt{+}, \texttt{-}, \texttt{*}, \texttt{-}, \texttt{>}, \^{} ...
+\item \textbf{control structures}, e.g. \texttt{if} $\varPhi$ \texttt{then} $E_1$ \texttt{else} $E_2$;
+\item \textbf{comments}, e.g. \texttt{(*  this is a comment *)}
+\end{itemize}
+}{predefined_objects_sml}
+
+A simple example, if we write \texttt{2;} we get back \texttt{val it = 2 : int}. and if we write \texttt{4.711;} we get back \texttt{val it = 4.711 : real}. In other words, \linkterm{SML}{def:sml} interpreter has determined that the input has a value and that value has a specific \linkterm{type}{predefined_objects_sml}.
+
+\definition{Declarations bind variables}{
+\begin{itemize}
+    \item \textbf{value declarations}, e.g. \texttt{val pi = 3.1415;}
+    \item \textbf{type declarations}, e.g. \texttt{type twovec = int * int;}
+    \item \textbf{function declarations}, e.g. \texttt{fun square (x:real) = x * x;}
+\end{itemize}
+A \linkterm{function declaration}{sml_declarations} only \linkterm{declares}{sml_declarations} the function name as a globally visible name. The \textbf{formal parameters} in brackets are only visible in the \textbf{function body}.
+}{sml_declarations}
+
+Alternatively, we can just \linkterm{declare}{sml_declarations} a function object, e.g. via \texttt{val foo = fn x => x + x;}.
+
+\linkterm{SML}{def:sml} \linkterm{functions}{function} that have been \linkterm{declared}{sml_declarations} can be applied to arguments of the right type, e.g. \texttt{square 4.0} which evaluates to \texttt{4.0 * 4.0} and this to \texttt{16.0}.
+
+\inlinecode{- fun square(x:real) = x * x; (*function declaration*)}
+
+\inlinecode{val square = fn : real -> real (*interpreter response*)}
+
+\inlinecode{- square 4.0; (*function application*)}
+
+\inlinecode{val it = 16 : real (*interpreter response*)}
+
+\definition{Local Declaration}{
+A local declaration uses \texttt{let} to bind variables in its scope (delineated by \texttt{in} and \texttt{end}).
+}{local_declaration_sml}
+
+\commandnote{
+\linkterm{Local declarations}{local_declaration_sml} can \textbf{shadow} existing variables. i.e. it hides the old binding in its scope.
+}
+
+Example:
+
+\inlinecode{- val test = 4;}
+
+\inlinecode{val test = 4 : int}
+
+\inlinecode{- let val test = 7 in test * test end;}
+
+\inlinecode{val it = 49 : int}
+
+\inlinecode{- test;}
+
+\inlinecode{val it = 4 : int}
+
+\commandnote{
+In imperative programming, variable are identifiers for memory locations that can be changed at will. However, in \linkterm{functional programming}{functional_programming}, variables are bound to \linkterm{values}{sml_declarations} in a given \linkterm{scope}{scope}, that \linkterm{value}{sml_declarations} cannot be changed in the \linkterm{scope}{scope}. i.e. variable binding in \linkterm{functional programming}{functional_programming} is a dynamic mapping from variable names to immutable memory locations, which can be locally overwritten (shadowing).
+}
+
+\definition{Pattern Matching}{
+Pattern matching is using special expressions with unbound variables (we call them structured patterns) to \linkterm{declare}{sml_declarations} more than one variable.
+}{pattern_matching_sml}
+
+For example:
+
+\inlinecode{- val unitvector = (1,1);}
+
+\inlinecode{val unitvector = (1,1): int * int}
+
+\inlinecode{- val (x,y) = unitvector;}
+
+\inlinecode{val x = 1 : int}
+
+\inlinecode{val y = 1 : int}
+
+\definition{Anonymous Variables}{
+Variables without a name, denoted by "underscore" (\texttt{\_}).
+}{anonymous_variables_sml}
+e.g. if we are not interested in one if the values: \inlinecode{- val (x,\_) = unitvector} $\leadsto$ \inlinecode{val x = 1 : int}. Similarly, we can define a function that takes a pair and select the first element:
+
+\inlinecode{- fun first(p) = let val (x,\_) = p in x end;} $\leadsto$ \inlinecode{val first = fn : 'a * 'b -> 'a}. Example usage:
+\begin{verbatim}
+- first (3,"hello");
+val it = 3 : int
+\end{verbatim}
+
+A selector of the second element:
+\begin{verbatim}
+- fun second(p) = let val (_,x) = p in x end;
+val second = fn : 'a * 'b -> 'b
+- second (3,"Welcome to SML");
+val it = "Welcome to SML" : string
+\end{verbatim}
+
+\commandnote{
+\texttt{'a}, \texttt{'b}, ... are called type variables (\linkterm{SML}{def:sml} supports universal types). 
+}
+So the \texttt{first} \linkterm{function}{function} signature (\texttt{fn : ’a * ’b -> ’a}) means the \linkterm{function}{function} takes a pair of type \texttt{ ’a * ’b} as input and returns an object of type  \texttt{’a}.
+
+\linkterm{SML}{def:sml} has a built-in "list type". Given a type $\langle \langle$ \texttt{ty} $\rangle \rangle$, \texttt{list }$\langle \langle$ \texttt{ty} $\rangle \rangle$ is also a type (a list of objects of type $\langle \langle$ \texttt{ty} $\rangle \rangle$). For example, \texttt{list int} is a type for lists of integers. 
+\begin{verbatim}
+- [1,2,3];
+val it = [1,2,3] : int list
+\end{verbatim}
+
+\definition{Lists Constructors}{
+Lists have two constructors: \texttt{nil} (empty list) and \texttt{::} (called \texttt{cons}).
+}{lists_constructors_sml}
+\begin{verbatim}
+- nil;
+val it = [] : 'a list
+- 9::nil;
+val it = [9] : int list
+\end{verbatim}
+
+\definition{Recursion}{
+We call an \linkterm{SML}{def:sml} \linkterm{function}{sml_declarations} recursive, iff the \linkterm{function}{sml_declarations} is called in the body of the \linkterm{function declaration}{sml_declarations}.
+}{recursion}
+
+\linkterm{Recursion}{recursion} example:
+\begin{verbatim}
+- fun upto(m,n) = if m>n then nil else m::upto(m+1,n);
+vap upto = fn : int * int -> int list
+upto (2,5);
+val it = [2,3,4,5] : int list
+\end{verbatim}
+
+Let's trace that \linkterm{function}{function}: 
+\begin{verbatim}
+upto (2,5) = if 2>5 then nil else 2::upto(3,5)
+upto(3,5) = if 3>5 then nil else 3::upto(4,5)
+upto(4,5) = if 4>5 then nil else 4::upto(5,5)
+upto(5,5) = if 5>5 then nil else 5::upto(6,5)
+upto(6,5) = if 6>5 then nil else 6::upto(7,5)
+\end{verbatim}
+
+so it will evaluate to: \inlinecode{2::3::4::5::nil}
+
+\textbf{Another Example}, consider we want a \linkterm{function}{sml_declarations} that sums all the elements in a list. We also do that via \linkterm{recursion}{recursion}, if we get an empty list, we return 0, if we get a list with elements (a head element, and tail of the rest) then we sum the head to the sum of the tail.
+
+\begin{verbatim}
+- fun sumlist nil = 0 | sumlist (h::t) = h + sumlist t;
+val sumlist = fn : int list -> int
+- sumlist ([1,4,6]);
+val it = 11 : int
+- sumlist ([]);
+val it = 0 : int
+\end{verbatim}
+
+\commandnote{
+Every \textit{infix} operator in \linkterm{SML}{def:sml} (+,-,...) has a \textit{function style} (\texttt{op+}, \texttt{op-},...) notation.
+}
+For example, we can write the summation using that notation in our \texttt{sumlist} \linkterm{function}{sml_declarations}:
+\begin{verbatim}
+- fun sumlist nil = 0 | sumlist (h::t) = op+ (h, sumlist t);
+val sumlist = fn : int list -> int
+
+- sumlist ([1,2,3]);
+val it = 6 : int
+\end{verbatim}
+\linkterm{SML}{def:sml} have other \textit{function style} operations, e.g.:
+\begin{verbatim}
+(op-) (7, 4);            (* 3 *)
+(op*) (6, 5);            (* 30 *)
+(op div) (10, 3);        (* 3 *)
+(op mod) (10, 3);        (* 1 *)
+(op^) ("hi", "there");   (* "hithere" *)
+(op::) (1, [2,3]);       (* [1,2,3] *)
+(op@) ([1,2], [3,4]);    (* [1,2,3,4] *)
+(op=) (3, 3);            (* true *)
+(op=) ("a", "b");        (* false *)
+(op<>) (3, 4);           (* true *)
+(op<>) (5, 5);           (* false *)
+(op<)  (2, 5);           (* true  *)
+(op<=) (5, 5);           (* true  *)
+(op>)  (7, 3);           (* true  *)
+(op>=) (3, 4);           (* false *)
+\end{verbatim}
+
+
+
+Evaluation in \linkterm{SML}{def:sml} is \textbf{call-by-value} i.e. to whenever we encounter a \linkterm{function}{sml_declarations} applied to arguments, we compute the value of the argument first. We write $t_1 \leadsto t_2 \leadsto \cdots \leadsto t_n$ for tracing the \linkterm{recursive}{recursion} arguments $t_i$ through a \linkterm{recursive}{recursion} computation. For example:
+\[
+\operatorname{upto}\paren{2,4} \leadsto 2::\operatorname{upto}\paren{3,4} \leadsto 2::(3::\operatorname{upto}\paren{4,4}) \leadsto 2::(3::(4::\operatorname{upto}\paren{5,4})) \leadsto 2::(3::(4::\operatorname{nil})) 
+\]
+\commandnote{
+\linkterm{Recursive functions}{recursion} need not to terminate. For example:
+\inlinecode{fun diverges (n) = n + diverges (n+1)} which evaluates to: $\operatorname{diverges}(1) \leadsto 1 + \operatorname{diverges}(2) \leadsto 1 + (2 + \operatorname{diverges}(3)) \leadsto \cdots$
+}
+
+\textbf{Examples:}
+
+Length of a list:
+\begin{verbatim}
+- fun length nil = 0 | length (_::t) = 1 + length t;
+val length = fn : 'a list -> int
+- length ([1,2,3,4,5]);
+val it = 5 : int
+\end{verbatim}
+
+Fibonacci:
+\begin{verbatim}
+- fun fib 0 = 0
+= | fib 1 = 1
+= | fib n = fib (n-1) + fib (n-2);
+val fib = fn : int -> int
+
+- fib 6;
+val it = 8 : int
+\end{verbatim}
+
+
+Factorial:
+\begin{verbatim}
+- fun fact 0 = 1 | fact n = n * fact(n-1);
+val fact = fn : int -> int
+- fact 3
+val it = 6 : int
+\end{verbatim}
+\textbf{Note} that each \linkterm{recursive}{recursion} call has to remember the multiplication to do later. The final result waits until \inlinecode{fact(0)} is evaluated. However, there is another \linkterm{recursion}{recursion} technique called \textbf{tail recursion} where we accumulate the result as we go from recursive to another using a helper variable (accumulator) and function. For example, here is the same factorial \linkterm{function}{sml_declarations} using tail recursion:
+\begin{verbatim}
+- fun facthelper (0, acc) = acc | facthelper (k,acc) = facthelper (k-1, k * acc);
+val facthelper = fn : int * int -> int
+- fun fact n = facthelper (n,1);
+val fact = fn : int -> int
+- fact 3;
+val it = 6 : int
+\end{verbatim}
+Let's track that:
+$\operatorname{fact}(3) \leadsto \operatorname{facthelper}(3,1) \leadsto \operatorname{facthelper}(2, 3) \leadsto \operatorname{facthelper}(1, 6) \leadsto \operatorname{facthelper}(0,6) \leadsto 6$
+
+
+
+
+
+\definition{Tail Recursion}{
+A tail call is a subroutine call performed as the final action of a routine $R$. If the call is a \linkterm{recursive call}{recursion}, $R$ is said to be tail recursive.
+}{tail_recursion}
+
+\definition{Append \texttt{@}}{
+The operator \texttt{@} appends two lists together, e.g. \texttt{- [1]@[2];} gives us \texttt{val it = [1,2] : int list}
+}{append_sml}
+But we can define our own append \linkterm{recursively}{recursion}:
+\begin{verbatim}
+- fun append (nil,y) = y 
+    | append (h::t, y) = h::append (t,y);
+
+val append = fn : 'a list * 'a list -> 'a list
+
+- append ([1,2,3], [4,5,6]);
+val it = [1,2,3,4,5,6] : int list
+\end{verbatim}
+
+\textbf{Reversing a list:}
+\begin{verbatim}
+- fun reverse nil = nil
+  |   reverse (h::t) = reverse t @ [h];
+
+val reverse = fn : 'a list -> 'a list
+
+- reverse ([1,2,3,4,5,6,7]);
+val it = [7,6,5,4,3,2,1] : int list
+\end{verbatim}
+
+\textbf{Membership Check:}
+\begin{verbatim}
+- fun member (_, nil) = false
+    | member (x, h::t) =
+      if x = h then true
+      else member (x,t);
+
+val member = fn : ''a * ''a list -> bool
+
+- member (4,[1,2,3,4,5]);
+val it = true : bool
+
+- member (4,[1,2,3,5]);
+val it = false : bool
+\end{verbatim}
+
+\textbf{Reverse a list and append it to another list:}
+\begin{verbatim}
+- fun reverse (nil,y) = y
+    | reverse (h::t, y) = reverse (t, h::y);
+
+val reverse = fn : 'a list * 'a list -> 'a list
+
+- reverse ([4,5,6], [3,2,1]);
+val it = [6,5,4,3,2,1] : int list
+\end{verbatim}
+Let's trace that with \texttt{[2,3], [1]}:
+$\operatorname{reverse}([2,3],[1]) \leadsto \operatorname{reverse}([3],[2, 1]) \leadsto \operatorname{reverse}([],[3,2,1]) \leadsto [3,2,1]$
+
+\textbf{Flattening a list of lists to one list}
+\begin{verbatim}
+- fun flat nil = nil
+    | flat (h::t) = h @ flat t;
+
+val flat = fn : 'a list list -> 'a list
+
+- flat ([["when", "shall"], ["we"], ["meet", "again"]]);
+val it = ["when","shall","we","meet","again"] : string list
+\end{verbatim}
+
+\textbf{Remove First Occurrence:}
+
+Here is a function that takes an element and a list and give the list without the first occurrence of that element:
+\begin{verbatim}
+- fun remove_first (x,[]) = []
+    | remove_first (x, h::t) =
+        if x = h then t else h::remove_first (x,t);
+
+val remove_first = fn : ''a * ''a list -> ''a list
+
+- remove_first (1,[2,3,1,4,1]);
+val it = [2,3,4,1] : int list
+\end{verbatim}
+
+\textbf{Remove All Occurrences:}
+\begin{verbatim}
+- fun remove_all (x,[]) = []
+    | remove_all (x, h::t) =
+        if x = h then remove_all (x,t) else h::remove_all(x,t);
+
+val remove_all = fn : ''a * ''a list -> ''a list
+
+- remove_all (1,[2,3,1,4,1]);
+val it = [2,3,4] : int list 
+\end{verbatim}
+
+\textbf{Count All Occurrences}
+
+\begin{verbatim}
+- fun count _ [] = 0
+    | count x (h::t) = (if x = h then 1 else 0) + count x t;
+
+val count = fn : ''a -> ''a list -> int
+
+- count 1 [1,2,3,1,4,1,1,5];
+val it = 4 : int
+\end{verbatim}
+
+\textbf{Sort List:}
+
+\begin{verbatim}
+- fun sort [] = []
+    | sort (h::t) =
+        let
+            fun place (x, []) = [x]
+              | place (x, h::t) =
+                if x <= h then x :: h :: t else h :: place (x, t)
+        in
+            place (h, sort t)
+        end;
+
+val sort = fn : int list -> int list
+
+- sort [4,5,2,3,8,7,6,1,0];
+val it = [0,1,2,3,4,5,6,7,8] : int list
+\end{verbatim}
+Let's trace that on [2,1,3]:
+
+sort [2,1,3] $\leadsto$
+place (2, sort [1,3]) $\leadsto$
+place (2, place (1, sort [3])) $\leadsto$
+place (2, place (1, place (3, sort []))) $\leadsto$
+
+place (2, place (1, place (3, []))) $\leadsto$
+place (2, place (1, [3])) $\leadsto$
+place (2, [1,3]) $\leadsto$
+1::place(2, [3]) $\leadsto$
+1::[2,3] $\leadsto$
+[1,2,3] 
+
+\textbf{Merge two Sorted Lists:}
+\begin{verbatim}
+- fun merge ([],b) = b
+    | merge (a, []) = a
+    | merge (h1::t1, h2::t2) =
+        if h1 <= h2 then h1::merge (t1, h2::t2)
+        else h2::merge (h1::t1, t2);
+
+val merge = fn : int list * int list -> int list
+
+- merge ([1,3,5], [2,4,6]);
+val it = [1,2,3,4,5,6] : int list
+\end{verbatim}
+
+
+
+
+\definition{SML Strings}{
+\linkterm{SML}{def:sml} treats strings as lists of characters. We can go from \texttt{string} to \texttt{chat list} and vice versa via \texttt{explode} and \texttt{implode}.
+}{sml_string}
+For example:
+\begin{verbatim}
+- explode "Ibrahim";
+val it = [#"I",#"b",#"r",#"a",#"h",#"i",#"m"] : char list
+- implode it;
+val it = "Ibrahim" : string
+\end{verbatim}
+
+Using that and our reverse \linkterm{function}{sml_declarations}, we can define a \linkterm{function}{sml_declarations} that checks if a \linkterm{string}{sml_string} is \textit{palindrome} or not (read the same from either side, e.g. otto, anna, etc.)
+\begin{verbatim}
+- fun reverse nil = nil
+    | reverse (h::t) = reverse t @ [h];
+
+val reverse = fn : 'a list -> 'a list
+
+- fun palindrome s = 
+    let 
+        val cs = explode s 
+    in 
+        cs = reverse cs 
+    end;
+
+val palindrome = fn : string -> bool
+
+- palindrome "apa";
+val it = true : bool
+- palindrome "apaa";
+val it = false : bool
+\end{verbatim}
+
+\definition{Short-Circuit Operators}{
+\linkterm{SML}{def:sml} has built-in short-circuit operators. \texttt{andalso} is the logical AND and \texttt{orelse} is the logical OR. These behave like \texttt{\&\&} and \texttt{||} in C/Java.
+}{orelse_andalso}
+\begin{verbatim}
+- true andalso false;
+val it = false : bool
+
+- true orelse false;
+val it = true : bool
+\end{verbatim}
+
+\definition{Higher-Order Functions}{
+In \linkterm{SML}{def:sml}, we call \linkterm{functions}{sml_declarations} that take \linkterm{functions}{sml_declarations} as arguments \textbf{higher-order functions} and those that do not \textbf{first-order functions}
+}{higher_order_functions}
+
+For example, the built-in \linkterm{higher-order function}{higher_order_functions} \texttt{map} that takes a \linkterm{functions}{sml_declarations} and a list and returns a list with the passed \linkterm{functions}{sml_declarations} applied to each element of the list.
+\begin{verbatim}
+- fun f x = x + 1;
+val f = fn : int -> int
+- map f [1,2,3];
+val it = [2,3,4] : int list
+\end{verbatim}
+
+\textbf{Note: }we can program our own \texttt{map} \linkterm{function}{sml_declarations} \linkterm{recursively}{recursion}:
+\begin{verbatim}
+- fun mymap (f, nil) = nil
+    | mymap (f, h::t) = f(h)::mymap (f,t);
+val mymap = fn : ('a -> 'b) * 'a list -> 'b list
+
+- mymap (f,[1,2,3]);
+val it = [2,3,4] : int list
+\end{verbatim}
+
+\textbf{Selective Copy:}
+
+We would like to make a function that takes a list and give us copy of the list with, for instance, only the even numbers. First, we define an \texttt{is\_odd} function:
+\begin{verbatim}
+- fun is_odd x = (x mod 2) = 1;
+val is_odd = fn : int -> bool
+- is_odd 3;
+val it = true : bool
+- is_odd 2;
+val it = false : bool
+\end{verbatim}
+Then we define a function \texttt{remove\_if} that takes two arguments, one is the filter (a function as an argument) (here it is our \texttt{is\_odd}), and a list which we hope to filter out. 
+\begin{verbatim}
+- fun remove_if filter [] = []
+    | remove_if filter (h::t) =
+        if filter(h) then remove_if filter t
+        else h::(remove_if filter t);
+
+val remove_if = fn : ('a -> bool) -> 'a list -> 'a list
+
+- remove_if is_odd [1,2,3,4,5,6,7,8,9];
+val it = [2,4,6,8] : int list
+\end{verbatim}
+
+
+\definition{Function Literal}{
+A function literal (also called \textbf{anonymous function}) is a function definition that is not bound to an identifier.
+}{function_literal}
+For example, here we pass to the \texttt{map} \linkterm{function}{sml_declarations} an \linkterm{anonymous function}{function_literal} and a list:
+\begin{verbatim}
+- map (fn x => x * x) [2,3,4];
+val it = [4,9,16] : int list
+\end{verbatim}
+\textbf{Note: }we can also give an \linkterm{anonymous function}{function_literal} a name (treated as \linkterm{value declaration}{sml_declarations}) and call it, e.g.:
+\begin{verbatim}
+- val identity = fn x => x;
+val identity = fn : 'a -> 'a
+- identity (5);
+val it = 5 : int
+\end{verbatim}
+Given that \linkterm{functions}{sml_declarations} can be passed as arguments, they can be returned as well, e.g., here is a \linkterm{functions}{sml_declarations} \texttt{addconst} that takes an argument $k$ and returns another \linkterm{functions}{sml_declarations} that adds $k$ to its argument.
+\begin{verbatim}
+- val addconst = fn k => (fn x => x + k);
+val addconst = fn : int -> int -> int
+- (addconst 4) 5;
+val it = 9 : int
+\end{verbatim}
+
+\definition{Cartesian vs Cascaded Function}{
+We call a \linkterm{function}{sml_declarations} \textbf{cartesian}, iff the \textit{argument} type is a \textit{product} type, we call it \textbf{cascaded}, iff the \textit{result} type is a \textit{function} type. (\linkterm{uncurried}{curried_function_type} vs \linkterm{curried}{curried_function_type})
+}{cartesian_cascaded}
+For example, a \linkterm{cartesian}{cartesian_cascaded} plus function would look like:
+\begin{verbatim}
+- fun cartesian_plus (x:int, y:int) = x + y;
+val cartesian_plus = fn : int * int -> int
+- cartesian_plus (3,2);
+val it = 5 : int
+\end{verbatim}
+However, a \linkterm{cascaded}{cartesian_cascaded} plus function would look like:
+\begin{verbatim}
+- fun cascaded_plus (x:int) = (fn y:int => x + y);
+val cascaded_plus = fn : int -> int -> int
+- (cascaded_plus 3) 2;
+val it = 5 : int
+\end{verbatim}
+The following function is both \linkterm{cascaded}{cartesian_cascaded} and \linkterm{cartesian}{cartesian_cascaded}:
+\begin{verbatim}
+- fun both_plus (x:int, y:int) = fn (z:int) => x+y+z;
+val both_plus = fn : int * int -> int -> int
+- (both_plus(2,3)) 5;
+val it = 10 : int
+\end{verbatim}
+
+\commandnote{
+Function application always associates to the left, and function types always associate to the right. Usually we omit brackets for convenience, hence associativity must be implied.
+\begin{itemize}
+    \item $\operatorname{both\_plus}(2,3) 5 \leadsto (\operatorname{both\_plus}(2,3)) 5$
+    \item $\operatorname{int} \to \operatorname{int} \to \operatorname{int} \leadsto \operatorname{int} \to (\operatorname{int} \to \operatorname{int})$
+\end{itemize}
+}
+
+
+
+\definition{Left Folding Operator}{
+\linkterm{SML}{def:sml} provides the left folding \linkterm{operator}{arithmetic} to realize a recurrent computation schema. It is a \linkterm{higher-order function}{higher_order_functions} that:
+\begin{itemize}
+    \item takes a \linkterm{function}{sml_declarations} \inlinecode{f : 'a * 'b -> 'b}
+    \item takes a starting \linkterm{value}{sml_declarations} \inlinecode{s : 'b}
+    \item takes a list \inlinecode{[x1, ... xn] : 'a list}
+    \item and reduces that list into a single value by applying \inlinecode{f} from the left
+\end{itemize}
+}{left_folding}
+The general form of the \linkterm{foldl}{left_folding} operator:
+\begin{verbatim}
+foldl f s [x1, x2, x3, …, xn]
+= f(xn, f(x(n-1), … f(x1, s)…))
+\end{verbatim}
+We can think of the \linkterm{foldl}{left_folding} operator as \linkterm{recursive}{recursion} list processing. For example, remember our \texttt{sumlist} that we wrote \linkterm{recursively}{recursion}:
+\begin{verbatim}
+- fun sumlist nil = 0 | sumlist (h::t) = h + sumlist t;
+\end{verbatim}
+instead of implementing a \linkterm{recursive function}{recursion}, we can \linkterm{foldl}{left_folding} the summation operator (\texttt{op+}) and give it \texttt{s=0}, and our list to sum:
+\begin{verbatim}
+- foldl op+ 0 [1,2,3];
+val it = 6 : int
+\end{verbatim}
+This is what is going on under the hood:
+\begin{verbatim}
+- op+ (3, op+ (2, op+ (1, 0)));
+val it = 6 : int
+\end{verbatim}
+
+We also can use \linkterm{value declaration}{sml_declarations} to \linkterm{declare}{sml_declarations} a general summation function that works for any list using the form \inlinecode{val n = foldl f s} where \texttt{n} is the name that we can call. For example:
+\begin{verbatim}
+- val sum = foldl op+ 0;
+val sum = fn : int list -> int
+- sum [1,2,3,4];
+val it = 10 : int
+- sum [];
+val it = 0 : int
+\end{verbatim}
+
+\textbf{Another Example:}
+Remember the \linkterm{recursive function}{recursion} we wrote to get the length of a list:
+\begin{verbatim}
+- fun length nil = 0 | length (_::t) = 1 + length t;
+\end{verbatim}
+
+With \linkterm{foldl}{left_folding}, we can just write the following:
+\begin{verbatim}
+foldl (fn (_, acc) => acc + 1) 0 [10,20,30]
+\end{verbatim}
+It will evaluate to: \texttt{fn (30,fn (20,fn (10,0)))} $\leadsto$  \texttt{fn (30,fn (20,1))} $\leadsto$ \texttt{fn (30,2)} $\leadsto$ \texttt{3}.
+
+The type of \linkterm{foldl}{left_folding} is: \texttt{foldl : ('a * 'b -> 'b) -> 'b -> 'a list -> 'b}. i.e. First argument is a \linkterm{function}{sml_declarations} \texttt{f} of type \texttt{'a * 'b -> 'b}. In the previous example, that function was \texttt{fn (\_, acc) => acc + 1}:
+\begin{verbatim}
+- fn (_, acc) => acc + 1;
+val it = fn : 'a * int -> int
+\end{verbatim} 
+Second argument is a start value of type \texttt{'b}, in our case it is \texttt{0} of type \texttt{int}. The third argument is a list of type \texttt{'a list}. Finally, it returns a result of type \texttt{'b}.
+
+\textbf{Another Example: }remember how we wrote a \linkterm{recursive function}{recursion} to reverse a list:
+\begin{verbatim}
+- fun reverse nil = nil | reverse (h::t) = reverse t @ [h];
+val reverse = fn : 'a list -> 'a list
+- reverse [1,2,3,4,5];
+val it = [5,4,3,2,1] : int list
+\end{verbatim}
+We can instead \linkterm{foldl}{left_folding} the \texttt{op::} (cons) operator:
+\begin{verbatim}
+- foldl op:: nil [1,2,3,4,5];
+val it = [5,4,3,2,1] : int list
+\end{verbatim}
+It will evaluate to: \texttt{op::(5,op::(4,op::(3,op::(2,op::(1,nil)))))} $\leadsto$
+\begin{itemize}
+    \item  \texttt{op::(5,op::(4,op::(3,op::(2,[1]))))} $\leadsto$
+    \item \texttt{op::(5,op::(4,op::(3,[2,1])))} $\leadsto$
+    \item \texttt{op::(5,op::(4,[3,2,1]))} $\leadsto$
+    \item \texttt{op::(5,[4,3,2,1])} $\leadsto$
+    \item \texttt{[5,4,3,2,1]}
+\end{itemize}
+
+
+\minititle{Check whether a number is prime}
+\definition{Prime Numbers}{
+An integer $p \in \mathbb{Z}$ is prime if $p>1$ and the only positive divisors of $p$ are $1$ and $p$ itself. Examples:
+\begin{itemize}
+    \item $2$ is prime because its divisors are $\set{1,2}$
+    \item $7$ is prime because its divisors are $\set{1,7}$
+    \item $9$ is not prime because its divisors are $\set{1,3,9}$
+\end{itemize}
+The \linkterm{infinite}{set_cardinality} \linkterm{set}{def:set} of primes is $\set{2, 3, 5, 7, 11, 13, \cdots}$
+}{prime_numbers}
+
+\definition{Composite Numbers}{
+A positive number $n>1$ is called composite iff it is not prime. $1$ is neither prime nor composite by defintiion.
+}{composite_numbers}
+
+To check if a number $n$ is \linkterm{prime}{prime_numbers} we need to 
+\begin{itemize}
+    \item check if $n>=2$, otherwise it is $1$ which is not \linkterm{prime}{prime_numbers}.
+    \item if $n=2$, then it is \linkterm{prime}{prime_numbers}.
+    \item for all $n>2$ we need to see if there exists a number $d$ between $2$ and $n-1$ that divides $n$, if we find one, then $n$ is not \linkterm{prime}{prime_numbers}. If we don't find any, then $n$ is \linkterm{prime}{prime_numbers}.
+\end{itemize}
+For example, consider $n=5$, it does not divide any number in $[2 - 4]$ meaning the only divisors are $1$ and $5$, $\leadsto$ \linkterm{prime}{prime_numbers}. However, $6$ divides $3,2 \in [2-5] \leadsto$ not \linkterm{prime}{prime_numbers}.
+
+To implement that \linkterm{recursively}{recursion}, we need a main \linkterm{function}{sml_declarations} (\texttt{prime n}) and a helper one (\texttt{PrimeHelper (n,d)}).  \texttt{prime n} returns \texttt{false} if $n=1$, otherwise it calls  \texttt{PrimeHelper (n,2)}. \texttt{PrimeHelper (n,d)} has two base cases:
+\begin{itemize}
+    \item if $n=d$ (i.e. $n=2$) $\leadsto$ \texttt{true}
+    \item if $n \operatorname{mod} d = 0 \leadsto$  \texttt{false} (we found a $d$ such that, $n$ is divisible by $d$)
+\end{itemize}
+otherwise, we \linkterm{recursively}{recursion} call \texttt{PrimeHelper (n,d+1)}.
+
+
+\begin{verbatim}
+- fun PrimeHelper (n,d) =
+    if d = n then true
+    else if n mod d = 0 then false
+    else PrimeHelper (n,d+1);
+
+val PrimeHelper = fn : int * int -> bool
+
+- fun prime n =
+    if n<2 then false
+    else PrimeHelper (n,2);
+
+val prime = fn : int -> bool
+
+- prime 3;
+val it = true : bool
+- prime 4;
+val it = false : bool
+- prime 9;
+val it = false : bool
+- prime 11;
+val it = true : bool
+\end{verbatim}
+Let's trace:
+$\operatorname{prime} 9 \leadsto \operatorname{PrimeHelper}(9, 2) \leadsto \operatorname{PrimeHelper}(9, 3) \leadsto \operatorname{false}$
+
+\minititle{Check if a list has a prime number:}
+We use our \texttt{prime n} \linkterm{function}{sml_declarations} and the \linkterm{\texttt{foldl} operator}{left_folding}. We will \linkterm{foldl}{left_folding} the list with the \linkterm{function}{sml_declarations} \texttt{fn (a,b) => (prime a) orelse b} starting with \texttt{false} as the starting value.
+\begin{verbatim}
+- fun foo l = foldl (fn (a,b) => (prime a) orelse b) false l;
+val foo = fn : int list -> bool
+- foo [4,2,6,8];
+val it = true : bool
+- foo [4,6,8,10];
+val it = false : bool
+\end{verbatim}
+Let's trace:
+\begin{verbatim}
+foldl f false [4,2,6,8]
+= f(8, f(6, f(2, f(4, false))))
+= f(8, f(6, f(2, ((prime 4) orelse false))))
+= f(8, f(6, f(2, false)))
+= f(8, f(6, ((prime 2) orelse false)))
+= f(8, f(6, true))
+= f(8, ((prime 6) orelse true))
+= f(8, true)
+= (prime 8) orelse true
+= true
+\end{verbatim}
+
+
+
+\definition{Right Folding Operator}{
+\linkterm{SML}{def:sml} provides the right folding \linkterm{operator}{arithmetic} to realize a recurrent computation schema. It is a \linkterm{higher-order function}{higher_order_functions} that:
+\begin{itemize}
+    \item takes a \linkterm{function}{sml_declarations} \inlinecode{f : 'a * 'b -> 'b}
+    \item takes a starting \linkterm{value}{sml_declarations} \inlinecode{s : 'b}
+    \item takes a list \inlinecode{[x1, ... xn] : 'a list}
+    \item and reduces that list into a single value by applying \inlinecode{f} from the right
+\end{itemize}
+}{right_folding}
+The general form of the \linkterm{foldr}{right_folding} operator:
+\begin{verbatim}
+foldl f s [x1, x2, x3, …, xn]
+= f(x1, f(x2, … f(xn, s)…))
+\end{verbatim}
+For example: \texttt{foldr f s [x1, x2, x3, x4] = f(x1, f(x2, f(x3, f(x4, s))))}.
+
+A useful usecase would be to \linkterm{foldr}{right_folding} the cons operator (\texttt{op::}) which gives us an append function of two lists. We previously wrote an append function \linkterm{recursively}{recursion}:
+\begin{verbatim}
+- fun append (nil,y) = y | append (h::t, y) = h::append(t,y);
+val append = fn : 'a list * 'a list -> 'a list
+- append ([1,2],[3,4]);
+val it = [1,2,3,4] : int list
+\end{verbatim}
+We give the \linkterm{recursive function}{recursion} a list $x$ and a list $y$ and we get back a new list wih $y$ appended to $x$. If we \linkterm{foldr}{right_folding} the cons operator, then we give first the list $y$, then $x$ to get our desired result:
+\begin{verbatim}
+- foldr op:: [3,4] [1,2];
+val it = [1,2,3,4] : int list
+\end{verbatim}
+It will evaluate to: \texttt{op::(1,op::(2, [3,4]))}
+
+
+\definition{Defining Equations}{
+A \linkterm{set}{def:set} of equations $F(x) = \Phi_i (F,x)$ where $F$ and $x$ are variables and $\Phi_i (F,x)$ an expression in $F$ and $x$ is called defining for a \linkterm{function}{function} $f$ if $f$ solves them simultaneously for all $x$.
+}{defining_equations}
+For example, here is a \linkterm{defining equation system}{defining_equations} for unary addition:
+\begin{verbatim}
++(n, 0)     = n
++(m, s(n))  = s(+(m, n))  
+\end{verbatim}
+
+\Theorem{
+    $+ \subseteq \cartprod{\mathbb{N}_1,\mathbb{N}_1,\mathbb{N}_1}$ is a \linkterm{total function}{function}.
+}{th:plus_total_function}
+
+\Lemma{
+$\forall (n,m) \in \cartprod{\mathbb{N}_1, \mathbb{N}_1}$ there is exactly one $l \in \mathbb{N}_1$ with $+(n,m)=l$.
+}{lem:plus_total_function}
+
+\Proof{
+By \linkterm{induction}{induction} on $m$. We have two cases:
+
+1. Base case $(m=0)$
+\begin{itemize}
+    \item Choose $l:=n$, so we have $+(n,0) = n = l$
+    \item For any $l' = +(n,0)$ we have $l' = n = l$ 
+\end{itemize}
+2. \linkterm{Induction step}{induction_step} ($m = s(k)$)
+\begin{itemize}
+    \item Assume that there is a unique $r = +(n,k)$, choose $l:=s(r)$, so we have $+(n,s(k)) = s(+(n,k)) = s(r)$
+    \item Again, for any $l' = +(n,s(k))$ we have $l' = l$
+\end{itemize}
+}
+\Corollary{
+$+: \cartprod{\mathbb{N}_1, \mathbb{N}_1} \to \mathbb{N}_1$ is a \linkterm{total function}{function}
+}{cor:plus_total_function}
+
+\textbf{More Examples:}
+\begin{itemize}
+    \item the equations: $\delta(0) = 0$ and $\delta(s(n)) = s(s(\delta(n)))$ are \linkterm{defining equations}{defining_equations} for the doubling \linkterm{function}{function}.
+    \item the equations: $\mu(l,0)=0$ and $\mu(l,s(r)) = +(\mu(l,r), l)$ are \linkterm{defining equations}{defining_equations} for the \linkterm{multiplication}{multiplication} \linkterm{function}{function}.
+    \item the equations; $i(a,A,B)=A$ and $i(b,A,B)=B$ where $A,B$ are \linkterm{unary natural number}{unarynatnums} are \linkterm{defining equations}{defining_equations} for the \texttt{if-then-else} \linkterm{function}{function} on \linkterm{unary natural number}{unarynatnums} where $a$ represents \textit{true} and $b$ is \textit{false}.
+    \item the equations: $\mu(0) = 0$, $\mu(s(0)) = 0$, and $\mu(s(s(n))) = s(n)$ are \linkterm{defining equations}{defining_equations} for the \linkterm{function}{function} $\mu$ on \linkterm{unary natural number}{unarynatnums} where $\mu$ is the \texttt{lower halving} \linkterm{function}{function} $\mu:n \mapsto \lfloor \frac{n}{2} \rfloor $.
+\end{itemize}
+
+\definition{Inductively Defined Sets}{
+An inductively defined set $\tuple{S,C}$ is a \linkterm{set}{def:set} $S$ together with a \linkterm{finite}{set_cardinality} \linkterm{set}{def:set} $C:= \setbuilder{c_i}{1 \leq i \leq n}$ of $k_i$-ary constructors $c_i: S^{k_i} \to S$ with $k_i \geq 0$, such that:
+\begin{itemize}
+    \item if $s_i \in S \quad \forall 1 \leq i \leq k_i$, then $c_i(s_1, \cdots, s_{k_i}) \in S$ (\textit{generated by constructors})
+    \item all constructors are \linkterm{injective}{injective} (\textit{no internal confusion})
+    \item $\intersection{\operatorname{Im}(c_i), \operatorname{Im}(c_j)} = \phi$ for $i \neq j$ (\textit{no inter-constructor confusion})
+    \item for every $s \in S$ there is a constructor $c \in C$ with $s \in \operatorname{Im}(c)$ (\textit{no junk})
+    \item If $k_i = 0$, it is a nullary constructor (a constant element).
+\end{itemize}
+}{inductively_defined_set}
+\textbf{Example: }$\tuple{\mathbb{N}_1, \set{s,0}}$ is an \linkterm{inductively defined set}{inductively_defined_set}.
+\Proof{
+
+1. Generated by constructors:
+
+This is guranteed by $P1$ and $P2$. $0 \in \mathbb{N}_1$ and if $n \in \mathbb{N}_1$ then $s(n) \in \mathbb{N}_1$.
+
+2. No internal confusion: $c_i (s_1, \cdots, s_{k_i}) = c_i(t_1, \cdots, t_{k_i}) \Rightarrow s_j = t_j \forall j$.
+
+$P4$ gurantees this. If $s(n) = s(m)$ then $n=m$
+
+3. No inter-constructor confusion:
+
+$P3$ asserts that. Different constructors never produce the same element. The element $0$ is not the image $s$, nothing is both a zero and a successor.
+
+4. No junk is assured by $P5$: $\forall s \in S, \exists c \in C \text{ such that }s \in \operatorname{Im}(c)$. i.e. every element of $S$ comes from some constructor. There are no extra elements that didn't come from constructors.
+}
+
+We can define Lists of natural numbers $\mathcal{L}[\mathbb{N}]$ \linkterm{inductively}{inductively_defined_set} as well. Let the \texttt{nil}-rule be starting with the empty list $[]$, and the \texttt{cons}-rule extends the list by adding a number $n \in \mathbb{N}$ at the front. For example $\operatorname{cons}(3,\operatorname{cons}(2, \operatorname{cons}(1, \operatorname{nil}))) = [3,2,1]$ and $[] = \operatorname{nil}$
+
+\definition{List Piano Axioms}{
+We call the following \linkterm{set}{def:set} of \linkterm{axioms}{axiom} \textit{list Peano axioms} for $\mathcal{L}[\mathbb{N}]$ in analogy to the \linkterm{Peano Axioms}{piano} in \Defref{piano}.
+\begin{itemize}
+\item \textbf{LP1}: $\operatorname{nil} \in \mathcal{L}[\mathbb{N}]$.
+\item \textbf{LP2}: $\operatorname{cons}: \mathbb{N} \times \mathcal{L}[\mathbb{N}] \to \mathcal{L}[\mathbb{N}]$.
+\item \textbf{LP3}: \texttt{nil} is not a \texttt{cons}-value.
+\item \textbf{LP4}: \texttt{cons} is \linkterm{injective}{injective}.
+\item \textbf{LP5}:
+\begin{enumerate}
+\item \textbf{Base Case}: \texttt{nil} has property $P$. ($P(\operatorname{nil})$)
+\item \textbf{Inductive Step}: If a list $l$ has property $P$, then for every natural number $n \in \mathbb{N}$, the list $\operatorname{cons}(n,l)$ also has property $P$. i.e.
+\[
+P(l) \Rightarrow P(\operatorname{cons}(n,l)) \quad \forall n \in \mathbb{N}, \forall l \in \mathcal{L}[\mathbb{N}]
+\]
+\item \textbf{Conclusion}: $P(l) \quad \forall l \in \mathcal{L}[\mathbb{N}]$
+\end{enumerate}
+\[
+\left( P(\operatorname{nil}) \land \forall l \in \mathcal{L}[\mathbb{N}], \forall n \in \mathbb{N}, (P(l) \Rightarrow P(\operatorname{cons}(n,l))) \right) \Rightarrow \forall l \in \mathcal{L}[\mathbb{N}], P(l)
+\]
+\end{itemize}
+}{piano_list}
+
+\textbf{Example (Length of a List).}  
+We define the length function on lists as follows:
+\[
+\text{len}(nil) = 0, \qquad \text{len}(\text{cons}(n,l)) = 1 + \text{len}(l).
+\]
+
+We want to prove
+\[
+\forall l \in \mathcal{L}[\mathbb{N}], \; \text{len}(l) \in \mathbb{N}.
+\]
+
+\Proof{
+We proceed by list induction (Axiom LP5).
+
+\emph{Base Case:} Let $l = nil$. Then
+\[
+\text{len}(nil) = 0 \in \mathbb{N}.
+\]
+Thus the base case holds.
+
+\emph{Inductive Step:} Assume $\text{len}(l) \in \mathbb{N}$ for some $l \in \mathcal{L}[\mathbb{N}]$ (induction hypothesis).  
+We need to show that $\text{len}(\text{cons}(n,l)) \in \mathbb{N}$ for any $n \in \mathbb{N}$.  
+Indeed,
+\[
+\text{len}(\text{cons}(n,l)) = 1 + \text{len}(l).
+\]
+By the induction hypothesis, $\text{len}(l) \in \mathbb{N}$. Since $\mathbb{N}$ is closed under addition, we have $1 + \text{len}(l) \in \mathbb{N}$.
+
+\emph{Conclusion:} By the principle of list induction, it follows that
+\[
+\forall l \in \mathcal{L}[\mathbb{N}], \quad \text{len}(l) \in \mathbb{N}.
+\]
+}
+
+
+\textbf{Example (Double Reversal).}  
+We define the reverse function on lists as follows:
+\[
+\begin{aligned}
+\text{rev}(nil) &= nil, \\
+\text{rev}(\text{cons}(n,l)) &= \text{append}(\text{rev}(l), \text{cons}(n,nil)),
+\end{aligned}
+\]
+where $\text{append}$ is the usual concatenation of two lists.
+
+We want to prove
+\[
+\forall l \in \mathcal{L}[\mathbb{N}], \quad \text{rev}(\text{rev}(l)) = l.
+\]
+
+\Proof{
+We proceed by list induction (Axiom LP5).
+
+\emph{Base Case:} Let $l = nil$. Then
+\[
+\text{rev}(\text{rev}(nil)) = \text{rev}(nil) = nil,
+\]
+so the base case holds.
+
+\emph{Inductive Step:} Assume $\text{rev}(\text{rev}(l)) = l$ for some $l \in \mathcal{L}[\mathbb{N}]$ (induction hypothesis).  
+We need to show that
+\[
+\text{rev}(\text{rev}(\text{cons}(n,l))) = \text{cons}(n,l), \qquad \forall n \in \mathbb{N}.
+\]
+
+We compute:
+\[
+\begin{aligned}
+\text{rev}(\text{rev}(\text{cons}(n,l))) 
+&= \text{rev}(\text{rev}(\text{append}(\text{rev}(l), \text{cons}(n,nil)))) \\
+&= \text{rev}\Big(\text{append}(\text{rev}(\text{cons}(n,nil)), \text{rev}(\text{rev}(l)))\Big).
+\end{aligned}
+\]
+
+By the induction hypothesis, $\text{rev}(\text{rev}(l)) = l$.  
+Also, $\text{rev}(\text{cons}(n,nil)) = \text{append}(\text{rev}(nil), \text{cons}(n,nil)) = \text{cons}(n,nil)$.  
+So:
+\[
+\text{rev}(\text{rev}(\text{cons}(n,l))) = \text{rev}(\text{append}(\text{cons}(n,nil), l)).
+\]
+
+Now apply the auxiliary lemma that
+\[
+\text{rev}(\text{append}(x,y)) = \text{append}(\text{rev}(y), \text{rev}(x)).
+\]
+Using this with $x = \text{cons}(n,nil)$ and $y = l$, we get:
+\[
+\text{rev}(\text{append}(\text{cons}(n,nil), l)) = \text{append}(\text{rev}(l), \text{rev}(\text{cons}(n,nil))).
+\]
+
+But $\text{rev}(\text{cons}(n,nil)) = \text{cons}(n,nil)$, hence
+\[
+\text{rev}(\text{rev}(\text{cons}(n,l))) = \text{append}(l, \text{cons}(n,nil)) = \text{cons}(n,l).
+\]
+
+Thus the inductive step is proved.
+
+\emph{Conclusion:} By the principle of list induction, it follows that
+\[
+\forall l \in \mathcal{L}[\mathbb{N}], \quad \text{rev}(\text{rev}(l)) = l.
+\]
+}
+
+\definition{Datatype Declaration}{
+\linkterm{SML}{def:sml} datatype declarations provide a concerete syntax for \linkterm{inductively defined sets}{inductively_defined_set} (called (abstract) data types in programming) via the keyword \texttt{datatype} followed by a sequence of \textbf{constructor declarations}
+}{datatype_declaration}
+
+\textbf{Example: }We can declare a datatype for \linkterm{unary natural numbers}{unarynatnums} by:
+\begin{verbatim}
+- datatype mynat = zero | suc of mynat;
+datatype mynat = suc of mynat | zero
+
+- val n0 = zero;
+val n0 = zero : mynat
+
+- val n1 = suc zero;
+val n1 = suc zero : mynat
+
+- val n2 = suc (suc zero);
+val n2 = suc (suc zero) : mynat
+
+- val n3 = suc (suc (suc zero));
+val n3 = suc (suc (suc zero)) : mynat
+\end{verbatim}
+
+Therefore, we can implement \linkterm{functions}{sml_declarations} on our datatype \texttt{mynat}, e.g. here is unary addition:
+\begin{verbatim}
+- fun add (zero, m) = m | add (suc n,m) = suc (add (n,m));
+val add = fn : mynat * mynat -> mynat
+
+- add (suc zero, suc (suc zero));
+val it = suc (suc (suc zero)) : mynat
+\end{verbatim}
+
+\minititle{Converting unary to int:}
+\begin{verbatim}
+- fun num (zero) = 0 | num (suc n) = num (n) + 1;
+val num = fn : mynat -> int
+
+- num (suc (suc (suc zero)));
+val it = 3 : int
+\end{verbatim}
+
+\minititle{Check even-odd unary using Mutual Recursion:}
+\begin{verbatim}
+- fun even (zero) = true | even (suc n) = odd (n)
+      and
+      odd (zero) = false | odd (suc n) = even (n);
+
+val even = fn : mynat -> bool
+val odd = fn : mynat -> bool
+
+- odd (suc (suc (suc zero)));
+val it = true : bool
+
+- even (suc (suc (suc (suc zero))));
+val it = true : bool
+\end{verbatim}
+Trace:
+\begin{verbatim}
+even (suc (suc (suc (suc zero)))) = odd (suc (suc (suc zero))) = even(suc (suc zero))
+= odd (suc zero) = even (zero) = true
+\end{verbatim}
+
+We also can declare \textbf{Enumeration Types}, e.g. here is a type for weekdays:
+\begin{verbatim}
+- datatype day = mon | tue | wed | thu | fri | sat | sun;
+datatype day = fri | mon | sat | sun | thu | tue | wed
+\end{verbatim}
+And here is a function that check if a given weekday is weekend or not:
+\begin{verbatim}
+- fun weekend sat = true | weekend sun = true | weekend _ = false;
+val weekend = fn : day -> bool
+
+- weekend fri;
+val it = false : bool
+
+- weekend sat;
+val it = true : bool
+\end{verbatim}
+
+\minititle{Binary Tree datatype (only leafs are valued):}
+\begin{verbatim}
+datatype tree = leaf of int | node of tree * tree;
+
+- val t = node (leaf 1, leaf 2);
+val t = node (leaf 1,leaf 2) : tree
+\end{verbatim}
+
+\minititle{Binary Tree datatype (every node is valued):}
+\begin{verbatim}
+- datatype tree = leaf of int | node of int * tree * tree;
+
+- val t1 = node (1, leaf 2, leaf 3);
+val t1 = node (1,leaf 2,leaf 3) : tree
+\end{verbatim}
+
+\minititle{A function to sum node values in a binary tree:}
+\begin{verbatim}
+- fun sum (leaf n) = n
+    | sum (node (v, l, r)) = v + sum l + sum r;
+
+val sum = fn : tree -> int
+
+- sum t1;
+val it = 6 : int
+\end{verbatim}
+
+\minititle{Number of leaves:}
+\begin{verbatim}
+- datatype tree = leaf of int | node of int * tree * tree;
+
+- fun leavescount (leaf x) = 1 | leavescount (node (l, r)) = leavescount l + leavescount r;
+val leavescount = fn : tree -> int
+
+- val t1 = node (leaf 1, node (leaf 2, leaf 3));
+
+- leavescount t1;
+val it = 3 : int
+\end{verbatim}
+
+\minititle{Multiway tree:}
+\begin{verbatim}
+datatype t = a of int | c of t list
+
+- val v = a 1;
+val v = a 1 : t
+
+- val v = c [a 1, c [a 2]];
+val v = c [a 1,c [a 2]] : t
+\end{verbatim}
+
+
+\minititle{Sum all nodes in the tree:}
+\begin{verbatim}
+- fun sum (a n) = n
+    | sum (c children) = foldl (fn (sub, acc) => sum sub + acc) 0 children;
+
+val sum = fn : t -> int
+
+- sum v;
+val it = 3 : int
+\end{verbatim}
+
+
+\textbf{Another Example:} We can declare types for geometric shapes:
+\begin{itemize}
+    \item A circle is defined by only one value $r \in \mathbb{R}^{+}$ (its radius)
+    \item A square is defined by one value $a \in \mathbb{R}^{+}$ (side length)
+    \item A triangle is defined by the three values $a,b,c \in \cartprod{\mathbb{R}^{+}, \mathbb{R}^{+}, \mathbb{R}^{+}}$ (two sides and base)
+\end{itemize}
+
+\begin{verbatim}
+- datatype shape =
+      Circle of real
+    | Square of real
+    | Triangle of real * real * real;
+
+- Circle 4.0;
+val it = Circle 4 : shape
+
+- Square 3.0;
+val it = Square 3 : shape
+
+- Triangle (4.0,3.0,5.0);
+val it = Triangle (4,3,5) : shape
+\end{verbatim}
+And here is a function that compute the area of a shape:
+\begin{verbatim}
+- fun area (Circle r) = Math.pi * r * r
+    | area (Square a) = a * a
+    | area (Triangle (a,b,c)) =
+        let
+            val s = (a + b + c)/2.0
+        in
+            Math.sqrt(s * (s-a) * (s-b) * (s-c))
+        end;
+
+val area = fn : shape -> real
+
+- area (Square 3.0);
+val it = 9 : real
+
+- area (Circle 4.0);
+val it = 50.2654824574 : real
+
+- area (Triangle (4.0, 3.0, 5.0));
+val it = 6 : real
+\end{verbatim}
+
+Until now, our \linkterm{functions}{sml_declarations} have been characterized entirely by their \linkterm{values}{sml_declarations} on their arguments (as \linkterm{mathematical}{mathematics} \linkterm{functions}{function} behave). However, \linkterm{SML}{def:sml} also considers effects, e.g. for
+\begin{itemize}
+    \item \textbf{input/output}: the interesting bit about a \texttt{print} statement is the effect,
+    \item \refterm{mutation}{mutation_sml}: allocation and modification of storage during evaluation,
+    \item \refterm{communication}{communication_sml}: data may be send and received over channels, and
+    \item \textbf{exceptions}: abort evaluation by signaling an exceptional condition.
+\end{itemize} 
+\commandnote{
+    An effect is any action resulting from an evaluation that is not returning a value.
+}
+
+Input and Output is handled via \textit{streams}. There are two predefined streams \texttt{TextIO.stdIn} and \texttt{TextIO.stdOut}.
+
+\textbf{Example: } Input via \texttt{TextIO.inputLine}: \texttt{TextIO.instream} $\to$ \texttt{string}
+\begin{verbatim}
+- TextIO.inputLine(TextIO.stdIn);
+ibrahim
+val it = SOME "ibrahim\n" : string option
+\end{verbatim}
+
+\textbf{Example: } Printing to Standard Output. \texttt{TextIO.print} prints its arguments to \texttt{stdIn}. \texttt{print} also returns a value \texttt{()} of type \texttt{unit}:
+\begin{verbatim}
+- print "Hello World! \n";
+Hello World!
+val it = () : unit
+\end{verbatim}
+\commandnote{
+Users can create streams as files using \texttt{TextIO.openIn} and \texttt{TextIO.openOut}. However, streams should be closed when no longer needed via \texttt{TextIO.closeIn} and \texttt{TextIO.closeOut}. 
+}
+
+\definition{Exception}{
+An \textbf{exception} is a special \linkterm{SML}{def:sml} object. \textbf{Raising} an exception $e$ in a \linkterm{function}{sml_declarations} aborts functional computation and returns $e$ to the next level.
+}{exception_sml}
+\textbf{Example: }Predefined \linkterm{exceptions}{exception_sml}:
+\begin{verbatim}
+- 3 div 0;
+uncaught exception Div [divide by zero]
+  raised at: stdIn:88.3-88.6
+
+- fib 100;
+uncaught exception Overflow [overflow]
+  raised at: <file stdIn>
+\end{verbatim}
+
+\textbf{Example: }User-defined \linkterm{exceptions}{exception_sml}:
+\begin{verbatim}
+- exception Empty;
+exception Empty
+
+- Empty;
+val it = Empty(-) : exn
+\end{verbatim}
+
+\textbf{Example: } \linkterm{Exception}{exception_sml} constructors:
+\begin{verbatim}
+- exception SysError of int;
+exception SysError of int
+
+- SysError;
+val it = fn : int -> exn
+\end{verbatim}
+
+\textbf{Example: }Programming with \linkterm{exceptions}{exception_sml} (factorial):
+\begin{verbatim}
+- exception Factorial;
+exception Factorial
+
+- local
+    fun fact 0 = 1 | fact n = n * fact (n-1)
+  in  
+    fun safe_factorial n =
+        if n >= 0 then fact n else raise Factorial
+  end;
+
+val safe_factorial = fn : int -> int
+
+- safe_factorial(~1);
+uncaught exception Factorial
+  raised at: stdIn:112.34-112.43
+\end{verbatim}
+
+\commandnote{
+\texttt{local} act just like \texttt{let}, only that is also that the body (between \texttt{in} and \texttt{end}) contains sequence of \linkterm{declarations}{sml_declarations} and not an expression whose value is returned as the value of the overall expression. Here the identifier \texttt{fact} is bound to the \linkterm{recursive function}{recursion} in the definition of \texttt{safe\_factorial} but unbound outside. This way we avoid polluting the name space with \linkterm{functions}{sml_declarations} that are only used \linkterm{locally}{local_declaration_sml}.
+}
+
+\minititle{Exception Handling:}
+\begin{verbatim}
+ exception NaN;
+ fun read_integer () =
+    let
+        val intstring = case TextIO.inputLine(TextIO.stdIn) of
+                           NONE => raise NaN
+                         | SOME(s) => s
+    in
+        case Int.fromString intstring of
+             NONE => raise NaN
+           | SOME i => i
+    end;   
+\end{verbatim}
+\begin{verbatim}
+fun factorial_driver () =
+    let val input = read_integer ()
+        val result = Int.toString (safe_factorial input)
+    in
+        print result
+    end
+    handle Factorial => print "Out of range.\n"
+         | NaN => print "Not a Number!\n";
+\end{verbatim}
+
+\begin{verbatim}
+- factorial_driver ();
+3
+6
+val it = () : unit
+
+- factorial_driver ();
+-3
+Out of range.
+val it = () : unit
+
+- factorial_driver ();
+hi
+Not a Number!
+val it = () : unit
+\end{verbatim}

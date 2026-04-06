@@ -1,0 +1,265 @@
+\labeledsection{Complexity Analysis in AI}{sec:complexity_analysis}
+\definition{Algorithm}{
+An algorithm is a series of instructions to control a (computation) process.
+}{algorithm}
+
+\definition{Computational Problem}{
+A computational problem is a triple $\tuple{I, S, \sigma}$, where $I$ is a \linkterm{set}{def:set} of inputs, $S$ is a \linkterm{set}{def:set} of solutions, and $\sigma: I \to \powerset{S}$ asigns to each input the set of valid solutions. The problem is called \textbf{computable} if there exists an algorithm $\alpha : I \to S$ such that for every $i \in I, \alpha (i) \in \sigma (i)$ and $\alpha (i)$ is defined, i.e. the \linkterm{algorithm}{algorithm} always \textbf{halts}.
+}{computational_problem}
+
+\definition{Partially Computable Problem}{
+A \linkterm{computational problem}{computational_problem} $\tuple{I, S, \sigma}$ is called \textbf{partially computable} if there exists a \textit{partial} \linkterm{algorithm}{algorithm} $\pfunc{\alpha}{I}{S}$ such that for every $i \in I$, if $\alpha (i)$ is defined then $\alpha (i) \in \sigma (i)$. In this case $\alpha$ may diverge on some inputs.
+}{partially_computable_problem}
+
+\definition{Resource}{
+A resource is a measurable quantity consumed by an \linkterm{algorithm}{algorithm} during execution. The most common resources are
+\textbf{time} (number of computation steps) and \textbf{space} (amount of memory used).
+}{resource}
+
+\definition{Complexity Theory}{
+(Computational) complexity theory focuses on classifying \linkterm{computational problems}{computational_problem} according to their resource usage, and relating these classes to each other.
+}{complexity_theory}
+
+
+\definition{Complexity Measure}{
+A complexity measure is a mapping $m : I \to \mathbb{N}$ that assigns to each input $i \in I$ a natural number describing the amount of some \linkterm{resource}{resource} consumed by an \linkterm{algorithm}{algorithm} on input $i$.
+}{complexity_measure}
+
+\definition{Input Size}{
+The size of an input $i \in I$, denoted $|i|$, is a natural number measuring the length of the encoding of $i$ (for instance, the number of bits required to represent $i$).
+}{input_size}
+
+\definition{Asymptotic Analysis}{
+Asymptotic analysis studies the growth of a \linkterm{complexity measure}{complexity_measure} as the \linkterm{input size}{input_size} $n$ tends to infinity. It abstracts from constant factors and lower-order terms to capture the long-term behavior of an \linkterm{algorithm}{algorithm}.
+}{asymptotic_analysis}
+
+
+\definition{Running Time}{
+If an \linkterm{algorithm}{algorithm} $\alpha$ terminates within $t(n)$ steps on every input of \linkterm{size}{input_size} $n$, then we say that $\alpha$ has \textbf{running time} $T(\alpha) := t$.
+}{running_time}
+
+\definition{Time Complexity}{
+Let $S \subseteq \mathbb{N} \to \mathbb{N}$ be a \linkterm{set}{def:set} of natural number \linkterm{functions}{function}. An \linkterm{algorithm}{algorithm} $\alpha$ with \linkterm{running time}{running_time} $T(\alpha) = t$ is said to have \textbf{time complexity} in $S$ (written $T(\alpha) \in S$, or colloquially $T(\alpha) = S$) if $t \in S$.
+}{time_complexity}
+
+\definition{Space Complexity}{
+Let $S \subseteq \mathbb{N} \to \mathbb{N}$ be a \linkterm{set}{def:set} of natural number \linkterm{functions}{function}. An \linkterm{algorithm}{algorithm} $\alpha$ is said to have \textbf{space complexity} in $S$ if, on every input of \linkterm{size}{input_size} $n$, $\alpha$ uses at most $s(n)$ units of memory for some $s \in S$.
+}{space_complexity}
+
+
+\definition{Best-Case Complexity}{
+The best-case complexity of an \linkterm{algorithm}{algorithm} $\alpha$ is the function
+\[
+T^{\text{best}}_\alpha(n) = \min \{ \text{running time of } \alpha(i) \mid i \in I, |i| = n \}.
+\]
+It describes the minimal resource usage among all inputs of size $n$.
+}{best_case_complexity}
+
+
+\definition{Average-Case Complexity}{
+The average-case complexity of an \linkterm{algorithm}{algorithm} $\alpha$ is the expected \linkterm{resource}{resource} usage over all inputs of size $n$, with respect to some probability distribution $D$ on $I$. Formally,
+\[
+T^{\text{avg}}_\alpha(n) = \mathbb{E}_{i \sim D, |i| = n} [ \text{running time of } \alpha(i) ] .
+\]
+}{average_case_complexity}
+
+\definition{Worst-Case Complexity}{
+The worst-case complexity of an \linkterm{algorithm}{algorithm} $\alpha$ is the function
+\[
+T^{\text{worst}}_\alpha(n) = \max \{ \text{running time of } \alpha(i) \mid i \in I, |i| = n \}.
+\]
+It describes the maximal \linkterm{resource}{resource} usage among all inputs of size $n$.
+}{worst_case_complexity}
+
+\commandnote{We are mostly interested in \linkterm{worst-case complexity}{worst_case_complexity}.}
+
+\definition{Big-$\mathcal{O}$ Notation}{
+In practice, \linkterm{asymptotic analysis}{asymptotic_analysis} is most often applied to the \linkterm{worst-case complexity}{worst_case_complexity}. 
+Let $f, g : \mathbb{N} \to \mathbb{R}_{\geq 0}$. 
+We say that $f$ is \textbf{asymptotically bounded} by $g$, written $f \in \bigo{g}$ or $f \leq_a g$, if there exist constants $c > 0$ and $n_0 \in \mathbb{N}$ such that
+\[
+\forall n \geq n_0: \quad f(n) \leq c \cdot g(n).
+\]
+Equivalently, the \textbf{Landau set} $\mathcal{O}(g)$ is the set of all such \linkterm{functions}{function}:
+\[
+\mathcal{O}(g) = \{ f \mid \exists c > 0, \exists n_0 \in \mathbb{N}, \forall n \geq n_0 : f(n) \leq c \cdot g(n) \}.
+\]
+}{big_o}
+
+\textbf{Example: }Let $f(n) = 3n^2 + 2n + 7$ and $g(n) = n^2$.  
+We want to show that $f \in \bigo{g}$.  
+
+By the \linkterm{definition of Big-$\mathcal{O}$}{big_o}, this means we must find constants $c > 0$ and $n_0 \in \mathbb{N}$ such that
+\[
+\forall n \geq n_0 : \quad f(n) \leq c \cdot g(n).
+\]
+
+Let's take $n_0 = 1$, then $\forall n \geq 1$ we have:
+\[
+2n \leq 2n^2 \quad \text{and} \quad 7 \leq 7n^2.
+\]
+
+Therefore,
+\[
+f(n) = 3n^2 + 2n + 7 \;\;\leq\;\; 3n^2 + 2n^2 + 7n^2 = 12n^2.
+\]
+
+Here we see that $f(n) \leq 12 \cdot g(n)$ for all $n \geq 1$.  
+Thus the definition holds with $c = 12$ and $n_0 = 1$.  
+We conclude that $f(n) \in \mathcal{O}(n^2)$.
+
+\Lemma{
+\textbf{Growth Ranking}. For $\bar{k}>2$ and $k > 1$ we have:
+\[
+\bigo{1} \subset \bigo{\operatorname{log}_2 (n)} \subset \bigo{n} \subset \bigo{n^2} \subset \bigo{n^{\bar{k}}} \subset \bigo{k^n} 
+\]
+}{growth_ranking_complexity}
+The following \linkterm{sets}{def:set} are often used for $S$ in $T(\alpha)$:
+\begin{table}[h]
+\centering
+\begin{tabular}{|c|c|c||c|c|c|}
+\hline
+\textbf{Landau set} & \textbf{class name} & \textbf{rank} &
+\textbf{Landau set} & \textbf{class name} & \textbf{rank} \\
+\hline
+$\mathcal{O}(1)$          & constant     & 1 & $\mathcal{O}(n^2)$ & quadratic   & 4 \\
+$\mathcal{O}(\log_2 n)$   & logarithmic  & 2 & $\mathcal{O}(n^k)$ & polynomial  & 5 \\
+$\mathcal{O}(n)$          & linear       & 3 & $\mathcal{O}(k^n)$ & exponential & 6 \\
+\hline
+\end{tabular}
+\caption{Common complexity classes}
+\end{table}
+
+Computing with \linkterm{Landau sets}{big_o} is quite simple:
+\begin{itemize}
+    \item $\bigo{ c \cdot f} = \bigo{f}$ for any constant $c \in \mathbb{N}$ (\textit{drop constant factors})
+    \item $\bigo{f} \subseteq \bigo{g} \Rightarrow \bigo{f + g} = \bigo{g}$ (\textit{drop low-complexity summands})
+    \item $\bigo{f \cdot g} = \bigo{f} \cdot \bigo{g}$ (\textit{distribute over products})
+\end{itemize}
+\textbf{Example: }$\bigo{4n^3 + 3n + 7^{1000n}} = \bigo{2^n}$ (\textit{exponential})
+\commandnote{
+   $\bigo{n} \subset \bigo{n \cdot log_2 (n)} \subset \bigo{n^2}$ (\textit{linearithmic})
+}
+
+\commandnote{
+    \textbf{Updated Growth Ranking \& Common Classes} \\
+    To account for all algorithmic patterns discussed (such as nested loops with logarithmic guards ), we refine the growth hierarchy. For $a > 2$ and $b > 1$, the asymptotic ranking is :
+    \[
+    \bigo{1} \subset \bigo{\log_2 n} \subset \bigo{n} \subset \mathbf{\bigo{n \log_2 n}} \subset \bigo{n^2} \subset \bigo{n^a} \subset \bigo{b^n}
+    \]
+}
+
+\minititle{Determining the Time/Space Complexity of Algorithms}
+Assume we have 
+\begin{itemize}
+    \item $\Gamma$: a mapping that tells us the complexity of variables.
+    \item $\alpha$: a program fragment.
+    \item $T_{\Gamma} (\alpha)$: the \linkterm{time complexity}{time_complexity} of $\alpha$ under $\Gamma$.
+    \item $C_{\Gamma} (\alpha)$: the context update, i.e. what new cost $\alpha$ introduces.
+\end{itemize}
+We use \linkterm{induction}{induction} on program strcuture:
+
+\textbf{1. Constant}
+
+If $\alpha = \delta$ (where $\delta$ is a literal, like $5$ or \texttt{true}), then $T_{\Gamma} (\alpha) \in \bigo{1}$
+
+\textbf{2. Variable}
+
+If $\alpha = v$ and $v \in \operatorname{dom}(\Gamma)$, then $T_{\Gamma} (\alpha) \in \bigo{\Gamma (v)}$
+
+\textbf{3. Function Call}
+
+If $\alpha = \varphi (\psi)$, with $T_{\Gamma} (\alpha) \in \bigo{f}$, and $T_{\Gamma \cup C_{\Gamma} (\varphi) \in \bigo{g}}$, then $T_{\Gamma} (\alpha) \in \bigo{\compose{f,g}}$
+
+\textbf{4. Assignment}
+
+If $\alpha = v := \varphi$, with $T_{\Gamma} (\varphi) \in S$, then $T_{\Gamma} (\alpha) \in S$, $C_{\Gamma} (\alpha) = \Gamma \cup (v, S)$
+
+\textbf{5. Composition (sequence)}
+
+If $\alpha = \varphi;\psi$, with $T_{\Gamma} (\varphi) \in P$, and $T_{\Gamma \cup C_{\Gamma}(\varphi)}(\psi) \in Q$, then $T_{\Gamma} (\alpha) \in \operatorname{max}\set{P,Q}$
+
+\textbf{6. Branching}
+
+If $\alpha = $ \texttt{if} $\gamma$ \texttt{then} $\varphi$ \texttt{else} $\psi$ \texttt{end}, with $T_{\Gamma} (\gamma) \in C$, $T_{\Gamma \cup C_{\Gamma}(\gamma)}(\varphi) \in P$, and $T_{\Gamma \cup C_{\Gamma}(\gamma)}(\psi) \in Q$, then $T_{\Gamma} (\alpha) \in \operatorname{max}\set{C,P,Q}$
+
+\textbf{7. Loop}
+
+If $\alpha = $ \texttt{while} $\gamma$ \texttt{do} $\varphi$ \texttt{end}, with $T_{\Gamma}(\gamma) \in \bigo{f}$, and $T_{\Gamma \cup C_{\Gamma}(\gamma)}(\varphi) \in \bigo{g}$, then $T_{\Gamma} (\alpha) \in \bigo{f(n) \cdot g(n)}$
+
+\commandnote{
+By default, the overall time complextiy is $T (\alpha) = T_{\phi} (\alpha)$
+}
+
+\minititle{Sequence Example}
+\begin{verbatim}
+x := readArray(n)   -- O(n)
+y := sum(x)         -- O(n)
+\end{verbatim}
+$\operatorname{max}(\bigo{n},\bigo{n}) = \bigo{n}$
+
+\minititle{Conditional Example}
+\begin{verbatim}
+if isSorted(x) then     -- O(n)
+    binarySearch(x,k)   -- O(log n)
+else
+    linearSearch(x,k)   -- O(n)
+end
+\end{verbatim}
+$\operatorname{max}(\bigo{n}, \bigo{\operatorname{log} (n), \bigo{n}}) = \bigo{n}$
+
+\minititle{While loop example}
+\begin{verbatim}
+i := 1
+while i <= n do 
+    i := i + 1
+end
+\end{verbatim}
+Guard (loop condition check) runs $\bigo{n}$ times, body is $\bigo{1}$. Total $\bigo{n \cdot 1} = \bigo{n}$
+
+\minititle{Function Call Example}
+Suppose \texttt{buildArray(n)} $\in \bigo{n^2}$ returns an array  of size $n^2$ and \texttt{sort(m)} $\in \bigo{m \cdot \operatorname{log}(m)}$
+\begin{verbatim}
+sort(buildArray(n))
+\end{verbatim}
+$\bigo{(n^2) \cdot \operatorname{log} (n^2)} = \bigo{n^2 \cdot \operatorname{log} (n)}$
+
+\minititle{Nested For Loop Example}
+\begin{verbatim}
+for i = 1 to n do       -- O(n)
+    for j = 1 to n do   -- O(n)
+        x := x + 1      -- O(1)
+\end{verbatim}
+Inner loop: $\bigo{n \cdot 1}$, outer loop: $\bigo{n \cdot n \cdot 1}$, total: $\bigo{n^2}$
+
+\minititle{Nested (one logarthmic loop)}
+\begin{verbatim}
+for i = 1 to n do
+    k := 1
+    while k < n do
+        k := 2 * k
+\end{verbatim}
+Inner loop starts with $k=1$, each iteration $k$ doubles and the loop stops when $k \geq n$. How many times can we double before reaching $n$? Solve $2^t \geq n \leadsto t = \lceil \operatorname{log}_2 (n) \rceil$. So the inner loop runs $\bigo{\operatorname{log}(n)}$ iterations. Each iteration is $\bigo{1}$, therefore total $\bigo{\operatorname{log}(n)}$.
+
+Outer loop runs exactly $n$ times with each time the cost is $\bigo{\operatorname{log}(n)}$. Total cost is $n \cdot \bigo{\operatorname{log}(n)} = \bigo{n \cdot \operatorname{log}(n)}$
+
+\commandnote{
+    Take home message: not every time you see two nested loops you assume $\bigo{n^2}$
+}
+Here is another example: assume \texttt{<<body>>} $\in \bigo{1}$:
+\begin{verbatim}
+i, j := 0
+while i <= n-1 do
+    i := i+1
+    while j <= 10 do
+        j := j+1
+        <<body>>
+    end
+end
+\end{verbatim} 
+\textbf{Outer Loop: }$i$ increments by $1$ each time untill $i > n - 1$ we stop, so it runs $n$ times.
+
+\textbf{Inner Loop: }the condition is $j \leq 10$, but note that $j$ is initialized once before the loop and not reset for each $i$! That means, first outer iteration $j=0$, runs until $j = 11$, i.e. $11$ iterations. After that, $j=11$ always and the condition $j \leq 10$ is false, so the inner loop never runs again. Inner loop total cost is $\bigo{11} = \bigo{1}$
+
+Therefore, all in all we have linear time ($\bigo{n}$).
+

@@ -1,0 +1,226 @@
+\labeledsection{Relations}{sec:relations}
+
+\definition{Relation}{
+$R \subseteq A \times B$ is a (binary) relation between $A$ and $B$
+}{relation}
+
+\definition{Relation on}{
+a \linkterm{relation}{relation} $R \subseteq A \times B$ where $A = B$ is called a \textit{relation on} $A$
+}{relation_on}
+
+\definition{Total}{
+A \linkterm{relation}{relation} $R \subseteq A \times B$ is called \textit{total} (\textit{left total}) iff $\forall x \in A. \exists y \in B. (x,y) \in R$
+}{total_relation}
+
+\definition{Converse Relation}{
+$R^{-1} \subseteq B \times A := \set{(y,x) \mid (x,y) \in R}$ is the converse \linkterm{relation}{relation} of $R$ 
+}{converse_relation}
+
+\definition{Relation Composition}{
+The composition of $R \subseteq A \times B$ and $S \subseteq B \times C$ is defined as $R \circ S := \set{(a,c) \in A \times C \mid \exists b \in B. (a,b) \in R \land (b,c) \in S} $
+}{relation_composition}
+
+A \linkterm{relation on}{relation_on} $A$: $R \subseteq A \times A$ is called:
+\begin{itemize}
+    \item \refterm{reflexive}{reflexive} on $A$, iff $\forall a \in A. (a,a) \in R$
+    \item \refterm{irreflexive}{irreflexive} on $A$, iff $\forall a \in A. (a,a) \notin R$
+    \item \refterm{symmetric}{symmetric} on $A$, iff $\forall a,b \in A. (a,b) \in R \Rightarrow (b,a) \in R$
+    \item \refterm{asymmetric}{asymmetric} on $A$, iff $\forall a,b \in A. (a,b) \in R \Rightarrow (b,a) \notin R$
+    \item \refterm{antisymmetric}{antisymmetric} on $A$, iff $\forall a,b \in A. (a,b) \in R \land (b,a) \in R \Rightarrow a = b$
+    \item \refterm{transitive}{transitive_relation} on $A$, iff $\forall a,b,c \in A. (a,b) \in R \land (b,c) \in R \Rightarrow (a,c) \in R$
+    \item \refterm{equivalence relation}{equivalence_relation} on $A$, iff $R$ is \linkterm{reflexive}{reflexive} \linkterm{symmetric}{symmetric}, and \linkterm{transitive}{transitive_relation}
+\end{itemize}
+
+\definition{Equality Relation}{
+The equality relation is an \linkterm{equivalence relation}{equivalence_relation} on any \linkterm{set}{def:set}.
+}{equality_relation}
+
+
+\definition{Divides Relation}{
+The \emph{divides} \linkterm{relation on}{relation_on} the integers is defined as
+$\mid \;\subseteq\; \mathbb{Z} \times \mathbb{Z},$ where $\mid \;=\;\{(a,b) \in \mathbb{Z} \times \mathbb{Z} \;\mid\; \exists k \in \mathbb{Z} : b = a \cdot k \}.$ We write $a \mid b$ to denote $(a,b) \in \mid$ (read as \textit{"$a$ divides $b$"}).
+}{divides_relation}
+For example: $5 \mid 10$ because $\exists k:10=5 \cdot k$ where $k=2$.
+
+\definition{Congruence Modulo}{
+For a fixed $n \in \mathbb{N}$ with $n \geq 1$, the \emph{congruence modulo $n$} \linkterm{relation on}{relation_on} the integers is defined as  
+$$\equiv_n \;\subseteq\; \mathbb{Z} \times \mathbb{Z}, \qquad 
+\equiv_n \;=\;\{(a,b) \in \mathbb{Z} \times \mathbb{Z} \;\mid\; n \mid (a-b) \}.$$  
+We write $a \equiv b \pmod{n}$ to denote $(a,b) \in \equiv_n$ (read as \textit{"$a$ is congruent to $b$ modulo $n$"}).
+}{congruence_modulo}
+Examples:
+\begin{itemize}
+    \item $12 \equiv 2 \pmod{5}$ because $5 \mid 10$
+    \item $7 \equiv 22 \pmod{5}$ because $5 \mid 15$
+    \item $9 \equiv 9 \pmod{5}$ because $5 \mid 0$
+\end{itemize}
+
+\commandnote{
+In the definition of \linkterm{congruence modulo}{congruence_modulo} $n$, we do \emph{not} take the absolute value of the difference:
+$$a \equiv b \pmod{n} \;\Longleftrightarrow\; n \mid (a-b).$$
+Since the divisor $n$ can be multiplied by a negative integer, the sign of $(a-b)$ does not matter.  
+For example, $2 \equiv 12 \pmod{5}$ because $2-12=-10$ and $-10 = 5 \cdot (-2)$, so $5 \mid (2-12)$.
+}
+
+\textbf{Exercise:}
+Which of the following binary \linkterm{relations}{relation_on} on integers are \linkterm{equivalence relations}{equivalence_relation}?
+
+\begin{enumerate}
+\item $\Phi$. It is not \linkterm{reflexive}{reflexive} because we must have $(a,a)\in R$ for all integers $a$. But $\Phi$ has no pairs at all. $\to$ NO.
+\item $\mathbb{Z} \times \mathbb{Z}$
+\begin{itemize}
+    \item It is \linkterm{reflexive}{reflexive} since $(a,a) \in R \quad \forall a$
+    \item It is \linkterm{symmetric}{symmetric} because if $(a,b) \in R$ then $(b,a)$ also is
+    \item It is \linkterm{transitive}{transitive_relation} because every possible \linkterm{pair}{cartesian_product} is in it anyway
+    \item $\to$ YES.
+\end{itemize}
+\item $m \leq n$
+\begin{itemize}
+    \item It is \linkterm{reflexive}{reflexive} since $m \leq m$
+    \item It is not \linkterm{symmetric}{symmetric}, e.g. $2 \leq 3$ but not $3 \leq 2$
+    \item $\to$ NO
+\end{itemize}
+\item $\exists z \in \mathbb{Z}:m + z = n$
+\begin{itemize}
+    \item This is actually the same as $\mathbb{Z} \times \mathbb{Z}$ because for any integers $m,n$, we can always pick $z = n-m$. $\to$ YES.
+\end{itemize}
+\item $\exists z \in \mathbb{Z}:m \cdot z = n$
+\begin{itemize}
+    \item This is the same as $m \mid n$. It is \linkterm{reflexive}{reflexive} ($m \cdot 1 = 1$). However, it is not \linkterm{symmetric}{symmetric} ($2 \mid 4$ but $4 \nmid 2$). $\to$ NO.
+\end{itemize}
+\item $5 \mid (m-2)$
+\begin{itemize}
+    \item This means $m$ is \linkterm{congruent}{congruence_modulo} to $2$ modulo $5$.
+    \item It is \linkterm{reflexive}{reflexive} ($5 \mid 0$)
+    \item It is \linkterm{symmetric}{symmetric} (negative or positive does not matter)
+    \item It is \linkterm{transitive}{transitive_relation}, if $5 \mid m-n$ and $5 \mid n-k$, then $5 \mid (m-n) + (n-k) = m-k$
+    \item $\to$ YES. 
+\end{itemize}
+\item $m \mid n$. It is \linkterm{reflexive}{reflexive} but not \linkterm{symmetric}{symmetric}. $\to$ NO.
+\end{enumerate}
+
+\definition{Parital Ordering (non-strict)}{
+A \linkterm{relation}{relation_on} $R \subseteq A \times A$ is called a \textbf{partial ordering} on $A$, iff $R$ is \linkterm{reflexive}{reflexive}, \linkterm{antisymmetric}{antisymmetric}, and \linkterm{transitive}{transitive_relation} on $A$.
+}{partial_ordering}
+
+\definition{Strict Partial Ordering}{
+A \linkterm{relation}{relation_on} $R \subseteq A \times A$ is called a \textbf{strict partial ordering} on $A$, iff $R$ is \linkterm{irreflexive}{irreflexive}, and \linkterm{transitive}{transitive_relation} on $A$.
+}{strict_partial_ordering}
+
+\commandnote{
+We usually write \linkterm{strict partial ordering}{strict_partial_ordering} with asymmetric symbols like $\prec$ and  \linkterm{non-strict ones}{partial_ordering} by adding a line that reminds us of equality ($\preceq$).
+}
+
+\definition{Comparable}{
+In a \linkterm{non-strict partial ordering}{partial_ordering},  two elements $a,b$ are comparable if either $a \preceq b$ or $b \preceq a$. If neither holds, they are incomparable.
+}{comparable}
+
+\definition{Linear Order}{
+A \linkterm{partial ordering}{partial_ordering} is called linear (or total) on $A$, iff all \linkterm{elements}{def:set} in $A$ are \linkterm{comparable}{comparable}, i.e. if $(x,y) \in R$ or $(y,x) \in R$ for all $x,y \in A$.
+}{linear_order}
+
+For example, the $\leq$ \linkterm{relation}{relation_on} is a \linkterm{linear order}{linear_order} on $\mathbb{N}$. However, the \linkterm{"divides" ($\mid$) relation}{divides_relation} is a \linkterm{non-strict partial ordering}{partial_ordering} on $\mathbb{N}$ that is not \linkterm{linear}{linear_order} (e.g., neither $2 \mid 3$ nor $3 \mid 2$).
+
+\Lemma{
+    \linkterm{Strict partial orderings}{strict_partial_ordering} are \linkterm{asymmetric}{asymmetric}.
+}{lemma:strict_partial_order_asymmetric}
+
+\Proof{
+By contradiction: if $(a,b) \in R$ and $(b,a) \in R$, then $(a,a) \in R$ by \linkterm{transitivity}{transitive_relation}, and that can't be because its \linkterm{irreflexive}{irreflexive}.
+}
+
+\Lemma{
+If $\preceq$ is a \linkterm{non-strict partial order}{partial_ordering}, then 
+$
+\prec := \set{(a,b) \mid a \preceq b \land a \neq b}
+$
+is a \linkterm{strict partial order}{strict_partial_ordering}. Conversely, if $\prec$ is a \linkterm{strict partial order}{strict_partial_ordering}, then 
+$
+\preceq := \set{(a,b) \mid   a \prec b \;\lor\; a = b}
+$
+is a \linkterm{non-strict partial order}{partial_ordering}.
+}{lemma:nonstrict_strict_partial_order}
+
+
+\Proof{
+\textbf{(1) Non-strict $\to$ Strict:}  
+Assume $\preceq$ is reflexive, antisymmetric, and transitive.  
+Define $a \prec b \iff (a \preceq b \land a \neq b)$.  
+\begin{itemize}
+  \item \emph{Irreflexive:} $a \prec a$ would require $a \neq a$, impossible.  
+  \item \emph{Transitive:} If $a \prec b$ and $b \prec c$, then $a \preceq b$, $b \preceq c$, and $a \neq b$, $b \neq c$.  
+  By transitivity of $\preceq$, $a \preceq c$.  
+  If $a=c$, antisymmetry would force $a=b$, contradiction.  
+  So $a \neq c$, hence $a \prec c$.  
+\end{itemize}
+Thus $\prec$ is a strict partial order.
+
+\textbf{(2) Strict $\to$ Non-strict:}  
+Assume $\prec$ is irreflexive and transitive.  
+Define $a \preceq b \iff (a=b \lor a \prec b)$.  
+\begin{itemize}
+  \item \emph{Reflexive:} $a=a$ gives $a \preceq a$.  
+  \item \emph{Antisymmetric:} If $a \preceq b$ and $b \preceq a$, then either $a=b$ or we would have $a \prec b$ and $b \prec a$, contradicting asymmetry.  
+  \item \emph{Transitive:} If $a \preceq b$ and $b \preceq c$, then combining cases ($=$ or $\prec$) always gives $a \preceq c$.  
+\end{itemize}
+Thus $\preceq$ is a non-strict partial order.
+}
+
+Examples:
+\begin{itemize}
+  \item On $\mathbb{N}$, the non-strict partial order $\leq$ induces the strict order $<$ by removing equality.  
+  Conversely, $<$ induces $\leq$ by adding equality.  
+  \item On sets, the non-strict partial order $\subseteq$ induces the strict order $\subset$.  
+  Conversely, $\subset$ induces $\subseteq$ by adding equality.  
+\end{itemize}
+
+\textbf{Exercise: }which of the following binary \linkterm{relation}{relation_on} on integers are \linkterm{partial ordering}{partial_ordering}:
+\begin{enumerate}
+\item $\Phi$. It is not \linkterm{reflexive}{reflexive} because we must have $(a,a)\in R$ for all integers $a$. But $\Phi$ has no pairs at all. $\to$ NO.
+\item $\mathbb{Z} \times \mathbb{Z}$
+\begin{itemize}
+    \item It is \linkterm{reflexive}{reflexive} since $(a,a) \in R \quad \forall a$
+    \item It is \linkterm{symmetric}{symmetric} because if $(a,b) \in R$ then $(b,a)$ also is, $\to$ it is not \linkterm{antisymmetric}{antisymmetric}, $\to$ NO
+\end{itemize}
+\item $m \leq n$
+\begin{itemize}
+    \item It is \linkterm{reflexive}{reflexive} since $m \leq m$
+    \item It is \linkterm{asymmetric}{asymmetric}, e.g. $2 \leq 3$ but not $3 \leq 2$
+    \item It is \linkterm{transitive}{transitive_relation}
+    \item $\to$ YES
+\end{itemize}
+\item $\exists z \in \mathbb{Z}:m + z = n$
+\begin{itemize}
+    \item This is actually the same as $\mathbb{Z} \times \mathbb{Z}$ because for any integers $m,n$, we can always pick $z = n-m$. $\to$ NO.
+\end{itemize}
+\item $\exists z \in \mathbb{Z}:m \cdot z = n$
+\begin{itemize}
+    \item This is the same as $m \mid n$. It is \linkterm{reflexive}{reflexive} ($m \cdot 1 = 1$). It is \linkterm{asymmetric}{asymmetric} on $\mathbb{N}$ but not on $\mathbb{Z}$ ($2 \mid -2$ and $-2 \mid 2$ but $2 \neq -2$). $\to$ NO.
+\end{itemize}
+\item $5 \mid (m-2)$
+\begin{itemize}
+    \item This means $m$ is \linkterm{congruent}{congruence_modulo} to $n$ modulo $5$.
+    \item It is \linkterm{reflexive}{reflexive} ($5 \mid 0$)
+    \item It is \linkterm{symmetric}{symmetric} (not \linkterm{asymmetric}{asymmetric})
+    \item It is \linkterm{transitive}{transitive_relation}, if $5 \mid m-n$ and $5 \mid n-k$, then $5 \mid (m-n) + (n-k) = m-k$
+    \item $\to$ NO. 
+\end{itemize}
+\item $m \mid n$. It is \linkterm{reflexive}{reflexive} but not \linkterm{asymmetric}{asymmetric}. $\to$ NO.
+\end{enumerate}
+
+\definition{Partially Ordered Set (Poset)}{
+A \textbf{Partially Ordered Set} (or \textbf{poset}) is a pair $\langle G, \preceq \rangle$ where $G$ is a \linkterm{set}{def:set} and $\preceq$ is a \linkterm{non-strict partial ordering}{partial_ordering} on $G$.
+}{poset}
+
+\definition{Least Element}{
+Let $\langle G, \preceq \rangle$ be a \linkterm{poset}{poset} and $T \subseteq G$. An \linkterm{element}{def:set} $t \in T$ is the \textbf{least} (or \textbf{smallest}, \textbf{minimal}, or $\preceq$-\textbf{minimal}) element of $T$ iff $t \preceq t'$ for all $t' \in T$.
+}{least_element}
+
+\definition{Greatest Element}{
+Let $\langle G, \preceq \rangle$ be a \linkterm{poset}{poset} and $T \subseteq G$. An \linkterm{element}{def:set} $t \in T$ is the \textbf{greatest} (or \textbf{largest}, \textbf{maximal}, or $\preceq$-\textbf{maximal}) element of $T$ iff $t' \preceq t$ for all $t' \in T$.
+}{greatest_element}
+
+\definition{Supremum and Infimum}{
+Let $\tuple{G,\preceq}$ be a \linkterm{non-strict partial ordering}{partial_ordering} and $T \subseteq G$, then we call the \textbf{least upper bound} ($\operatorname{sup}(T) \in G$) of $T$ the \textbf{supremum} of $T$ and the \textbf{greatest lower bound} ($\operatorname{inf}(T) \in G$) of $T$ the \textbf{infimum} of $T$ (if they exist).
+}{supremum_infimum}
+\textbf{Example: }Consider the \linkterm{non-strict partial ordering}{partial_ordering} $\tuple{\mathbb{R},\preceq}$. Let $T$ be the open interval $(0,1) \subseteq \mathbb{R}$, then $\operatorname{sup}(T) = 1$, and $\operatorname{inf}(T) = 0$. Note that $0,1 \in \mathbb{R} \text{ but } \notin T$. (its different from \texttt{min} and \texttt{max} of $T$).
